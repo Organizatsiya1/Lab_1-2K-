@@ -1,6 +1,6 @@
 ﻿namespace Lab_1_2K_
 {
-    partial class Form1
+    partial class Main_Form
     {
         /// <summary>
         /// Обязательная переменная конструктора.
