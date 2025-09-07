@@ -9,9 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_1(2K)", "Lab_1(2K)\Lab_
 		{E53573C0-8588-45FD-89DA-2F2B45163DBE} = {E53573C0-8588-45FD-89DA-2F2B45163DBE}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business_Logic", "Business_Logic\Business_Logic.csproj", "{E53573C0-8588-45FD-89DA-2F2B45163DBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business_Logic", "Business_Logic\Business_Logic.csproj", "{E53573C0-8588-45FD-89DA-2F2B45163DBE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CFCB39D5-15B7-40F0-81A8-3006AF19E202} = {CFCB39D5-15B7-40F0-81A8-3006AF19E202}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{CFCB39D5-15B7-40F0-81A8-3006AF19E202}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{CFCB39D5-15B7-40F0-81A8-3006AF19E202}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
