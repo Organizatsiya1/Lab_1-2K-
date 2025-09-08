@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    internal class Mage:Character
+    public class Mage:Character
     {
         public int Mana {  get; set; }
         public Magic_Schools School { get; set; }
