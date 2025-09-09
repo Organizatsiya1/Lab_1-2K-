@@ -2,15 +2,24 @@
 using System.Formats.Asn1;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+
 namespace Business_Logic
 {
     public class Logic
     {
+        private readonly List<Character> units = new List<Character>();
+
+        // Возвращаем копию текущего списка (безопасно для UI)
+        public List<Character> GetUnits()
+        {
+            return units.ToList();
+        }
+
         /// <summary>
         /// Добавляет бойца в отряд
         /// </summary>
         /// <param name="units">Список всех юнитов - отряд</param>
-        public void Add_Fighter(List<Character> units, string name, string disc, int hp, int str, int stam, Weapons weapon) 
+        public void Add_Fighter(string name, string disc, int hp, int str, int stam, Weapons weapon) 
         {
             Fighter fighter = new Fighter(name, disc, hp, str, stam, weapon);
             units.Add(fighter);
@@ -19,7 +28,7 @@ namespace Business_Logic
         /// Добавляет мага в отряд
         /// </summary>
         /// <param name="units">Список всех юнитов - отряд</param>
-        public void Add_Mage(List<Character> units, string name, string disc, int hp, int str, int mana, Magic_Schools School) 
+        public void Add_Mage(string name, string disc, int hp, int str, int mana, Magic_Schools School) 
         {
             Mage mage = new Mage(name, disc, hp, str, mana, School);
             units.Add(mage);
@@ -29,8 +38,9 @@ namespace Business_Logic
         /// </summary>
         /// <param name="units">Список всех юнитов - отряд</param>
         /// <param name="unit">Удаляемый юнит</param>
-        public void Delete_Unit(List<Character> units, Character unit) 
+        public void Delete_Unit(Character unit) 
         {
+            if (unit == null) return;
             units.Remove(unit); 
         }
         /// <summary>
@@ -45,6 +55,7 @@ namespace Business_Logic
         /// <param name="weapon">Оружие</param>
         public void Change_Fighter(Fighter unit, string name, string disc, int hp, int str, int stam, Weapons weapon) 
         {
+            if (unit == null) return;
             unit.Name = name;
             unit.Description = disc;
             unit.HP = hp;
@@ -64,6 +75,7 @@ namespace Business_Logic
         /// <param name="School">Тип магии</param>
         public void Change_Mage(Mage unit, string name, string disc, int hp, int str, int mana, Magic_Schools School)
         {
+            if (unit == null) return;
             unit.Name = name;
             unit.Description = disc;
             unit.HP = hp;
@@ -78,6 +90,7 @@ namespace Business_Logic
         /// <returns name="info">Прочитанная информация</returns>
         public string Read_Unit(Character unit) 
         {
+            if (unit == null) return "";
             string info = "";
             var properties = unit.GetType().GetProperties();
             foreach (var property in properties) 
@@ -90,10 +103,14 @@ namespace Business_Logic
         /// Построить юнитов - сгруппировать: сначала бойцы - потом маги
         /// </summary>
         /// <param name="units">Список всех юнитов - отряд</param>
-        public void Line_Up(List<Character> units)
+        public void Line_Up()
         {
             var linedUp = units.OrderBy(c => c is Fighter fighter ? 0 : 1).ToList();
-            units = linedUp;
+
+            // нужно переставить элементы в исходном списке (в методе-параметре),
+            // присваивание units = linedUp меняло только локальную ссылку
+            units.Clear();
+            units.AddRange(linedUp);
         }
         /// <summary>
         /// Выбрать владельцев определённого типа оружия
@@ -101,7 +118,7 @@ namespace Business_Logic
         /// <param name="units">Список всех юнитов - отряд</param>
         /// <param name="weapon">Тип оружия</param>
         /// <returns name="marked">Выбранные юниты</returns>
-        public List<Character> Choose_Marked(List<Character> units, Weapons weapon) 
+        public List<Character> Choose_Marked(Weapons weapon) 
         {
             var marked = units.Where(p => ((p is Fighter fighter) && (fighter.Weapon==weapon))).ToList();
             return marked;
@@ -112,7 +129,7 @@ namespace Business_Logic
         /// <param name="units">Список всех юнитов - отряд</param>
         /// <param name="magic">Тип магии</param>
         /// <returns name="marked">Выбранные юниты</returns>
-        public List<Character> Choose_Marked(List<Character> units, Magic_Schools magic)
+        public List<Character> Choose_Marked(Magic_Schools magic)
         {
             var marked = units.Where(p => ((p is Mage mage) && (mage.School == magic))).ToList();
             return marked;
