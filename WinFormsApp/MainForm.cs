@@ -18,6 +18,10 @@ namespace WinFormsApp
             RefreshGrid(); // таблица пустая при запуске
         }
 
+        /// <summary>
+        /// Объявление шаблона таблицы, наполняет фильтры
+        /// значениями перечислений оружия и школ магии
+        /// </summary>
         private void InitializeDataGridView()
         {
             dataGridViewCharacters.AutoGenerateColumns = false;
@@ -25,11 +29,11 @@ namespace WinFormsApp
 
             dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Тип", Width = 80 });
             dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Имя", Width = 150 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Описание", Width = 300 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "HP", Width = 60 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Сила", Width = 60 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Выносливость / Мана", Width = 120 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Оружие / Школа", Width = 120 });
+            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Описание", Width = 210 });
+            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "HP", Width = 80 });
+            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Сила", Width = 100 });
+            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Выносливость / Мана", Width = 300 });
+            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Оружие / Школа", Width = 270 });
 
             // фильтры
             comboBoxFilterWeapon.Items.Clear();
@@ -41,6 +45,9 @@ namespace WinFormsApp
             comboBoxFilterSchool.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Заполнение таблица текущими юнитами и обновление таблицы
+        /// </summary>
         private void RefreshGrid()
         {
             dataGridViewCharacters.Rows.Clear();
@@ -67,6 +74,10 @@ namespace WinFormsApp
             }
         }
 
+        /// <summary>
+        /// Возвращает объест персонажа, соответствующей выбранной строки таблицы 
+        /// </summary>
+        /// <returns>Выбранный объект персонажа, или же значение null при ошибке выбора</returns>
         private Character GetSelectedCharacter()
         {
             if (dataGridViewCharacters.CurrentRow == null || dataGridViewCharacters.CurrentRow.Index < 0)
@@ -85,6 +96,13 @@ namespace WinFormsApp
             return null;
         }
 
+        /// <summary>
+        /// Открывает форму создания персонажа
+        /// После успешного создания передаёт данные в слой логики (Logic) 
+        /// для добавления в список юнитов и обновляет таблицу
+        /// </summary>
+        /// <param name="sender">Ссылка на объект</param>
+        /// <param name="e">Аргументы события</param>
         private void buttonAddHero_Click(object sender, EventArgs e)
         {
             using (AddHeroForm form = new AddHeroForm())
@@ -103,6 +121,12 @@ namespace WinFormsApp
             }
         }
 
+        /// <summary>
+        /// Удаляет выбранного персонажа через логику и обновляет таблицу
+        /// Если ничего не выбрано — ничего не делает
+        /// </summary>
+        /// <param name="sender">Ссылка на объект</param>
+        /// <param name="e">Аргументы события</param>
         private void buttonDeleteHero_Click(object sender, EventArgs e)
         {
             Character selected = GetSelectedCharacter();
@@ -113,6 +137,12 @@ namespace WinFormsApp
             MessageBox.Show("Персонаж удалён!");
         }
 
+        /// <summary>
+        /// Открывает форму редактирования для выбранного персонажа
+        /// По подтверждении обновляет данные через методы логики и обновляет интерфейс
+        /// </summary>
+        /// <param name="sender">Ссылка на объект</param>
+        /// <param name="e">Аргументы события</param>
         private void buttonEditHero_Click(object sender, EventArgs e)
         {
             Character selected = GetSelectedCharacter();
@@ -148,6 +178,11 @@ namespace WinFormsApp
             }
         }
 
+        /// <summary>
+        /// Отображает в таблице только воинов с выбранным типом оружия
+        /// </summary>
+        /// <param name="sender">Ссылка на объект</param>
+        /// <param name="e">Аргументы события</param>
         private void buttonFilterFighters_Click(object sender, EventArgs e)
         {
             if (comboBoxFilterWeapon.SelectedItem == null) return;
@@ -171,6 +206,11 @@ namespace WinFormsApp
             }
         }
 
+        /// <summary>
+        /// Отображает в таблице только магов с выбранной школой магии
+        /// </summary>
+        /// <param name="sender">Ссылка на объект</param>
+        /// <param name="e">Аргументы события</param>
         private void buttonFilterMages_Click(object sender, EventArgs e)
         {
             if (comboBoxFilterSchool.SelectedItem == null) return;
@@ -193,6 +233,23 @@ namespace WinFormsApp
             }
         }
 
+        /// <summary>
+        /// Сортировка: сначала воины, потом маги
+        /// </summary>
+        private void buttonSort_Click(object sender, EventArgs e)
+        {
+            // сортируем внутренний список логики
+            logic.Line_Up();
+
+            // перерисовываем грид так же, как и в остальных местах
+            RefreshGrid();
+        }
+
+        /// <summary>
+        /// Восстанавливает полный список юнитов в таблице (сброс фильтров)
+        /// </summary>
+        /// <param name="sender">Ссылка на объект</param>
+        /// <param name="e">Аргументы события</param>
         private void buttonShowAll_Click(object sender, EventArgs e)
         {
             RefreshGrid();

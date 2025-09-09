@@ -8,7 +8,10 @@ namespace ConsoleApp
     {
         static Logic logic = new Logic();
 
-        static void Main(string[] args)
+        /// <summary>
+        /// Точка входа в консольное приложение с запуском консольного меню
+        /// </summary>
+        static void Main()
         {
             while (true)
             {
@@ -55,6 +58,9 @@ namespace ConsoleApp
             }
         }
 
+        /// <summary>
+        /// Создает персонажа через консольный ввод и добавляет его в логику
+        /// </summary>
         static void CreateCharacter()
         {
             Console.Clear();
@@ -103,6 +109,9 @@ namespace ConsoleApp
             }
         }
 
+        /// <summary>
+        /// Удаляет персонажа по индексу, выбранному пользователем из списка
+        /// </summary>
         static void DeleteCharacter()
         {
             Console.Clear();
@@ -128,6 +137,9 @@ namespace ConsoleApp
             }
         }
 
+        /// <summary>
+        /// Выводит в консоль подробную информацию обо всех персонажах
+        /// </summary>
         static void ShowAll()
         {
             Console.Clear();
@@ -148,6 +160,9 @@ namespace ConsoleApp
             }
         }
 
+        /// <summary>
+        /// Редактирование выбранного персонажа, сохранение текущих значений при пустом вводе
+        /// </summary>
         static void EditCharacter()
         {
             Console.Clear();
@@ -206,6 +221,9 @@ namespace ConsoleApp
             }
         }
 
+        /// <summary>
+        /// Меню дополнительных бизнес функций (выстраивание отряда, фильтры по оружию/школе)
+        /// </summary>
         static void ExtraFunctions()
         {
             while (true)
@@ -266,8 +284,11 @@ namespace ConsoleApp
             }
         }
 
-        // --- вспомогательные методы ввода ---
+        #region вспомогательные методы ввода
 
+        /// <summary>
+        /// Выводит короткий и удобный список юнитов с индексами (для выбора по индексу в меню)
+        /// </summary>
         static void ShowShortList()
         {
             var units = logic.GetUnits();
@@ -277,6 +298,12 @@ namespace ConsoleApp
             }
         }
 
+        ///  <summary>
+        /// Считывает целое число из консоли
+        /// </summary>
+        /// <param name="prompt">Текст подсказки для пользователя</param>
+        /// <param name="defaultValue">Значение по умолчанию, возвращаемое при некорректном вводе</param>
+        /// <returns>Введённое целое число либо значение по умолчанию</returns>
         static int ReadInt(string prompt, int defaultValue)
         {
             Console.Write($"{prompt} (число) [{defaultValue}]: ");
@@ -285,6 +312,12 @@ namespace ConsoleApp
             return defaultValue;
         }
 
+        /// <summary>
+        /// Считывает целое число с возможностью оставить пустой ввод для сохранения текущего значения (редактирование персонажа)
+        /// </summary>
+        /// <param name="prompt">Текст подсказки для пользователя</param>
+        /// <param name="current">Текущее значение, которое будет возвращено при пустом или некорректном вводе</param>
+        /// <returns>Новое значение или сохранённое текущее значение при пустом или некорректном вводе</returns>
         static int ReadIntWithDefault(string prompt, int current)
         {
             Console.Write($"{prompt} [{current}]: ");
@@ -295,6 +328,12 @@ namespace ConsoleApp
             return current;
         }
 
+        /// <summary>
+        /// Считывает строку с возможностью оставить пустой ввод для сохранения текущего значения
+        /// </summary>
+        /// <param name="prompt">Текст подсказки для пользователя</param>
+        /// <param name="current">Текущее значение, которое будет возвращено при пустом вводе</param>
+        /// <returns>Введённая строка или текущее значение при пустом вводе</returns>
         static string ReadStringWithDefault(string prompt, string current)
         {
             Console.Write($"{prompt} [{current}]: ");
@@ -302,4 +341,6 @@ namespace ConsoleApp
             return string.IsNullOrWhiteSpace(s) ? current : s;
         }
     }
+
+    #endregion
 }

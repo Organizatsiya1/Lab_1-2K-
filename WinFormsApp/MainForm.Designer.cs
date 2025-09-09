@@ -28,6 +28,7 @@ namespace WinFormsApp
             labelMage = new Label();
             labelFighter = new Label();
             buttonShowAll = new Button();
+            buttonSort = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewCharacters).BeginInit();
             SuspendLayout();
             // 
@@ -37,7 +38,7 @@ namespace WinFormsApp
             dataGridViewCharacters.Location = new Point(42, 79);
             dataGridViewCharacters.Name = "dataGridViewCharacters";
             dataGridViewCharacters.RowHeadersWidth = 51;
-            dataGridViewCharacters.Size = new Size(1045, 487);
+            dataGridViewCharacters.Size = new Size(1252, 487);
             dataGridViewCharacters.TabIndex = 1;
             // 
             // buttonAddHero
@@ -47,7 +48,7 @@ namespace WinFormsApp
             buttonAddHero.FlatStyle = FlatStyle.Popup;
             buttonAddHero.Font = new Font("Papyrus", 10.2F, FontStyle.Bold);
             buttonAddHero.ForeColor = Color.Gold;
-            buttonAddHero.Location = new Point(1108, 79);
+            buttonAddHero.Location = new Point(1322, 79);
             buttonAddHero.Name = "buttonAddHero";
             buttonAddHero.Size = new Size(250, 50);
             buttonAddHero.TabIndex = 2;
@@ -62,7 +63,7 @@ namespace WinFormsApp
             buttonDeleteHero.FlatStyle = FlatStyle.Popup;
             buttonDeleteHero.Font = new Font("Papyrus", 10.2F, FontStyle.Bold);
             buttonDeleteHero.ForeColor = Color.Gold;
-            buttonDeleteHero.Location = new Point(1108, 135);
+            buttonDeleteHero.Location = new Point(1322, 135);
             buttonDeleteHero.Name = "buttonDeleteHero";
             buttonDeleteHero.Size = new Size(250, 50);
             buttonDeleteHero.TabIndex = 3;
@@ -77,7 +78,7 @@ namespace WinFormsApp
             buttonEditHero.FlatStyle = FlatStyle.Popup;
             buttonEditHero.Font = new Font("Papyrus", 10.2F, FontStyle.Bold);
             buttonEditHero.ForeColor = Color.Gold;
-            buttonEditHero.Location = new Point(1108, 191);
+            buttonEditHero.Location = new Point(1322, 191);
             buttonEditHero.Name = "buttonEditHero";
             buttonEditHero.Size = new Size(250, 50);
             buttonEditHero.TabIndex = 4;
@@ -92,7 +93,7 @@ namespace WinFormsApp
             buttonFilterMages.FlatStyle = FlatStyle.Popup;
             buttonFilterMages.Font = new Font("Papyrus", 10.2F, FontStyle.Bold);
             buttonFilterMages.ForeColor = Color.White;
-            buttonFilterMages.Location = new Point(1315, 362);
+            buttonFilterMages.Location = new Point(1532, 328);
             buttonFilterMages.Name = "buttonFilterMages";
             buttonFilterMages.Size = new Size(57, 38);
             buttonFilterMages.TabIndex = 10;
@@ -107,7 +108,7 @@ namespace WinFormsApp
             buttonFilterFighters.FlatStyle = FlatStyle.Popup;
             buttonFilterFighters.Font = new Font("Papyrus", 10.2F, FontStyle.Bold);
             buttonFilterFighters.ForeColor = Color.White;
-            buttonFilterFighters.Location = new Point(1315, 310);
+            buttonFilterFighters.Location = new Point(1532, 276);
             buttonFilterFighters.Name = "buttonFilterFighters";
             buttonFilterFighters.Size = new Size(57, 38);
             buttonFilterFighters.TabIndex = 7;
@@ -118,7 +119,7 @@ namespace WinFormsApp
             // comboBoxFilterSchool
             // 
             comboBoxFilterSchool.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxFilterSchool.Location = new Point(1185, 362);
+            comboBoxFilterSchool.Location = new Point(1402, 328);
             comboBoxFilterSchool.Name = "comboBoxFilterSchool";
             comboBoxFilterSchool.Size = new Size(120, 45);
             comboBoxFilterSchool.TabIndex = 9;
@@ -126,7 +127,7 @@ namespace WinFormsApp
             // comboBoxFilterWeapon
             // 
             comboBoxFilterWeapon.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxFilterWeapon.Location = new Point(1185, 307);
+            comboBoxFilterWeapon.Location = new Point(1402, 273);
             comboBoxFilterWeapon.Name = "comboBoxFilterWeapon";
             comboBoxFilterWeapon.Size = new Size(120, 45);
             comboBoxFilterWeapon.TabIndex = 6;
@@ -136,7 +137,7 @@ namespace WinFormsApp
             labelTitle.AutoSize = true;
             labelTitle.Font = new Font("Papyrus", 22F, FontStyle.Bold);
             labelTitle.ForeColor = Color.Gold;
-            labelTitle.Location = new Point(161, 9);
+            labelTitle.Location = new Point(257, 9);
             labelTitle.Name = "labelTitle";
             labelTitle.Size = new Size(814, 58);
             labelTitle.TabIndex = 0;
@@ -146,7 +147,7 @@ namespace WinFormsApp
             // 
             labelMage.AutoSize = true;
             labelMage.ForeColor = Color.White;
-            labelMage.Location = new Point(1093, 370);
+            labelMage.Location = new Point(1310, 336);
             labelMage.Name = "labelMage";
             labelMage.Size = new Size(71, 37);
             labelMage.TabIndex = 8;
@@ -156,7 +157,7 @@ namespace WinFormsApp
             // 
             labelFighter.AutoSize = true;
             labelFighter.ForeColor = Color.White;
-            labelFighter.Location = new Point(1093, 310);
+            labelFighter.Location = new Point(1310, 276);
             labelFighter.Name = "labelFighter";
             labelFighter.Size = new Size(86, 37);
             labelFighter.TabIndex = 5;
@@ -169,7 +170,7 @@ namespace WinFormsApp
             buttonShowAll.FlatStyle = FlatStyle.Popup;
             buttonShowAll.Font = new Font("Papyrus", 10.2F, FontStyle.Bold);
             buttonShowAll.ForeColor = Color.Gold;
-            buttonShowAll.Location = new Point(1122, 426);
+            buttonShowAll.Location = new Point(1322, 392);
             buttonShowAll.Name = "buttonShowAll";
             buttonShowAll.Size = new Size(250, 50);
             buttonShowAll.TabIndex = 11;
@@ -177,13 +178,29 @@ namespace WinFormsApp
             buttonShowAll.UseVisualStyleBackColor = false;
             buttonShowAll.Click += buttonShowAll_Click;
             // 
+            // buttonSort
+            // 
+            buttonSort.BackColor = Color.MidnightBlue;
+            buttonSort.Cursor = Cursors.PanNW;
+            buttonSort.FlatStyle = FlatStyle.Popup;
+            buttonSort.Font = new Font("Papyrus", 10.2F, FontStyle.Bold);
+            buttonSort.ForeColor = Color.Gold;
+            buttonSort.Location = new Point(1322, 482);
+            buttonSort.Name = "buttonSort";
+            buttonSort.Size = new Size(250, 79);
+            buttonSort.TabIndex = 12;
+            buttonSort.Text = "⚔ Сформировать отряд";
+            buttonSort.UseVisualStyleBackColor = false;
+            buttonSort.Click += buttonSort_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(17F, 37F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkSlateGray;
-            ClientSize = new Size(1403, 607);
+            ClientSize = new Size(1602, 607);
             Controls.Add(buttonShowAll);
+            Controls.Add(buttonSort);
             Controls.Add(labelTitle);
             Controls.Add(dataGridViewCharacters);
             Controls.Add(buttonAddHero);
@@ -219,5 +236,6 @@ namespace WinFormsApp
         private Label labelMage;
         private Label labelFighter;
         private Button buttonShowAll;
+        private Button buttonSort;
     }
 }
