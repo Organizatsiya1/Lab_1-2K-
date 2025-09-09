@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Business_Logic\Business_Logic.csproj" />
-    <ProjectReference Include="..\Model\Model.csproj" />
+    <ProjectReference Include="..\BusinessLogicModel\BusinessLogicModel.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
-using Business_Logic;
-using Model;
+using BusinessLogicModel;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -41,7 +40,7 @@ namespace WinFormsApp
             comboBoxFilterWeapon.SelectedIndex = 0;
 
             comboBoxFilterSchool.Items.Clear();
-            comboBoxFilterSchool.Items.AddRange(Enum.GetNames(typeof(Magic_Schools)));
+            comboBoxFilterSchool.Items.AddRange(Enum.GetNames(typeof(MagicSchools)));
             comboBoxFilterSchool.SelectedIndex = 0;
         }
 
@@ -112,9 +111,9 @@ namespace WinFormsApp
                     Character hero = form.CreatedHero;
                     // используем методы логики (не внутренний список формы)
                     if (hero is Fighter f)
-                        logic.Add_Fighter(f.Name, f.Description, f.HP, f.Strength, f.Stamina, f.Weapon);
+                        logic.AddFighter(f.Name, f.Description, f.HP, f.Strength, f.Stamina, f.Weapon);
                     else if (hero is Mage m)
-                        logic.Add_Mage(m.Name, m.Description, m.HP, m.Strength, m.Mana, m.School);
+                        logic.AddMage(m.Name, m.Description, m.HP, m.Strength, m.Mana, m.School);
 
                     RefreshGrid();
                 }
@@ -132,7 +131,7 @@ namespace WinFormsApp
             Character selected = GetSelectedCharacter();
             if (selected == null) return;
 
-            logic.Delete_Unit(selected);
+            logic.DeleteUnit(selected);
             RefreshGrid();
             MessageBox.Show("Персонаж удалён!");
         }
@@ -156,20 +155,20 @@ namespace WinFormsApp
 
                     if (selected is Fighter oldF && newValues is Fighter newF)
                     {
-                        logic.Change_Fighter(oldF, newF.Name, newF.Description, newF.HP, newF.Strength, newF.Stamina, newF.Weapon);
+                        logic.ChangeFighter(oldF, newF.Name, newF.Description, newF.HP, newF.Strength, newF.Stamina, newF.Weapon);
                     }
                     else if (selected is Mage oldM && newValues is Mage newM)
                     {
-                        logic.Change_Mage(oldM, newM.Name, newM.Description, newM.HP, newM.Strength, newM.Mana, newM.School);
+                        logic.ChangeMage(oldM, newM.Name, newM.Description, newM.HP, newM.Strength, newM.Mana, newM.School);
                     }
                     else
                     {
                         // тип изменён: удаляем старый и добавляем новый через логику
-                        logic.Delete_Unit(selected);
+                        logic.DeleteUnit(selected);
                         if (newValues is Fighter nf)
-                            logic.Add_Fighter(nf.Name, nf.Description, nf.HP, nf.Strength, nf.Stamina, nf.Weapon);
+                            logic.AddFighter(nf.Name, nf.Description, nf.HP, nf.Strength, nf.Stamina, nf.Weapon);
                         else if (newValues is Mage nm)
-                            logic.Add_Mage(nm.Name, nm.Description, nm.HP, nm.Strength, nm.Mana, nm.School);
+                            logic.AddMage(nm.Name, nm.Description, nm.HP, nm.Strength, nm.Mana, nm.School);
                     }
 
                     RefreshGrid();
@@ -188,7 +187,7 @@ namespace WinFormsApp
             if (comboBoxFilterWeapon.SelectedItem == null) return;
             if (!Enum.TryParse<Weapons>(comboBoxFilterWeapon.SelectedItem.ToString(), out var selectedWeapon)) return;
 
-            var filtered = logic.Choose_Marked(selectedWeapon);
+            var filtered = logic.ChooseMarked(selectedWeapon);
             if (!filtered.Any())
             {
                 MessageBox.Show("Нет воинов с выбранным оружием!");
@@ -214,9 +213,9 @@ namespace WinFormsApp
         private void buttonFilterMages_Click(object sender, EventArgs e)
         {
             if (comboBoxFilterSchool.SelectedItem == null) return;
-            if (!Enum.TryParse<Magic_Schools>(comboBoxFilterSchool.SelectedItem.ToString(), out var selectedSchool)) return;
+            if (!Enum.TryParse<MagicSchools>(comboBoxFilterSchool.SelectedItem.ToString(), out var selectedSchool)) return;
 
-            var filtered = logic.Choose_Marked(selectedSchool);
+            var filtered = logic.ChooseMarked(selectedSchool);
             if (!filtered.Any())
             {
                 MessageBox.Show("Нет магов с выбранной школой!");
@@ -239,7 +238,7 @@ namespace WinFormsApp
         private void buttonSort_Click(object sender, EventArgs e)
         {
             // сортируем внутренний список логики
-            logic.Line_Up();
+            logic.LineUp();
 
             // перерисовываем грид так же, как и в остальных местах
             RefreshGrid();

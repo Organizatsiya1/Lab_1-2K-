@@ -1,5 +1,4 @@
-﻿using Business_Logic;
-using Model;
+﻿using BusinessLogicModel;
 using System;
 
 namespace ConsoleApp
@@ -87,20 +86,20 @@ namespace ConsoleApp
                 if (!Enum.TryParse<Weapons>(w, true, out weapon))
                     weapon = Weapons.None;
 
-                logic.Add_Fighter(name, desc, hp, str, stam, weapon);
+                logic.AddFighter(name, desc, hp, str, stam, weapon);
                 Console.WriteLine("Воин добавлен.");
             }
             else if (t == "2")
             {
                 int mana = ReadInt("Мана", 50);
-                Console.WriteLine("Школы магии: " + string.Join(", ", Enum.GetNames(typeof(Magic_Schools))));
+                Console.WriteLine("Школы магии: " + string.Join(", ", Enum.GetNames(typeof(MagicSchools))));
                 Console.Write("Выберите школу (например Fire): ");
                 string s = Console.ReadLine();
-                Magic_Schools school;
-                if (!Enum.TryParse<Magic_Schools>(s, true, out school))
-                    school = Magic_Schools.Fire;
+                MagicSchools school;
+                if (!Enum.TryParse<MagicSchools>(s, true, out school))
+                    school = MagicSchools.Fire;
 
-                logic.Add_Mage(name, desc, hp, str, mana, school);
+                logic.AddMage(name, desc, hp, str, mana, school);
                 Console.WriteLine("Маг добавлен.");
             }
             else
@@ -128,7 +127,7 @@ namespace ConsoleApp
             int idx = ReadInt("Введите номер персонажа для удаления (0..N-1)", -1);
             if (idx >= 0 && idx < units.Count)
             {
-                logic.Delete_Unit(units[idx]);
+                logic.DeleteUnit(units[idx]);
                 Console.WriteLine("Персонаж удалён.");
             }
             else
@@ -155,7 +154,7 @@ namespace ConsoleApp
             for (int i = 0; i < units.Count; i++)
             {
                 Console.WriteLine($"[{i}] {units[i].GetType().Name} - {units[i].Name}");
-                Console.WriteLine(logic.Read_Unit(units[i]));
+                Console.WriteLine(logic.ReadUnit(units[i]));
                 Console.WriteLine(new string('-', 40));
             }
         }
@@ -197,7 +196,7 @@ namespace ConsoleApp
                 string w = ReadStringWithDefault("Оружие", f.Weapon.ToString());
                 if (!Enum.TryParse<Weapons>(w, true, out Weapons weapon)) weapon = f.Weapon;
 
-                logic.Change_Fighter(f, name, desc, hp, str, stam, weapon);
+                logic.ChangeFighter(f, name, desc, hp, str, stam, weapon);
                 Console.WriteLine("Данные воина обновлены.");
             }
             else if (selected is Mage m)
@@ -208,11 +207,11 @@ namespace ConsoleApp
                 int hp = ReadIntWithDefault("HP", m.HP);
                 int str = ReadIntWithDefault("Сила", m.Strength);
                 int mana = ReadIntWithDefault("Мана", m.Mana);
-                Console.WriteLine("Школы: " + string.Join(", ", Enum.GetNames(typeof(Magic_Schools))));
+                Console.WriteLine("Школы: " + string.Join(", ", Enum.GetNames(typeof(MagicSchools))));
                 string s = ReadStringWithDefault("Школа", m.School.ToString());
-                if (!Enum.TryParse<Magic_Schools>(s, true, out Magic_Schools school)) school = m.School;
+                if (!Enum.TryParse<MagicSchools>(s, true, out MagicSchools school)) school = m.School;
 
-                logic.Change_Mage(m, name, desc, hp, str, mana, school);
+                logic.ChangeMage(m, name, desc, hp, str, mana, school);
                 Console.WriteLine("Данные мага обновлены.");
             }
             else
@@ -239,7 +238,7 @@ namespace ConsoleApp
 
                 if (c == "1")
                 {
-                    logic.Line_Up();
+                    logic.LineUp();
                     Console.WriteLine("Отряд выстроен. (воины сначала)");
                 }
                 else if (c == "2")
@@ -249,7 +248,7 @@ namespace ConsoleApp
                     var w = Console.ReadLine();
                     if (Enum.TryParse<Weapons>(w, true, out Weapons weapon))
                     {
-                        var res = logic.Choose_Marked(weapon);
+                        var res = logic.ChooseMarked(weapon);
                         if (!res.Any()) Console.WriteLine("Нет воинов с выбранным оружием.");
                         else
                         {
@@ -261,12 +260,12 @@ namespace ConsoleApp
                 }
                 else if (c == "3")
                 {
-                    Console.WriteLine("Школы: " + string.Join(", ", Enum.GetNames(typeof(Magic_Schools))));
+                    Console.WriteLine("Школы: " + string.Join(", ", Enum.GetNames(typeof(MagicSchools))));
                     Console.Write("Выберите школу: ");
                     var s = Console.ReadLine();
-                    if (Enum.TryParse<Magic_Schools>(s, true, out Magic_Schools school))
+                    if (Enum.TryParse<MagicSchools>(s, true, out MagicSchools school))
                     {
-                        var res = logic.Choose_Marked(school);
+                        var res = logic.ChooseMarked(school);
                         if (!res.Any()) Console.WriteLine("Нет магов с выбранной школой.");
                         else
                         {

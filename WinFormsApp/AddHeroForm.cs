@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using Model;
+using BusinessLogicModel;
 
 namespace WinFormsApp
 {
@@ -18,7 +18,7 @@ namespace WinFormsApp
             if (comboBoxWeapon.Items.Count == 0)
                 comboBoxWeapon.Items.AddRange(Enum.GetNames(typeof(Weapons)));
             if (comboBoxSchool.Items.Count == 0)
-                comboBoxSchool.Items.AddRange(Enum.GetNames(typeof(Magic_Schools)));
+                comboBoxSchool.Items.AddRange(Enum.GetNames(typeof(MagicSchools)));
 
             if (comboBoxType.Items.Count > 0 && comboBoxType.SelectedIndex < 0)
                 comboBoxType.SelectedIndex = 0;
@@ -124,7 +124,7 @@ namespace WinFormsApp
             }
             else // Маг
             {
-                Magic_Schools school = Magic_Schools.Fire;
+                MagicSchools school = MagicSchools.Fire;
                 if (comboBoxSchool.SelectedItem != null)
                     Enum.TryParse(comboBoxSchool.SelectedItem.ToString(), true, out school);
 
