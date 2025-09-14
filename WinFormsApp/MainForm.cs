@@ -9,7 +9,8 @@ namespace WinFormsApp
     public partial class MainForm : Form
     {
         private Logic logic = new Logic();
-
+        private Character character1 = new Character();
+        private Character character2 = new Character();
         public MainForm()
         {
             InitializeComponent();
@@ -253,13 +254,11 @@ namespace WinFormsApp
             }
         }
 
-        /// <summary>
-        /// Сортировка: сначала воины, потом маги
-        /// </summary>
+        
         private void buttonSort_Click(object sender, EventArgs e)
         {
             // сортируем внутренний список логики
-            logic.LineUp();
+            logic.Fight(character1, character2);
 
             RefreshGrid();
         }

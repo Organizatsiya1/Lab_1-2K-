@@ -233,7 +233,7 @@ namespace WinFormsApp
             comboBoxFilterSchool.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             comboBoxFilterSchool.Location = new Point(1646, 518);
             comboBoxFilterSchool.Name = "comboBoxFilterSchool";
-            comboBoxFilterSchool.Size = new Size(181, 49);
+            comboBoxFilterSchool.Size = new Size(181, 41);
             comboBoxFilterSchool.TabIndex = 9;
             // 
             // comboBoxFilterWeapon
@@ -242,7 +242,7 @@ namespace WinFormsApp
             comboBoxFilterWeapon.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             comboBoxFilterWeapon.Location = new Point(1646, 454);
             comboBoxFilterWeapon.Name = "comboBoxFilterWeapon";
-            comboBoxFilterWeapon.Size = new Size(181, 49);
+            comboBoxFilterWeapon.Size = new Size(181, 41);
             comboBoxFilterWeapon.TabIndex = 6;
             // 
             // labelTitle
@@ -252,7 +252,7 @@ namespace WinFormsApp
             labelTitle.ForeColor = Color.Gold;
             labelTitle.Location = new Point(314, 9);
             labelTitle.Name = "labelTitle";
-            labelTitle.Size = new Size(855, 58);
+            labelTitle.Size = new Size(752, 45);
             labelTitle.TabIndex = 0;
             labelTitle.Text = "⚔ Гильдия искателей приключений ⚔";
             // 
@@ -263,7 +263,7 @@ namespace WinFormsApp
             labelMage.ForeColor = Color.White;
             labelMage.Location = new Point(1540, 521);
             labelMage.Name = "labelMage";
-            labelMage.Size = new Size(85, 41);
+            labelMage.Size = new Size(72, 34);
             labelMage.TabIndex = 8;
             labelMage.Text = "Маг:";
             // 
@@ -274,7 +274,7 @@ namespace WinFormsApp
             labelFighter.ForeColor = Color.White;
             labelFighter.Location = new Point(1540, 457);
             labelFighter.Name = "labelFighter";
-            labelFighter.Size = new Size(100, 41);
+            labelFighter.Size = new Size(89, 34);
             labelFighter.TabIndex = 5;
             labelFighter.Text = "Воин:";
             // 
@@ -304,13 +304,13 @@ namespace WinFormsApp
             buttonSort.Name = "buttonSort";
             buttonSort.Size = new Size(256, 144);
             buttonSort.TabIndex = 12;
-            buttonSort.Text = "⚔ Сформировать отряд";
+            buttonSort.Text = "⚔ Устроить поединок";
             buttonSort.UseVisualStyleBackColor = false;
             buttonSort.Click += buttonSort_Click;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(16F, 34F);
+            AutoScaleDimensions = new SizeF(13F, 27F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             BackColor = Color.DarkSlateGray;
