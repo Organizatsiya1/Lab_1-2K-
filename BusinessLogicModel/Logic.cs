@@ -192,17 +192,18 @@
             return info;
         }
 
-        /// <summary>
-        /// Построить юнитов - сгруппировать: сначала бойцы - потом маги
-        /// </summary>
-        public void LineUp()
+      /// <summary>
+      /// Формирует отряд из заданного количества магов и бойцов
+      /// </summary>
+      /// <param name="nfigh">Количество бойцов</param>
+      /// <param name="nmag">Количество магов</param>
+      /// <returns>Список отряда</returns>
+        public List<Character> MakeATeam(int nfigh, int nmag)
         {
-            var linedUp = units.OrderBy(c => c is Fighter fighter ? 0 : 1).ToList();
-
-            // нужно переставить элементы в исходном списке (в методе-параметре),
-            // присваивание units = linedUp меняло только локальную ссылку
-            units.Clear();
-            units.AddRange(linedUp);
+            List<Character> team = new List<Character>();
+            team.AddRange(units.OfType<Fighter>().Take(nfigh));
+            team.AddRange(units.OfType<Mage>().Take(nmag));
+            return team;
         }
 
         /// <summary>
