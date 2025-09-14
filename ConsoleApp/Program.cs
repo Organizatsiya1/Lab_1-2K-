@@ -299,7 +299,7 @@ namespace ConsoleApp
             {
                 Console.Clear();
                 Console.WriteLine("Дополнительные функции:");
-                Console.WriteLine("1. Выстроить: сначала воины, затем маги");
+                Console.WriteLine("1. Устроить поединок");
                 Console.WriteLine("2. Показать владельцев выбранного оружия");
                 Console.WriteLine("3. Показать магов выбранной школы");
                 Console.WriteLine("0. Назад");
@@ -308,8 +308,54 @@ namespace ConsoleApp
 
                 if (c == "1")
                 {
-                    logic.LineUp(); ////-----------------
-                    Console.WriteLine("Отряд выстроен. (воины сначала)");
+                    bool trigg1 = false;
+                    bool trigg2 = false;
+                    int picked = 0;
+                    Character ch1 = new Character();
+                    Character ch2 = new Character();
+                    while (trigg1 == false) 
+                    {
+                        Console.WriteLine("Выбери бойца");
+                            for (int i = 0; i < logic.GetUnits().Count; i++)
+                            {
+                                Console.WriteLine($"{i + 1} {logic.GetUnits()[i].Name}");
+                            }
+                        int.TryParse(Console.ReadLine(), out int pos1);
+                        pos1--;
+                        picked = pos1;
+                        if (pos1>=0 && pos1 < logic.GetUnits().Count)
+                        {
+                            trigg1 = true;
+                            ch1 = logic.GetUnits()[pos1];
+                        }
+                        else
+                        {
+                            Console.WriteLine("Выбран несущуствующий персонаж");
+                        }
+                        Console.Clear();
+                    }
+                    while(trigg2 == false)
+                    {
+                        Console.WriteLine("Выбери соперника");
+                            for (int i = 0; i < logic.GetUnits().Count; i++)
+                            {
+                                Console.WriteLine($"{i + 1} {logic.GetUnits()[i].Name}");
+                            }
+                        int.TryParse(Console.ReadLine(), out int pos2);
+                        pos2--;
+                        if (pos2 >= 0 && pos2 < logic.GetUnits().Count && pos2!=picked)
+                        {
+                            trigg2 = true;
+                            ch2 = logic.GetUnits()[pos2];
+                        }
+                        else
+                        {
+                            Console.WriteLine("Выбран несущуствующий персонаж, или поединок хотят провести самим с собой");
+                        }
+                        Console.Clear();
+                    }
+                    Console.WriteLine(logic.Fight(ch1, ch2));
+                    Console.Read();
                 }
                 else if (c == "2")
                 {

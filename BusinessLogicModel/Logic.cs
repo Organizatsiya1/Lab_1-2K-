@@ -192,18 +192,27 @@
             return info;
         }
 
-      /// <summary>
-      /// Формирует отряд из заданного количества магов и бойцов
-      /// </summary>
-      /// <param name="nfigh">Количество бойцов</param>
-      /// <param name="nmag">Количество магов</param>
-      /// <returns>Список отряда</returns>
-        public List<Character> MakeATeam(int nfigh, int nmag)
+     /// <summary>
+     /// Метод, проводящий поединок между персонажами, если здоровье кого-то опускается до 0 и ниже, он выбывает из списка
+     /// </summary>
+     /// <param name="char1">Первый персонаж</param>
+     /// <param name="char2">Второй персонаж</param>
+        public string Fight(Character char1, Character char2)
         {
-            List<Character> team = new List<Character>();
-            team.AddRange(units.OfType<Fighter>().Take(nfigh));
-            team.AddRange(units.OfType<Mage>().Take(nmag));
-            return team;
+            string mes = "Поединок завершён\n";
+            char1.HP-=char2.Strength;
+            char2.HP-=char1.Strength;
+            if (char1.HP<=0) 
+            {
+                DeleteUnit(char1);
+                mes += $"{char1.Name} выбывает из группы\n";
+            }
+            if (char2.HP <= 0) 
+            {
+                DeleteUnit(char2);
+                mes += $"{char2.Name} выбывает из группы\n";
+            }
+            return mes;
         }
 
         /// <summary>
