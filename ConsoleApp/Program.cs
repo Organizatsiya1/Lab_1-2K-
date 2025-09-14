@@ -1,5 +1,4 @@
 ﻿using BusinessLogicModel;
-using System;
 
 namespace ConsoleApp
 {
@@ -64,8 +63,25 @@ namespace ConsoleApp
         {
             Console.Clear();
             Console.WriteLine("Создание персонажа");
-            Console.Write("Тип (1 - Воин, 2 - Маг): ");
-            var t = Console.ReadLine();
+            Console.WriteLine("Оставьте поле пустым если хотите установить значение по умолчанию");
+
+            string t;
+            while (true)
+            {
+                Console.Write("Тип (1 - Воин, 2 - Маг, 0 - Отмена): ");
+                t = (Console.ReadLine() ?? "").Trim();
+
+                if (t == "0")
+                {
+                    Console.WriteLine("Создание отменено.");
+                    return;
+                }
+
+                if (t == "1" || t == "2")
+                    break;
+
+                Console.WriteLine("Неверный ввод. Введите 1 - Воин, 2 - Маг, 0 - Отмена");
+            }
 
             Console.Write("Имя: ");
             string name = Console.ReadLine() ?? "";
@@ -73,18 +89,13 @@ namespace ConsoleApp
             Console.Write("Описание: ");
             string desc = Console.ReadLine() ?? "";
 
-            int hp = ReadInt("HP", 100);
+            int hp = ReadInt("Здоровье", 100);
             int str = ReadInt("Сила", 10);
 
             if (t == "1")
             {
                 int stam = ReadInt("Выносливость", 20);
-                Console.WriteLine("Оружие: " + string.Join(", ", Enum.GetNames(typeof(Weapons))));
-                Console.Write("Выберите оружие (например Sword): ");
-                string w = Console.ReadLine();
-                Weapons weapon;
-                if (!Enum.TryParse<Weapons>(w, true, out weapon))
-                    weapon = Weapons.None;
+                Weapons weapon = ChooseEnum<Weapons>("Тип оружия");
 
                 logic.AddFighter(name, desc, hp, str, stam, weapon);
                 Console.WriteLine("Воин добавлен.");
@@ -92,19 +103,10 @@ namespace ConsoleApp
             else if (t == "2")
             {
                 int mana = ReadInt("Мана", 50);
-                Console.WriteLine("Школы магии: " + string.Join(", ", Enum.GetNames(typeof(MagicSchools))));
-                Console.Write("Выберите школу (например Fire): ");
-                string s = Console.ReadLine();
-                MagicSchools school;
-                if (!Enum.TryParse<MagicSchools>(s, true, out school))
-                    school = MagicSchools.Fire;
+                MagicSchools school = ChooseEnum<MagicSchools>("Школа магии");
 
                 logic.AddMage(name, desc, hp, str, mana, school);
                 Console.WriteLine("Маг добавлен.");
-            }
-            else
-            {
-                Console.WriteLine("Неверный тип.");
             }
         }
 
@@ -151,12 +153,56 @@ namespace ConsoleApp
                 return;
             }
 
+            // Заголовки таблицы
+            // Формат строки с вертикальными разделителями
+            string rowFormat = "| {0,4} | {1,-10} | {2,-15} | {3,7} | {4,6} | {5,12} | {6,6} | {7,-12} | {8,-12} | {9,-30} |";
+            int tableWidth = 150; //общая ширина столбца
+
+            // Верхняя граница
+            Console.WriteLine(new string('-', tableWidth));
+
+            // Заголовок таблицы (ширины подобраны для аккуратного вывода)
+            Console.WriteLine(rowFormat,
+                "№", "Тип", "Имя", "Здоровье", "Сила", "Выносливость", "Мана", "Оружие", "Школа магии", "Описание");
+
+            // Разделитель под заголовком
+            Console.WriteLine(new string('-', tableWidth));
+
             for (int i = 0; i < units.Count; i++)
             {
-                Console.WriteLine($"[{i}] {units[i].GetType().Name} - {units[i].Name}");
-                Console.WriteLine(logic.ReadUnit(units[i]));
-                Console.WriteLine(new string('-', 40));
+                var u = units[i];
+                string type = Displays.CharacterTypes[u.GetType()];
+                string name = u.Name;
+                int hp = u.HP;
+                int str = u.Strength;
+
+                // Defaults
+                int stamina = 0;
+                int mana = 0;
+                string weapon = Weapons.None.ToString();
+                string school = "-";
+                string desc = u.Description ?? "";
+
+                if (u is Fighter f)
+                {
+                    stamina = f.Stamina;
+                    weapon = Displays.WeaponsNames[f.Weapon];
+                }
+                else if (u is Mage m)
+                {
+                    mana = m.Mana;
+                    school = Displays.MagicNames[m.School];
+                }
+
+                // Обрезаем описание, чтобы не ломать таблицу
+                if (desc.Length > 30) desc = desc.Substring(0, 27) + "...";
+
+                Console.WriteLine(rowFormat,
+                    i, type, name, hp, str, stamina, mana, weapon, school, desc);
             }
+
+            // Нижняя граница
+            Console.WriteLine(new string('-', tableWidth));
         }
 
         /// <summary>
@@ -175,7 +221,7 @@ namespace ConsoleApp
             }
 
             ShowShortList();
-            int idx = ReadInt("Введите номер персонажа для изменения (0..N-1)", -1);
+            int idx = ReadInt("Введите номер персонажа для изменения", -1);
             if (idx < 0 || idx >= units.Count)
             {
                 Console.WriteLine("Неверный индекс.");
@@ -188,15 +234,27 @@ namespace ConsoleApp
             {
                 Console.WriteLine("Редактирование воина. Оставьте поле пустым, чтобы сохранить текущее значение.");
                 string name = ReadStringWithDefault("Имя", f.Name);
-                string desc = ReadStringWithDefault("Описание", f.Description);
-                int hp = ReadIntWithDefault("HP", f.HP);
+                string disc = ReadStringWithDefault("Описание", f.Description);
+                int hp = ReadIntWithDefault("Здоровье", f.HP);
                 int str = ReadIntWithDefault("Сила", f.Strength);
                 int stam = ReadIntWithDefault("Выносливость", f.Stamina);
-                Console.WriteLine("Оружие: " + string.Join(", ", Enum.GetNames(typeof(Weapons))));
-                string w = ReadStringWithDefault("Оружие", f.Weapon.ToString());
-                if (!Enum.TryParse<Weapons>(w, true, out Weapons weapon)) weapon = f.Weapon;
 
-                logic.ChangeFighter(f, name, desc, hp, str, stam, weapon);
+                var weaponKeys = Displays.WeaponsNames.Keys.ToArray();
+                Console.WriteLine("Оружие:");
+                for (int i = 0; i < weaponKeys.Length; i++)
+                {
+                    var wk = weaponKeys[i];
+                    Console.WriteLine($"{i + 1}. {Displays.WeaponsNames[wk]}");
+                }
+                Console.Write($"Введите номер (1..{weaponKeys.Length}) или нажмите Enter, чтобы оставить текущее [{Displays.WeaponsNames[f.Weapon]}]: ");
+                var wInput = (Console.ReadLine() ?? "").Trim();
+                Weapons weapon = f.Weapon;
+                if (!string.IsNullOrWhiteSpace(wInput) && int.TryParse(wInput, out int wnum) && wnum >= 1 && wnum <= weaponKeys.Length)
+                {
+                    weapon = weaponKeys[wnum - 1];
+                }
+
+                logic.ChangeFighter(f, name, disc, hp, str, stam, weapon);
                 Console.WriteLine("Данные воина обновлены.");
             }
             else if (selected is Mage m)
@@ -204,12 +262,24 @@ namespace ConsoleApp
                 Console.WriteLine("Редактирование мага. Оставьте поле пустым, чтобы сохранить текущее значение.");
                 string name = ReadStringWithDefault("Имя", m.Name);
                 string desc = ReadStringWithDefault("Описание", m.Description);
-                int hp = ReadIntWithDefault("HP", m.HP);
+                int hp = ReadIntWithDefault("Здоровье", m.HP);
                 int str = ReadIntWithDefault("Сила", m.Strength);
                 int mana = ReadIntWithDefault("Мана", m.Mana);
-                Console.WriteLine("Школы: " + string.Join(", ", Enum.GetNames(typeof(MagicSchools))));
-                string s = ReadStringWithDefault("Школа", m.School.ToString());
-                if (!Enum.TryParse<MagicSchools>(s, true, out MagicSchools school)) school = m.School;
+
+                var schoolKeys = Displays.MagicNames.Keys.ToArray();
+                Console.WriteLine("Школы магии:");
+                for (int i = 0; i < schoolKeys.Length; i++)
+                {
+                    var sk = schoolKeys[i];
+                    Console.WriteLine($"{i + 1}. {Displays.MagicNames[sk]}");
+                }
+                Console.Write($"Введите номер (1..{schoolKeys.Length}) или нажмите Enter, чтобы оставить текущее [{Displays.MagicNames[m.School]}]: ");
+                var sInput = (Console.ReadLine() ?? "").Trim();
+                MagicSchools school = m.School;
+                if (!string.IsNullOrWhiteSpace(sInput) && int.TryParse(sInput, out int snum) && snum >= 1 && snum <= schoolKeys.Length)
+                {
+                    school = schoolKeys[snum - 1];
+                }
 
                 logic.ChangeMage(m, name, desc, hp, str, mana, school);
                 Console.WriteLine("Данные мага обновлены.");
@@ -238,42 +308,30 @@ namespace ConsoleApp
 
                 if (c == "1")
                 {
-                    logic.LineUp();
+                    logic.LineUp(); ////-----------------
                     Console.WriteLine("Отряд выстроен. (воины сначала)");
                 }
                 else if (c == "2")
                 {
-                    Console.WriteLine("Оружия: " + string.Join(", ", Enum.GetNames(typeof(Weapons))));
-                    Console.Write("Выберите оружие: ");
-                    var w = Console.ReadLine();
-                    if (Enum.TryParse<Weapons>(w, true, out Weapons weapon))
+                    Weapons weapon = ChooseEnum<Weapons>("Выберите оружие");
+                    var res = logic.ChooseMarked(weapon);
+                    if (!res.Any()) Console.WriteLine("Нет воинов с выбранным оружием.");
+                    else
                     {
-                        var res = logic.ChooseMarked(weapon);
-                        if (!res.Any()) Console.WriteLine("Нет воинов с выбранным оружием.");
-                        else
-                        {
-                            Console.WriteLine("Найденные персонажи:");
-                            foreach (var u in res) Console.WriteLine($"{u.GetType().Name}: {u.Name}");
-                        }
+                        Console.WriteLine("Найденные персонажи:");
+                        foreach (var u in res) Console.WriteLine($"{Displays.CharacterTypes[u.GetType()]}: {u.Name}");
                     }
-                    else Console.WriteLine("Некорректное оружие.");
                 }
                 else if (c == "3")
                 {
-                    Console.WriteLine("Школы: " + string.Join(", ", Enum.GetNames(typeof(MagicSchools))));
-                    Console.Write("Выберите школу: ");
-                    var s = Console.ReadLine();
-                    if (Enum.TryParse<MagicSchools>(s, true, out MagicSchools school))
+                    MagicSchools school = ChooseEnum<MagicSchools>("Выберите школу");
+                    var res = logic.ChooseMarked(school);
+                    if (!res.Any()) Console.WriteLine("Нет магов с выбранной школой.");
+                    else
                     {
-                        var res = logic.ChooseMarked(school);
-                        if (!res.Any()) Console.WriteLine("Нет магов с выбранной школой.");
-                        else
-                        {
-                            Console.WriteLine("Найденные персонажи:");
-                            foreach (var u in res) Console.WriteLine($"{u.GetType().Name}: {u.Name}");
-                        }
+                        Console.WriteLine("Найденные персонажи:");
+                        foreach (var u in res) Console.WriteLine($"{Displays.CharacterTypes[u.GetType()]}: {u.Name}");
                     }
-                    else Console.WriteLine("Некорректная школа.");
                 }
                 else if (c == "0") return;
                 else Console.WriteLine("Неверный ввод.");
@@ -286,6 +344,44 @@ namespace ConsoleApp
         #region вспомогательные методы ввода
 
         /// <summary>
+        /// Показывает список значений enum и позволяет выбрать по номеру
+        /// </summary>
+        /// <typeparam name="T">Тип перечисления</typeparam>
+        /// <param name="title">Заголовок выбора</param>
+        /// <returns>Выбранное значение перечисления</returns>
+        static T ChooseEnum<T>(string title) where T : Enum
+        {
+            var values = Enum.GetValues(typeof(T));
+            Console.WriteLine($"{title}:");
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                var value = (T)values.GetValue(i);
+                string display;
+
+                if (typeof(T) == typeof(Weapons))
+                    display = Displays.WeaponsNames[(Weapons)(object)value];
+                else if (typeof(T) == typeof(MagicSchools))
+                    display = Displays.MagicNames[(MagicSchools)(object)value];
+                else
+                    display = value.ToString();
+
+                Console.WriteLine($"{i + 1}. {display}");
+            }
+
+
+            while (true)
+            {
+                Console.Write($"Введите число (1..{values.Length}): ");
+                var input = (Console.ReadLine() ?? "").Trim();
+                if (int.TryParse(input, out int n) && n >= 1 && n <= values.Length)
+                    return (T)values.GetValue(n - 1);
+
+                Console.WriteLine("Ошибка: введите номер из списка.");
+            }
+        }
+
+        /// <summary>
         /// Выводит короткий и удобный список юнитов с индексами (для выбора по индексу в меню)
         /// </summary>
         static void ShowShortList()
@@ -293,11 +389,12 @@ namespace ConsoleApp
             var units = logic.GetUnits();
             for (int i = 0; i < units.Count; i++)
             {
-                Console.WriteLine($"[{i}] {units[i].GetType().Name} - {units[i].Name}");
+                var typeName = Displays.CharacterTypes[units[i].GetType()];
+                Console.WriteLine($"[{i}] {typeName} - {units[i].Name}");
             }
         }
 
-        ///  <summary>
+        /// <summary>
         /// Считывает целое число из консоли
         /// </summary>
         /// <param name="prompt">Текст подсказки для пользователя</param>

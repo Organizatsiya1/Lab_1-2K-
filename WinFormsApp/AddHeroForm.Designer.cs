@@ -51,7 +51,6 @@ namespace WinFormsApp
             numericStamina = new NumericUpDown();
             labelMana = new Label();
             numericMana = new NumericUpDown();
-
             ((System.ComponentModel.ISupportInitialize)numericHP).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericStrength).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericStamina).BeginInit();
@@ -61,116 +60,129 @@ namespace WinFormsApp
             // labelTitle
             // 
             labelTitle.AutoSize = true;
-            labelTitle.Font = new Font("Papyrus", 20F, FontStyle.Bold);
+            labelTitle.Font = new Font("Ink Free", 28.1999989F, FontStyle.Bold, GraphicsUnit.Point, 204);
             labelTitle.ForeColor = Color.Gold;
-            labelTitle.Location = new Point(120, 10);
+            labelTitle.Location = new Point(112, 10);
             labelTitle.Name = "labelTitle";
-            labelTitle.Size = new Size(377, 54);
+            labelTitle.Size = new Size(429, 58);
             labelTitle.TabIndex = 16;
             labelTitle.Text = "✨ Новый герой ✨";
             // 
             // labelName
             // 
+            labelName.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             labelName.ForeColor = Color.Gold;
-            labelName.Location = new Point(50, 70);
+            labelName.Location = new Point(30, 157);
             labelName.Name = "labelName";
-            labelName.Size = new Size(100, 23);
+            labelName.Size = new Size(195, 46);
             labelName.TabIndex = 15;
             labelName.Text = "Имя:";
             // 
             // textBoxName
             // 
-            textBoxName.Location = new Point(200, 70);
+            textBoxName.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
+            textBoxName.Location = new Point(284, 155);
             textBoxName.Name = "textBoxName";
-            textBoxName.Size = new Size(300, 39);
+            textBoxName.Size = new Size(342, 41);
             textBoxName.TabIndex = 14;
             // 
             // labelDesc
             // 
+            labelDesc.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             labelDesc.ForeColor = Color.Gold;
-            labelDesc.Location = new Point(50, 120);
+            labelDesc.Location = new Point(30, 210);
             labelDesc.Name = "labelDesc";
-            labelDesc.Size = new Size(134, 23);
+            labelDesc.Size = new Size(234, 46);
             labelDesc.TabIndex = 13;
             labelDesc.Text = "Описание:";
             // 
             // textBoxDesc
             // 
-            textBoxDesc.Location = new Point(200, 120);
+            textBoxDesc.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
+            textBoxDesc.Location = new Point(284, 210);
+            textBoxDesc.Multiline = true;
             textBoxDesc.Name = "textBoxDesc";
-            textBoxDesc.Size = new Size(300, 39);
+            textBoxDesc.Size = new Size(342, 129);
             textBoxDesc.TabIndex = 12;
             // 
             // labelHP
             // 
+            labelHP.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             labelHP.ForeColor = Color.Gold;
-            labelHP.Location = new Point(50, 170);
+            labelHP.Location = new Point(30, 355);
             labelHP.Name = "labelHP";
-            labelHP.Size = new Size(100, 23);
+            labelHP.Size = new Size(195, 46);
             labelHP.TabIndex = 11;
-            labelHP.Text = "HP:";
+            labelHP.Text = "Здоровье:";
             // 
             // numericHP
             // 
-            numericHP.Location = new Point(200, 170);
+            numericHP.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
+            numericHP.Location = new Point(284, 355);
             numericHP.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
             numericHP.Name = "numericHP";
-            numericHP.Size = new Size(120, 39);
+            numericHP.Size = new Size(120, 41);
             numericHP.TabIndex = 10;
             numericHP.Value = new decimal(new int[] { 100, 0, 0, 0 });
             // 
             // labelStrength
             // 
+            labelStrength.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             labelStrength.ForeColor = Color.Gold;
-            labelStrength.Location = new Point(50, 218);
+            labelStrength.Location = new Point(30, 414);
             labelStrength.Name = "labelStrength";
-            labelStrength.Size = new Size(100, 23);
+            labelStrength.Size = new Size(195, 46);
             labelStrength.TabIndex = 9;
             labelStrength.Text = "Сила:";
             // 
             // numericStrength
             // 
-            numericStrength.Location = new Point(200, 218);
+            numericStrength.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
+            numericStrength.Location = new Point(284, 414);
             numericStrength.Name = "numericStrength";
-            numericStrength.Size = new Size(120, 39);
+            numericStrength.Size = new Size(120, 41);
             numericStrength.TabIndex = 8;
             numericStrength.Value = new decimal(new int[] { 10, 0, 0, 0 });
             // 
             // comboBoxType
             // 
             comboBoxType.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxType.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
             comboBoxType.Items.AddRange(new object[] { "Воин", "Маг" });
-            comboBoxType.Location = new Point(200, 318);
+            comboBoxType.Location = new Point(284, 98);
             comboBoxType.Name = "comboBoxType";
-            comboBoxType.Size = new Size(173, 39);
+            comboBoxType.Size = new Size(197, 42);
             comboBoxType.TabIndex = 6;
             comboBoxType.SelectedIndexChanged += comboBoxType_SelectedIndexChanged;
             // 
             // labelType
             // 
+            labelType.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             labelType.ForeColor = Color.Gold;
-            labelType.Location = new Point(50, 318);
+            labelType.Location = new Point(30, 100);
             labelType.Name = "labelType";
-            labelType.Size = new Size(100, 23);
+            labelType.Size = new Size(195, 46);
             labelType.TabIndex = 7;
             labelType.Text = "Тип:";
             // 
             // comboBoxWeapon
             // 
             comboBoxWeapon.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxWeapon.Items.AddRange(new object[] { "None", "Mace", "Sword", "Axe" });
-            comboBoxWeapon.Location = new Point(200, 368);
+            comboBoxWeapon.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
+            comboBoxWeapon.Items.AddRange(new object[] { "Нет", "Булава", "Меч", "Топор" });
+            comboBoxWeapon.Location = new Point(285, 531);
             comboBoxWeapon.Name = "comboBoxWeapon";
-            comboBoxWeapon.Size = new Size(121, 39);
+            comboBoxWeapon.Size = new Size(138, 42);
             comboBoxWeapon.TabIndex = 4;
             comboBoxWeapon.Visible = false;
             // 
             // labelWeapon
             // 
+            labelWeapon.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             labelWeapon.ForeColor = Color.Gold;
-            labelWeapon.Location = new Point(50, 368);
+            labelWeapon.Location = new Point(30, 531);
             labelWeapon.Name = "labelWeapon";
-            labelWeapon.Size = new Size(100, 23);
+            labelWeapon.Size = new Size(195, 46);
             labelWeapon.TabIndex = 5;
             labelWeapon.Text = "Оружие:";
             labelWeapon.Visible = false;
@@ -178,72 +190,34 @@ namespace WinFormsApp
             // comboBoxSchool
             // 
             comboBoxSchool.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxSchool.Items.AddRange(new object[] { "Fire", "Ice", "Light" });
-            comboBoxSchool.Location = new Point(200, 368);
+            comboBoxSchool.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
+            comboBoxSchool.Items.AddRange(new object[] { "Огонь", "Лед", "Свет" });
+            comboBoxSchool.Location = new Point(285, 531);
             comboBoxSchool.Name = "comboBoxSchool";
-            comboBoxSchool.Size = new Size(173, 39);
+            comboBoxSchool.Size = new Size(138, 42);
             comboBoxSchool.TabIndex = 2;
             comboBoxSchool.Visible = false;
             // 
             // labelSchool
             // 
+            labelSchool.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             labelSchool.ForeColor = Color.Gold;
-            labelSchool.Location = new Point(50, 368);
+            labelSchool.Location = new Point(30, 531);
             labelSchool.Name = "labelSchool";
-            labelSchool.Size = new Size(100, 23);
+            labelSchool.Size = new Size(195, 46);
             labelSchool.TabIndex = 3;
             labelSchool.Text = "Магия:";
             labelSchool.Visible = false;
-            // 
-            // labelStamina
-            // 
-            labelStamina.ForeColor = Color.Gold;
-            labelStamina.Location = new Point(50, 270);
-            labelStamina.Name = "labelStamina";
-            labelStamina.Size = new Size(140, 23);
-            labelStamina.TabIndex = 18;
-            labelStamina.Text = "Выносливость:";
-            labelStamina.Visible = false;
-            // 
-            // numericStamina
-            // 
-            numericStamina.Location = new Point(200, 270);
-            numericStamina.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
-            numericStamina.Name = "numericStamina";
-            numericStamina.Size = new Size(120, 39);
-            numericStamina.TabIndex = 17;
-            numericStamina.Value = new decimal(new int[] { 20, 0, 0, 0 });
-            numericStamina.Visible = false;
-            // 
-            // labelMana
-            // 
-            labelMana.ForeColor = Color.Gold;
-            labelMana.Location = new Point(50, 270);
-            labelMana.Name = "labelMana";
-            labelMana.Size = new Size(140, 23);
-            labelMana.TabIndex = 20;
-            labelMana.Text = "Мана:";
-            labelMana.Visible = false;
-            // 
-            // numericMana
-            // 
-            numericMana.Location = new Point(200, 270);
-            numericMana.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
-            numericMana.Name = "numericMana";
-            numericMana.Size = new Size(120, 39);
-            numericMana.TabIndex = 19;
-            numericMana.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            numericMana.Visible = false;
             // 
             // buttonSave
             // 
             buttonSave.BackColor = Color.MidnightBlue;
             buttonSave.FlatStyle = FlatStyle.Popup;
-            buttonSave.Font = new Font("Papyrus", 10F, FontStyle.Bold);
+            buttonSave.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
             buttonSave.ForeColor = Color.Gold;
-            buttonSave.Location = new Point(120, 486);
+            buttonSave.Location = new Point(92, 594);
             buttonSave.Name = "buttonSave";
-            buttonSave.Size = new Size(150, 40);
+            buttonSave.Size = new Size(214, 46);
             buttonSave.TabIndex = 1;
             buttonSave.Text = "💾 Сохранить";
             buttonSave.UseVisualStyleBackColor = false;
@@ -253,22 +227,66 @@ namespace WinFormsApp
             // 
             buttonCancel.BackColor = Color.Maroon;
             buttonCancel.FlatStyle = FlatStyle.Popup;
-            buttonCancel.Font = new Font("Papyrus", 10F, FontStyle.Bold);
+            buttonCancel.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
             buttonCancel.ForeColor = Color.White;
-            buttonCancel.Location = new Point(320, 486);
+            buttonCancel.Location = new Point(321, 594);
             buttonCancel.Name = "buttonCancel";
-            buttonCancel.Size = new Size(150, 40);
+            buttonCancel.Size = new Size(214, 46);
             buttonCancel.TabIndex = 0;
             buttonCancel.Text = "❌ Отмена";
             buttonCancel.UseVisualStyleBackColor = false;
             buttonCancel.Click += buttonCancel_Click;
             // 
+            // labelStamina
+            // 
+            labelStamina.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
+            labelStamina.ForeColor = Color.Gold;
+            labelStamina.Location = new Point(30, 473);
+            labelStamina.Name = "labelStamina";
+            labelStamina.Size = new Size(234, 46);
+            labelStamina.TabIndex = 18;
+            labelStamina.Text = "Выносливость:";
+            labelStamina.Visible = false;
+            // 
+            // numericStamina
+            // 
+            numericStamina.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
+            numericStamina.Location = new Point(285, 473);
+            numericStamina.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
+            numericStamina.Name = "numericStamina";
+            numericStamina.Size = new Size(120, 41);
+            numericStamina.TabIndex = 17;
+            numericStamina.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            numericStamina.Visible = false;
+            // 
+            // labelMana
+            // 
+            labelMana.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
+            labelMana.ForeColor = Color.Gold;
+            labelMana.Location = new Point(30, 468);
+            labelMana.Name = "labelMana";
+            labelMana.Size = new Size(241, 46);
+            labelMana.TabIndex = 20;
+            labelMana.Text = "Мана:";
+            labelMana.Visible = false;
+            // 
+            // numericMana
+            // 
+            numericMana.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
+            numericMana.Location = new Point(285, 473);
+            numericMana.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numericMana.Name = "numericMana";
+            numericMana.Size = new Size(120, 41);
+            numericMana.TabIndex = 19;
+            numericMana.Value = new decimal(new int[] { 50, 0, 0, 0 });
+            numericMana.Visible = false;
+            // 
             // AddHeroForm
             // 
-            AutoScaleDimensions = new SizeF(14F, 31F);
+            AutoScaleDimensions = new SizeF(16F, 34F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkSlateGray;
-            ClientSize = new Size(600, 558);
+            ClientSize = new Size(662, 667);
             Controls.Add(buttonCancel);
             Controls.Add(buttonSave);
             Controls.Add(comboBoxSchool);
@@ -290,7 +308,7 @@ namespace WinFormsApp
             Controls.Add(numericStamina);
             Controls.Add(labelMana);
             Controls.Add(numericMana);
-            Font = new Font("Papyrus", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Font = new Font("Ink Free", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "AddHeroForm";
             StartPosition = FormStartPosition.CenterParent;

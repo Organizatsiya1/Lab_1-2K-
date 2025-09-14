@@ -1,9 +1,4 @@
-﻿
-using System.Formats.Asn1;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-
-namespace BusinessLogicModel
+﻿namespace BusinessLogicModel
 {
     public class Logic
     {
@@ -20,6 +15,54 @@ namespace BusinessLogicModel
         }
 
         /// <summary>
+        /// Нормализует имя персонажа (заменяет пустое на "Безымянный")
+        /// </summary>
+        /// <param name="name">Исходное имя</param>
+        /// <returns>Нормализованная строка</returns>
+        private string NormalizeName(string name)
+        {
+            return string.IsNullOrWhiteSpace(name) ? "Безымянный" : name.Trim();
+        }
+
+        /// <summary>
+        /// Ограничивает числовую характеристику заданным диапазоном
+        /// </summary>
+        /// <param name="value">Значение</param>
+        /// <param name="min">Минимум = 0</param>
+        /// <param name="max">Максимум = 100</param>
+        /// <returns></returns>
+        private int ClampStat(int value, int min = 0, int max = 100)
+        {
+            if (value < min) return min;
+            if (value > max) return max;
+            return value;
+        }
+
+        /// <summary>
+        /// Нормализация общего набора полей
+        /// c out-параметрами
+        /// </summary>
+        /// <param name="name">Имя персонажа</param>
+        /// <param name="desc">Описание</param>
+        /// <param name="hp">Значение здоровья</param>
+        /// <param name="str">Значение силы</param>
+        /// <param name="outName">Нормализованное имя</param>
+        /// <param name="outDisc">Нормализованное описание</param>
+        /// <param name="outHp">Исправленное значение здоровья</param>
+        /// <param name="outStr">Исправленное значение силы</param>
+        private void NormalizeCommon(string name, string desc, int hp, int str,
+            out string outName, out string outDisc, out int outHp, out int outStr)
+        {
+            const int hpMax = 100;
+            const int strMax = 10;
+
+            outName = NormalizeName(name);
+            outDisc = desc ?? "";
+            outHp = ClampStat(hp, 0, hpMax);
+            outStr = ClampStat(str, 0, strMax);
+        }
+
+        /// <summary>
         /// Добавляет бойца в отряд
         /// </summary>
         /// <param name="name">Имя</param>
@@ -30,7 +73,14 @@ namespace BusinessLogicModel
         /// <param name="weapon">Выбранный тип оружия</param>
         public void AddFighter(string name, string disc, int hp, int str, int stam, Weapons weapon) 
         {
-            Fighter fighter = new Fighter(name, disc, hp, str, stam, weapon);
+            NormalizeCommon(name, disc, hp, str, out var nName, out var nDisc, out var nHp, out var nStr);
+            stam = ClampStat(stam, 0, 1000);
+
+            // Проверяем, что weapon — действительно определён в enum, иначе ставим None
+            if (!Enum.IsDefined(typeof(Weapons), weapon))
+                weapon = Weapons.None;
+
+            Fighter fighter = new Fighter(nName, nDisc, nHp, nStr, stam, weapon);
             units.Add(fighter);
         }
 
@@ -45,7 +95,10 @@ namespace BusinessLogicModel
         /// <param name="School">Выбранная школа магии</param>
         public void AddMage(string name, string disc, int hp, int str, int mana, MagicSchools School) 
         {
-            Mage mage = new Mage(name, disc, hp, str, mana, School);
+            NormalizeCommon(name, disc, hp, str, out var nName, out var nDisc, out var nHp, out var nStr);
+            mana = ClampStat(mana, 0, 2000);
+
+            Mage mage = new Mage(nName, nDisc, nHp, nStr, mana, School);
             units.Add(mage);
         }
 
@@ -72,10 +125,14 @@ namespace BusinessLogicModel
         public void ChangeFighter(Fighter unit, string name, string disc, int hp, int str, int stam, Weapons weapon) 
         {
             if (unit == null) return;
-            unit.Name = name;
-            unit.Description = disc;
-            unit.HP = hp;
-            unit.Strength = str;
+
+            NormalizeCommon(name, disc, hp, str, out var nName, out var nDisc, out var nHp, out var nStr);
+            stam = ClampStat(stam, 0, 1000);
+
+            unit.Name = nName;
+            unit.Description = nDisc;
+            unit.HP = nHp;
+            unit.Strength = nStr;
             unit.Weapon = weapon;
             unit.Stamina = stam;
         }
@@ -93,10 +150,14 @@ namespace BusinessLogicModel
         public void ChangeMage(Mage unit, string name, string disc, int hp, int str, int mana, MagicSchools School)
         {
             if (unit == null) return;
-            unit.Name = name;
-            unit.Description = disc;
-            unit.HP = hp;
-            unit.Strength = str;
+
+            NormalizeCommon(name, disc, hp, str, out var nName, out var nDisc, out var nHp, out var nStr);
+            mana = ClampStat(mana, 0, 2000);
+
+            unit.Name = nName;
+            unit.Description = nDisc;
+            unit.HP = nHp;
+            unit.Strength = nStr;
             unit.Mana = mana;
             unit.School = School;
         }
@@ -109,12 +170,25 @@ namespace BusinessLogicModel
         public string ReadUnit(Character unit) 
         {
             if (unit == null) return "";
+
             string info = "";
             var properties = unit.GetType().GetProperties();
             foreach (var property in properties) 
             {
                 info += $"{property.Name}: {property.GetValue(unit)}\n";
             }
+
+            if (unit is Mage)
+            {
+                info += $"Выносливость: 0\n";
+                info += $"Оружие: {Displays.WeaponsNames[Weapons.None]}\n";
+            }
+            else if (unit is Fighter)
+            {
+                info += $"Мана: 0\n";
+                info += $"Школа магии: -\n";
+            }
+
             return info;
         }
 

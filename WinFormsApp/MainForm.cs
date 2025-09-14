@@ -24,24 +24,60 @@ namespace WinFormsApp
         private void InitializeDataGridView()
         {
             dataGridViewCharacters.AutoGenerateColumns = false;
-            dataGridViewCharacters.Columns.Clear();
 
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Тип", Width = 80 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Имя", Width = 150 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Описание", Width = 210 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "HP", Width = 80 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Сила", Width = 100 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Выносливость / Мана", Width = 300 });
-            dataGridViewCharacters.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Оружие / Школа", Width = 270 });
+            // Включим авторазмер строк по содержимому (чтобы многострочные описания показывались)
+            dataGridViewCharacters.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewCharacters.RowTemplate.Height = 50;
+
+            // Небольшие косметические настройки
+            dataGridViewCharacters.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCharacters.AllowUserToAddRows = false;
+            dataGridViewCharacters.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewCharacters.MultiSelect = false;
 
             // фильтры
             comboBoxFilterWeapon.Items.Clear();
-            comboBoxFilterWeapon.Items.AddRange(Enum.GetNames(typeof(Weapons)));
+            comboBoxFilterWeapon.Items.AddRange(Displays.WeaponsNames.Values.ToArray());
             comboBoxFilterWeapon.SelectedIndex = 0;
 
             comboBoxFilterSchool.Items.Clear();
-            comboBoxFilterSchool.Items.AddRange(Enum.GetNames(typeof(MagicSchools)));
+            comboBoxFilterSchool.Items.AddRange(Displays.MagicNames.Values.ToArray());
             comboBoxFilterSchool.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Добавляет персонажа в таблицу
+        /// </summary>
+        /// <param name="index">Номер по порядку</param>
+        /// <param name="c">Объект персонажа</param>
+        private void AddCharacterRow(int index, Character c)
+        {
+            string type = Displays.CharacterTypes[c.GetType()];
+            string name = c.Name ?? "";
+            int hp = c.HP;
+            int str = c.Strength;
+
+            // значения по умолчанию
+            int stamina = 0;
+            int mana = 0;
+            string weapon = "—";
+            string school = "—";
+            string desc = c.Description ?? "";
+
+            if (c is Fighter f)
+            {
+                stamina = f.Stamina;
+                weapon = Displays.WeaponsNames[f.Weapon];
+            }
+            else if (c is Mage m)
+            {
+                mana = m.Mana;
+                school = Displays.MagicNames[m.School];
+            }
+
+            dataGridViewCharacters.Rows.Add(
+                index, type, name, hp, str, stamina, mana, weapon, school, desc
+            );
         }
 
         /// <summary>
@@ -52,24 +88,9 @@ namespace WinFormsApp
             dataGridViewCharacters.Rows.Clear();
             var list = logic.GetUnits(); // берем список из логики
 
-            foreach (var c in list)
+            for (int i = 0; i < list.Count; i++)
             {
-                string type = c is Fighter ? "Воин" : c is Mage ? "Маг" : c.GetType().Name;
-                string secondary = "";
-                string classExtra = "";
-
-                if (c is Fighter f)
-                {
-                    secondary = f.Stamina.ToString();
-                    classExtra = f.Weapon.ToString();
-                }
-                else if (c is Mage m)
-                {
-                    secondary = m.Mana.ToString();
-                    classExtra = m.School.ToString();
-                }
-
-                dataGridViewCharacters.Rows.Add(type, c.Name, c.Description, c.HP, c.Strength, secondary, classExtra);
+                AddCharacterRow(i, list[i]);
             }
         }
 
@@ -185,7 +206,10 @@ namespace WinFormsApp
         private void buttonFilterFighters_Click(object sender, EventArgs e)
         {
             if (comboBoxFilterWeapon.SelectedItem == null) return;
-            if (!Enum.TryParse<Weapons>(comboBoxFilterWeapon.SelectedItem.ToString(), out var selectedWeapon)) return;
+
+            var selectedWeapon = Displays.WeaponsNames.FirstOrDefault(
+                kv => kv.Value == comboBoxFilterWeapon.SelectedItem.ToString()
+            ).Key;
 
             var filtered = logic.ChooseMarked(selectedWeapon);
             if (!filtered.Any())
@@ -196,12 +220,9 @@ namespace WinFormsApp
 
             // показываем результат (заменим RefreshGrid -> временно показываем отфильтрованное)
             dataGridViewCharacters.Rows.Clear();
-            foreach (var c in filtered)
+            for (int i = 0; i < filtered.Count; i++)
             {
-                string type = c is Fighter ? "Воин" : c is Mage ? "Маг" : c.GetType().Name;
-                string secondary = c is Fighter f ? f.Stamina.ToString() : c is Mage m ? m.Mana.ToString() : "";
-                string classExtra = c is Fighter ff ? ff.Weapon.ToString() : c is Mage mm ? mm.School.ToString() : "";
-                dataGridViewCharacters.Rows.Add(type, c.Name, c.Description, c.HP, c.Strength, secondary, classExtra);
+                AddCharacterRow(i, filtered[i]);
             }
         }
 
@@ -213,7 +234,10 @@ namespace WinFormsApp
         private void buttonFilterMages_Click(object sender, EventArgs e)
         {
             if (comboBoxFilterSchool.SelectedItem == null) return;
-            if (!Enum.TryParse<MagicSchools>(comboBoxFilterSchool.SelectedItem.ToString(), out var selectedSchool)) return;
+
+            var selectedSchool = Displays.MagicNames.FirstOrDefault(
+                kv => kv.Value == comboBoxFilterSchool.SelectedItem.ToString()
+            ).Key;
 
             var filtered = logic.ChooseMarked(selectedSchool);
             if (!filtered.Any())
@@ -223,12 +247,9 @@ namespace WinFormsApp
             }
 
             dataGridViewCharacters.Rows.Clear();
-            foreach (var c in filtered)
+            for (int i = 0; i < filtered.Count; i++)
             {
-                string type = c is Fighter ? "Воин" : c is Mage ? "Маг" : c.GetType().Name;
-                string secondary = c is Fighter f ? f.Stamina.ToString() : c is Mage m ? m.Mana.ToString() : "";
-                string classExtra = c is Fighter ff ? ff.Weapon.ToString() : c is Mage mm ? mm.School.ToString() : "";
-                dataGridViewCharacters.Rows.Add(type, c.Name, c.Description, c.HP, c.Strength, secondary, classExtra);
+                AddCharacterRow(i, filtered[i]);
             }
         }
 
@@ -240,7 +261,6 @@ namespace WinFormsApp
             // сортируем внутренний список логики
             logic.LineUp();
 
-            // перерисовываем грид так же, как и в остальных местах
             RefreshGrid();
         }
 
