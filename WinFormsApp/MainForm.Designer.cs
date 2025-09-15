@@ -1,5 +1,4 @@
-﻿
-namespace WinFormsApp
+﻿namespace WinFormsApp
 {
     partial class MainForm
     {
@@ -16,23 +15,13 @@ namespace WinFormsApp
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             dataGridViewCharacters = new DataGridView();
-            ColIndex = new DataGridViewTextBoxColumn();
-            ColName = new DataGridViewTextBoxColumn();
-            ColType = new DataGridViewTextBoxColumn();
-            ColHP = new DataGridViewTextBoxColumn();
-            ColStr = new DataGridViewTextBoxColumn();
-            ColStamina = new DataGridViewTextBoxColumn();
-            ColMana = new DataGridViewTextBoxColumn();
-            ColWeapon = new DataGridViewTextBoxColumn();
-            ColSchool = new DataGridViewTextBoxColumn();
-            ColDesc = new DataGridViewTextBoxColumn();
             buttonAddHero = new Button();
             buttonDeleteHero = new Button();
             buttonEditHero = new Button();
@@ -45,112 +34,33 @@ namespace WinFormsApp
             labelFighter = new Label();
             buttonShowAll = new Button();
             buttonSort = new Button();
+            ColIndex = new DataGridViewTextBoxColumn();
+            ColType = new DataGridViewTextBoxColumn();
+            ColName = new DataGridViewTextBoxColumn();
+            ColHP = new DataGridViewTextBoxColumn();
+            ColStr = new DataGridViewTextBoxColumn();
+            ColStamina = new DataGridViewTextBoxColumn();
+            ColMana = new DataGridViewTextBoxColumn();
+            ColWeapon = new DataGridViewTextBoxColumn();
+            ColSchool = new DataGridViewTextBoxColumn();
+            ColDesc = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridViewCharacters).BeginInit();
             SuspendLayout();
             // 
             // dataGridViewCharacters
             // 
+            dataGridViewCharacters.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridViewCharacters.BackgroundColor = SystemColors.InactiveCaption;
+            dataGridViewCharacters.BorderStyle = BorderStyle.Fixed3D;
             dataGridViewCharacters.ColumnHeadersHeight = 32;
-            dataGridViewCharacters.Columns.AddRange(new DataGridViewColumn[] { ColIndex, ColName, ColType, ColHP, ColStr, ColStamina, ColMana, ColWeapon, ColSchool, ColDesc });
+            dataGridViewCharacters.Columns.AddRange(new DataGridViewColumn[] { ColIndex, ColType, ColName, ColHP, ColStr, ColStamina, ColMana, ColWeapon, ColSchool, ColDesc });
+            dataGridViewCharacters.Cursor = Cursors.PanEast;
             dataGridViewCharacters.GridColor = SystemColors.Menu;
-            dataGridViewCharacters.Location = new Point(12, 73);
+            dataGridViewCharacters.Location = new Point(12, 386);
             dataGridViewCharacters.Name = "dataGridViewCharacters";
             dataGridViewCharacters.RowHeadersWidth = 51;
-            dataGridViewCharacters.Size = new Size(1505, 970);
+            dataGridViewCharacters.Size = new Size(1900, 657);
             dataGridViewCharacters.TabIndex = 1;
-            // 
-            // ColIndex
-            // 
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleRight;
-            ColIndex.DefaultCellStyle = dataGridViewCellStyle7;
-            ColIndex.HeaderText = "№";
-            ColIndex.MinimumWidth = 6;
-            ColIndex.Name = "ColIndex";
-            ColIndex.ReadOnly = true;
-            ColIndex.Width = 60;
-            // 
-            // ColName
-            // 
-            ColName.HeaderText = "Имя";
-            ColName.MinimumWidth = 6;
-            ColName.Name = "ColName";
-            ColName.ReadOnly = true;
-            ColName.Width = 180;
-            // 
-            // ColType
-            // 
-            ColType.HeaderText = "Тип";
-            ColType.MinimumWidth = 6;
-            ColType.Name = "ColType";
-            ColType.ReadOnly = true;
-            ColType.Width = 125;
-            // 
-            // ColHP
-            // 
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleRight;
-            ColHP.DefaultCellStyle = dataGridViewCellStyle8;
-            ColHP.HeaderText = "Здоровье";
-            ColHP.MinimumWidth = 6;
-            ColHP.Name = "ColHP";
-            ColHP.ReadOnly = true;
-            ColHP.Width = 140;
-            // 
-            // ColStr
-            // 
-            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleRight;
-            ColStr.DefaultCellStyle = dataGridViewCellStyle9;
-            ColStr.HeaderText = "Сила";
-            ColStr.MinimumWidth = 6;
-            ColStr.Name = "ColStr";
-            ColStr.ReadOnly = true;
-            ColStr.Width = 90;
-            // 
-            // ColStamina
-            // 
-            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleRight;
-            ColStamina.DefaultCellStyle = dataGridViewCellStyle10;
-            ColStamina.HeaderText = "Выносливость";
-            ColStamina.MinimumWidth = 6;
-            ColStamina.Name = "ColStamina";
-            ColStamina.ReadOnly = true;
-            ColStamina.Width = 205;
-            // 
-            // ColMana
-            // 
-            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleRight;
-            ColMana.DefaultCellStyle = dataGridViewCellStyle11;
-            ColMana.HeaderText = "Мана";
-            ColMana.MinimumWidth = 6;
-            ColMana.Name = "ColMana";
-            ColMana.ReadOnly = true;
-            ColMana.Width = 90;
-            // 
-            // ColWeapon
-            // 
-            ColWeapon.HeaderText = "Оружие";
-            ColWeapon.MinimumWidth = 6;
-            ColWeapon.Name = "ColWeapon";
-            ColWeapon.ReadOnly = true;
-            ColWeapon.Width = 140;
-            // 
-            // ColSchool
-            // 
-            ColSchool.HeaderText = "Школа магии";
-            ColSchool.MinimumWidth = 6;
-            ColSchool.Name = "ColSchool";
-            ColSchool.ReadOnly = true;
-            ColSchool.Width = 140;
-            // 
-            // ColDesc
-            // 
-            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.True;
-            ColDesc.DefaultCellStyle = dataGridViewCellStyle12;
-            ColDesc.HeaderText = "Описание";
-            ColDesc.MinimumWidth = 6;
-            ColDesc.Name = "ColDesc";
-            ColDesc.ReadOnly = true;
-            ColDesc.Width = 280;
             // 
             // buttonAddHero
             // 
@@ -159,7 +69,7 @@ namespace WinFormsApp
             buttonAddHero.FlatStyle = FlatStyle.Popup;
             buttonAddHero.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             buttonAddHero.ForeColor = Color.Gold;
-            buttonAddHero.Location = new Point(1601, 229);
+            buttonAddHero.Location = new Point(473, 117);
             buttonAddHero.Name = "buttonAddHero";
             buttonAddHero.Size = new Size(256, 58);
             buttonAddHero.TabIndex = 2;
@@ -174,7 +84,7 @@ namespace WinFormsApp
             buttonDeleteHero.FlatStyle = FlatStyle.Popup;
             buttonDeleteHero.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             buttonDeleteHero.ForeColor = Color.Gold;
-            buttonDeleteHero.Location = new Point(1601, 377);
+            buttonDeleteHero.Location = new Point(473, 265);
             buttonDeleteHero.Name = "buttonDeleteHero";
             buttonDeleteHero.Size = new Size(256, 58);
             buttonDeleteHero.TabIndex = 3;
@@ -189,7 +99,7 @@ namespace WinFormsApp
             buttonEditHero.FlatStyle = FlatStyle.Popup;
             buttonEditHero.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             buttonEditHero.ForeColor = Color.Gold;
-            buttonEditHero.Location = new Point(1601, 302);
+            buttonEditHero.Location = new Point(473, 190);
             buttonEditHero.Name = "buttonEditHero";
             buttonEditHero.Size = new Size(256, 58);
             buttonEditHero.TabIndex = 4;
@@ -204,7 +114,7 @@ namespace WinFormsApp
             buttonFilterMages.FlatStyle = FlatStyle.Popup;
             buttonFilterMages.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             buttonFilterMages.ForeColor = Color.White;
-            buttonFilterMages.Location = new Point(1833, 514);
+            buttonFilterMages.Location = new Point(1073, 221);
             buttonFilterMages.Name = "buttonFilterMages";
             buttonFilterMages.Size = new Size(75, 53);
             buttonFilterMages.TabIndex = 10;
@@ -219,7 +129,7 @@ namespace WinFormsApp
             buttonFilterFighters.FlatStyle = FlatStyle.Popup;
             buttonFilterFighters.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             buttonFilterFighters.ForeColor = Color.White;
-            buttonFilterFighters.Location = new Point(1833, 450);
+            buttonFilterFighters.Location = new Point(1073, 157);
             buttonFilterFighters.Name = "buttonFilterFighters";
             buttonFilterFighters.Size = new Size(75, 54);
             buttonFilterFighters.TabIndex = 7;
@@ -231,18 +141,18 @@ namespace WinFormsApp
             // 
             comboBoxFilterSchool.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxFilterSchool.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            comboBoxFilterSchool.Location = new Point(1646, 518);
+            comboBoxFilterSchool.Location = new Point(886, 225);
             comboBoxFilterSchool.Name = "comboBoxFilterSchool";
-            comboBoxFilterSchool.Size = new Size(181, 41);
+            comboBoxFilterSchool.Size = new Size(181, 49);
             comboBoxFilterSchool.TabIndex = 9;
             // 
             // comboBoxFilterWeapon
             // 
             comboBoxFilterWeapon.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxFilterWeapon.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            comboBoxFilterWeapon.Location = new Point(1646, 454);
+            comboBoxFilterWeapon.Location = new Point(886, 161);
             comboBoxFilterWeapon.Name = "comboBoxFilterWeapon";
-            comboBoxFilterWeapon.Size = new Size(181, 41);
+            comboBoxFilterWeapon.Size = new Size(181, 49);
             comboBoxFilterWeapon.TabIndex = 6;
             // 
             // labelTitle
@@ -250,9 +160,9 @@ namespace WinFormsApp
             labelTitle.AutoSize = true;
             labelTitle.Font = new Font("Ink Free", 28.1999989F, FontStyle.Bold, GraphicsUnit.Point, 204);
             labelTitle.ForeColor = Color.Gold;
-            labelTitle.Location = new Point(314, 9);
+            labelTitle.Location = new Point(539, 9);
             labelTitle.Name = "labelTitle";
-            labelTitle.Size = new Size(752, 45);
+            labelTitle.Size = new Size(855, 58);
             labelTitle.TabIndex = 0;
             labelTitle.Text = "⚔ Гильдия искателей приключений ⚔";
             // 
@@ -261,9 +171,9 @@ namespace WinFormsApp
             labelMage.AutoSize = true;
             labelMage.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             labelMage.ForeColor = Color.White;
-            labelMage.Location = new Point(1540, 521);
+            labelMage.Location = new Point(780, 228);
             labelMage.Name = "labelMage";
-            labelMage.Size = new Size(72, 34);
+            labelMage.Size = new Size(85, 41);
             labelMage.TabIndex = 8;
             labelMage.Text = "Маг:";
             // 
@@ -272,9 +182,9 @@ namespace WinFormsApp
             labelFighter.AutoSize = true;
             labelFighter.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             labelFighter.ForeColor = Color.White;
-            labelFighter.Location = new Point(1540, 457);
+            labelFighter.Location = new Point(780, 164);
             labelFighter.Name = "labelFighter";
-            labelFighter.Size = new Size(89, 34);
+            labelFighter.Size = new Size(100, 41);
             labelFighter.TabIndex = 5;
             labelFighter.Text = "Воин:";
             // 
@@ -285,7 +195,7 @@ namespace WinFormsApp
             buttonShowAll.FlatStyle = FlatStyle.Popup;
             buttonShowAll.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             buttonShowAll.ForeColor = Color.Gold;
-            buttonShowAll.Location = new Point(1601, 584);
+            buttonShowAll.Location = new Point(1208, 85);
             buttonShowAll.Name = "buttonShowAll";
             buttonShowAll.Size = new Size(256, 102);
             buttonShowAll.TabIndex = 11;
@@ -300,7 +210,7 @@ namespace WinFormsApp
             buttonSort.FlatStyle = FlatStyle.Popup;
             buttonSort.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
             buttonSort.ForeColor = Color.Gold;
-            buttonSort.Location = new Point(1601, 707);
+            buttonSort.Location = new Point(1208, 208);
             buttonSort.Name = "buttonSort";
             buttonSort.Size = new Size(256, 144);
             buttonSort.TabIndex = 12;
@@ -308,9 +218,104 @@ namespace WinFormsApp
             buttonSort.UseVisualStyleBackColor = false;
             buttonSort.Click += buttonSort_Click;
             // 
+            // ColIndex
+            // 
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleRight;
+            ColIndex.DefaultCellStyle = dataGridViewCellStyle1;
+            ColIndex.HeaderText = "№";
+            ColIndex.MinimumWidth = 6;
+            ColIndex.Name = "ColIndex";
+            ColIndex.ReadOnly = true;
+            ColIndex.Width = 60;
+            // 
+            // ColType
+            // 
+            ColType.HeaderText = "Тип";
+            ColType.MinimumWidth = 6;
+            ColType.Name = "ColType";
+            ColType.ReadOnly = true;
+            ColType.Width = 125;
+            // 
+            // ColName
+            // 
+            ColName.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            ColName.HeaderText = "Имя";
+            ColName.MinimumWidth = 6;
+            ColName.Name = "ColName";
+            ColName.ReadOnly = true;
+            ColName.Width = 97;
+            // 
+            // ColHP
+            // 
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleRight;
+            ColHP.DefaultCellStyle = dataGridViewCellStyle2;
+            ColHP.HeaderText = "Здоровье";
+            ColHP.MinimumWidth = 6;
+            ColHP.Name = "ColHP";
+            ColHP.ReadOnly = true;
+            ColHP.Width = 140;
+            // 
+            // ColStr
+            // 
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleRight;
+            ColStr.DefaultCellStyle = dataGridViewCellStyle3;
+            ColStr.HeaderText = "Сила";
+            ColStr.MinimumWidth = 6;
+            ColStr.Name = "ColStr";
+            ColStr.ReadOnly = true;
+            ColStr.Width = 130;
+            // 
+            // ColStamina
+            // 
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleRight;
+            ColStamina.DefaultCellStyle = dataGridViewCellStyle4;
+            ColStamina.HeaderText = "Выносливость";
+            ColStamina.MinimumWidth = 6;
+            ColStamina.Name = "ColStamina";
+            ColStamina.ReadOnly = true;
+            ColStamina.Width = 205;
+            // 
+            // ColMana
+            // 
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleRight;
+            ColMana.DefaultCellStyle = dataGridViewCellStyle5;
+            ColMana.HeaderText = "Мана";
+            ColMana.MinimumWidth = 6;
+            ColMana.Name = "ColMana";
+            ColMana.ReadOnly = true;
+            ColMana.Width = 130;
+            // 
+            // ColWeapon
+            // 
+            ColWeapon.HeaderText = "Оружие";
+            ColWeapon.MinimumWidth = 6;
+            ColWeapon.Name = "ColWeapon";
+            ColWeapon.ReadOnly = true;
+            ColWeapon.Width = 250;
+            // 
+            // ColSchool
+            // 
+            ColSchool.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            ColSchool.HeaderText = "Школа магии";
+            ColSchool.MinimumWidth = 6;
+            ColSchool.Name = "ColSchool";
+            ColSchool.ReadOnly = true;
+            ColSchool.Width = 215;
+            // 
+            // ColDesc
+            // 
+            ColDesc.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            ColDesc.DefaultCellStyle = dataGridViewCellStyle6;
+            ColDesc.HeaderText = "Описание";
+            ColDesc.MinimumWidth = 6;
+            ColDesc.Name = "ColDesc";
+            ColDesc.ReadOnly = true;
+            ColDesc.Width = 166;
+            // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(13F, 27F);
+            AutoScaleDimensions = new SizeF(16F, 34F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             BackColor = Color.DarkSlateGray;
@@ -328,6 +333,7 @@ namespace WinFormsApp
             Controls.Add(labelMage);
             Controls.Add(comboBoxFilterSchool);
             Controls.Add(buttonFilterMages);
+            Cursor = Cursors.PanNW;
             Font = new Font("Ink Free", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "MainForm";
@@ -355,8 +361,8 @@ namespace WinFormsApp
         private Button buttonShowAll;
         private Button buttonSort;
         private DataGridViewTextBoxColumn ColIndex;
-        private DataGridViewTextBoxColumn ColName;
         private DataGridViewTextBoxColumn ColType;
+        private DataGridViewTextBoxColumn ColName;
         private DataGridViewTextBoxColumn ColHP;
         private DataGridViewTextBoxColumn ColStr;
         private DataGridViewTextBoxColumn ColStamina;
