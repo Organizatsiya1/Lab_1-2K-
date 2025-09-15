@@ -15,10 +15,14 @@ namespace WinFormsApp
         public AddHeroForm()
         {
             InitializeComponent();
-            if (comboBoxWeapon.Items.Count == 0)
-                comboBoxWeapon.Items.AddRange(Enum.GetNames(typeof(Weapons)));
-            if (comboBoxSchool.Items.Count == 0)
-                comboBoxSchool.Items.AddRange(Enum.GetNames(typeof(MagicSchools)));
+
+            comboBoxWeapon.Items.Clear();
+            foreach (var v in Displays.WeaponsNames.Values)
+                comboBoxWeapon.Items.Add(v);
+
+            comboBoxSchool.Items.Clear();
+            foreach (var v in Displays.MagicNames.Values)
+                comboBoxSchool.Items.Add(v);
 
             if (comboBoxType.Items.Count > 0 && comboBoxType.SelectedIndex < 0)
                 comboBoxType.SelectedIndex = 0;
@@ -61,20 +65,17 @@ namespace WinFormsApp
             if (exist is Fighter f)
             {
                 comboBoxType.SelectedItem = "Воин";
-                comboBoxWeapon.SelectedItem = f.Weapon.ToString();
+                comboBoxWeapon.SelectedItem = Displays.WeaponsNames.ContainsKey(f.Weapon) ? Displays.WeaponsNames[f.Weapon] : Displays.WeaponsNames[Weapons.None];
                 numericStamina.Value = Math.Clamp(f.Stamina, numericStamina.Minimum, numericStamina.Maximum);
-
                 ToggleFields(true);
             }
             else if (exist is Mage m)
             {
                 comboBoxType.SelectedItem = "Маг";
-                comboBoxSchool.SelectedItem = m.School.ToString();
+                comboBoxSchool.SelectedItem = Displays.MagicNames.ContainsKey(m.School) ? Displays.MagicNames[m.School] : Displays.MagicNames[MagicSchools.Fire];
                 numericMana.Value = Math.Clamp(m.Mana, numericMana.Minimum, numericMana.Maximum);
-
                 ToggleFields(false);
             }
-
         }
 
         /// <summary>
@@ -117,7 +118,19 @@ namespace WinFormsApp
             {
                 Weapons weapon = Weapons.None;
                 if (comboBoxWeapon.SelectedItem != null)
-                    Enum.TryParse(comboBoxWeapon.SelectedItem.ToString(), true, out weapon);
+                {
+                    var sel = comboBoxWeapon.SelectedItem.ToString();
+                    foreach (var kv in Displays.WeaponsNames)
+                    {
+                        if (kv.Value == sel)
+                        {
+                            weapon = kv.Key;
+                            break;
+                        }
+                    }
+                    if (!Enum.IsDefined(typeof(Weapons), weapon))
+                        Enum.TryParse(sel, true, out weapon);
+                }
 
                 int stamina = (int)numericStamina.Value;
                 CreatedHero = new Fighter(name, desc, hp, str, stamina, weapon);
@@ -126,7 +139,19 @@ namespace WinFormsApp
             {
                 MagicSchools school = MagicSchools.Fire;
                 if (comboBoxSchool.SelectedItem != null)
-                    Enum.TryParse(comboBoxSchool.SelectedItem.ToString(), true, out school);
+                {
+                    var sel = comboBoxSchool.SelectedItem.ToString();
+                    foreach (var kv in Displays.MagicNames)
+                    {
+                        if (kv.Value == sel)
+                        {
+                            school = kv.Key;
+                            break;
+                        }
+                    }
+                    if (!Enum.IsDefined(typeof(MagicSchools), school))
+                        Enum.TryParse(sel, true, out school);
+                }
 
                 int mana = (int)numericMana.Value;
                 CreatedHero = new Mage(name, desc, hp, str, mana, school);

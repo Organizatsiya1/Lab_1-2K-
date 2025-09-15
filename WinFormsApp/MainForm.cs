@@ -1,15 +1,12 @@
 using BusinessLogicModel;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-
 
 namespace WinFormsApp
 {
     public partial class MainForm : Form
     {
         private Logic logic = new Logic();
-
+        private Character character1 = new Character();
+        private Character character2 = new Character();
         public MainForm()
         {
             InitializeComponent();
@@ -33,7 +30,7 @@ namespace WinFormsApp
             dataGridViewCharacters.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCharacters.AllowUserToAddRows = false;
             dataGridViewCharacters.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewCharacters.MultiSelect = false;
+            dataGridViewCharacters.MultiSelect = true;
 
             // фильтры
             comboBoxFilterWeapon.Items.Clear();
@@ -253,15 +250,33 @@ namespace WinFormsApp
             }
         }
 
-        /// <summary>
-        /// Сортировка: сначала воины, потом маги
-        /// </summary>
+        
         private void buttonSort_Click(object sender, EventArgs e)
         {
-            // сортируем внутренний список логики
-            logic.LineUp();
+            var selRows = dataGridViewCharacters.SelectedRows;
+            if (selRows.Count != 2)
+            {
+                MessageBox.Show("Выберите ровно двух персонажей (держите Ctrl и кликните по строкам).");
+                return;
+            }
 
+            // Получаем индексы строк
+            int idx1 = selRows[0].Index;
+            int idx2 = selRows[1].Index;
+
+            var list = logic.GetUnits();
+            if (idx1 < 0 || idx1 >= list.Count || idx2 < 0 || idx2 >= list.Count)
+            {
+                MessageBox.Show("Ошибка выбора персонажей.");
+                return;
+            }
+
+            var ch1 = list[idx1];
+            var ch2 = list[idx2];
+
+            string result = logic.Fight(ch1, ch2); // используем существующий метод логики
             RefreshGrid();
+            MessageBox.Show(result, "Результат поединка");
         }
 
         /// <summary>

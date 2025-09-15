@@ -193,16 +193,53 @@
         }
 
         /// <summary>
-        /// Построить юнитов - сгруппировать: сначала бойцы - потом маги
+        /// Метод, проводящий поединок между персонажами, если здоровье кого-то опускается до 0 и ниже, он выбывает из списка
         /// </summary>
-        public void LineUp()
+        /// <param name="char1">Первый персонаж</param>
+        /// <param name="char2">Второй персонаж</param>
+        public string Fight(Character char1, Character char2)
         {
-            var linedUp = units.OrderBy(c => c is Fighter fighter ? 0 : 1).ToList();
+            string mes = "\t\tПоединок\n";
+            mes += $"\n{char1.Name} (Здоровье: {char1.HP})  vs  {char2.Name} (Здоровье: {char2.HP})\n\n";
 
-            // нужно переставить элементы в исходном списке (в методе-параметре),
-            // присваивание units = linedUp меняло только локальную ссылку
-            units.Clear();
-            units.AddRange(linedUp);
+            int damageTo1 = char2.Strength;
+            int damageTo2 = char1.Strength;
+
+            mes += $"{char1.Name} получает {damageTo1} урона\n";
+            mes += $"{char2.Name} получает {damageTo2} урона\n\n";
+
+            char1.HP -= damageTo1;
+            char2.HP -= damageTo2;
+
+            // отрицательного здоровья нет - минимум 0
+            if (char1.HP < 0) char1.HP = 0;
+            if (char2.HP < 0) char2.HP = 0;
+
+            mes += $"Статусы после удара: {char1.Name}: {char1.HP} единиц здоровья, {char2.Name}: {char2.HP} единиц здоровья\n\n";
+
+            if (char1.HP == 0 && char2.HP == 0)
+            {
+                DeleteUnit(char1);
+                DeleteUnit(char2);
+                mes += "Оба бойца выбиты из группы.\n";
+            }
+            else if (char1.HP == 0) 
+            {
+                DeleteUnit(char1);
+                mes += $"{char1.Name} выбывает из группы\n";
+            }
+            else if (char2.HP == 0) 
+            {
+                DeleteUnit(char2);
+                mes += $"{char2.Name} выбывает из группы\n";
+            }
+            else
+            {
+                mes += "Оба выжили. Поединок окончен\n";
+            }
+
+            mes += "\nПоединок завершён\n";
+            return mes;
         }
 
         /// <summary>

@@ -119,7 +119,6 @@ namespace WinFormsApp
             // 
             numericHP.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
             numericHP.Location = new Point(284, 355);
-            numericHP.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
             numericHP.Name = "numericHP";
             numericHP.Size = new Size(120, 41);
             numericHP.TabIndex = 10;
@@ -139,6 +138,7 @@ namespace WinFormsApp
             // 
             numericStrength.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
             numericStrength.Location = new Point(284, 414);
+            numericStrength.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
             numericStrength.Name = "numericStrength";
             numericStrength.Size = new Size(120, 41);
             numericStrength.TabIndex = 8;
@@ -151,7 +151,7 @@ namespace WinFormsApp
             comboBoxType.Items.AddRange(new object[] { "Воин", "Маг" });
             comboBoxType.Location = new Point(284, 98);
             comboBoxType.Name = "comboBoxType";
-            comboBoxType.Size = new Size(197, 42);
+            comboBoxType.Size = new Size(227, 42);
             comboBoxType.TabIndex = 6;
             comboBoxType.SelectedIndexChanged += comboBoxType_SelectedIndexChanged;
             // 
@@ -172,7 +172,7 @@ namespace WinFormsApp
             comboBoxWeapon.Items.AddRange(new object[] { "Нет", "Булава", "Меч", "Топор" });
             comboBoxWeapon.Location = new Point(285, 531);
             comboBoxWeapon.Name = "comboBoxWeapon";
-            comboBoxWeapon.Size = new Size(138, 42);
+            comboBoxWeapon.Size = new Size(226, 42);
             comboBoxWeapon.TabIndex = 4;
             comboBoxWeapon.Visible = false;
             // 
@@ -194,7 +194,7 @@ namespace WinFormsApp
             comboBoxSchool.Items.AddRange(new object[] { "Огонь", "Лед", "Свет" });
             comboBoxSchool.Location = new Point(285, 531);
             comboBoxSchool.Name = "comboBoxSchool";
-            comboBoxSchool.Size = new Size(138, 42);
+            comboBoxSchool.Size = new Size(226, 42);
             comboBoxSchool.TabIndex = 2;
             comboBoxSchool.Visible = false;
             // 
@@ -212,6 +212,7 @@ namespace WinFormsApp
             // buttonSave
             // 
             buttonSave.BackColor = Color.MidnightBlue;
+            buttonSave.Cursor = Cursors.PanNW;
             buttonSave.FlatStyle = FlatStyle.Popup;
             buttonSave.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
             buttonSave.ForeColor = Color.Gold;
@@ -226,6 +227,7 @@ namespace WinFormsApp
             // buttonCancel
             // 
             buttonCancel.BackColor = Color.Maroon;
+            buttonCancel.Cursor = Cursors.PanNW;
             buttonCancel.FlatStyle = FlatStyle.Popup;
             buttonCancel.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
             buttonCancel.ForeColor = Color.White;
@@ -251,8 +253,8 @@ namespace WinFormsApp
             // numericStamina
             // 
             numericStamina.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            numericStamina.Location = new Point(285, 473);
-            numericStamina.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
+            numericStamina.Location = new Point(284, 473);
+            numericStamina.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
             numericStamina.Name = "numericStamina";
             numericStamina.Size = new Size(120, 41);
             numericStamina.TabIndex = 17;
@@ -274,7 +276,7 @@ namespace WinFormsApp
             // 
             numericMana.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
             numericMana.Location = new Point(285, 473);
-            numericMana.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numericMana.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
             numericMana.Name = "numericMana";
             numericMana.Size = new Size(120, 41);
             numericMana.TabIndex = 19;
@@ -308,6 +310,7 @@ namespace WinFormsApp
             Controls.Add(numericStamina);
             Controls.Add(labelMana);
             Controls.Add(numericMana);
+            Cursor = Cursors.PanNW;
             Font = new Font("Ink Free", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "AddHeroForm";
