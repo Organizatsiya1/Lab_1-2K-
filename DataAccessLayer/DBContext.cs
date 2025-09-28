@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogicModels
+namespace DataAccessLayer
 {
-    public interface IDomainObject
+    public class DBContext
     {
-        int Id { get; set; }
     }
 }
