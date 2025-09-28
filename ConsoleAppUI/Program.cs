@@ -1,4 +1,6 @@
 ﻿using BusinessLogicModels;
+using System;
+using System.Linq;
 
 namespace ConsoleApp
 {
