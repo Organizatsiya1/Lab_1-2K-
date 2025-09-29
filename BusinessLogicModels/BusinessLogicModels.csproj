@@ -45,6 +45,7 @@
     <Compile Include="Displays.cs" />
     <Compile Include="Fighter.cs" />
     <Compile Include="IDomainObject.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="Mage.cs" />
     <Compile Include="MagicSchools.cs" />

@@ -10,6 +10,9 @@ namespace BusinessLogicModels
     {
         public int Stamina {  get; set; }
         public Weapons Weapon { get; set; }
+
+        public Fighter() { }
+
         public Fighter(string name, string descr, int hp, int str, int stam, Weapons weap) 
         {
             Name = name;

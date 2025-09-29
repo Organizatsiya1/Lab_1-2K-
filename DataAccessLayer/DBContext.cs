@@ -1,12 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BusinessLogicModels;
+using System.Data.Entity;
 
 namespace DataAccessLayer
 {
-    public class DBContext
+    // DBContext - 5a.i
+    public class AdventureGuildContext : DbContext
     {
+        public AdventureGuildContext() : base("name=AdventureGuildDB") { }
+
+        public DbSet<Character> Characters { get; set; }
+
+        /// <summary>
+        /// Настраивает модель, которая была обнаружена по соглашению из типов сущностей,
+        /// представленных в свойствах DbSet в производном контексте
+        /// </summary>
+        /// <param name="modelBuilder">Построитель, используемый для конструирования модели для этого контекста</param>
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Character>().ToTable("Персонажи");
+        }
+
     }
 }

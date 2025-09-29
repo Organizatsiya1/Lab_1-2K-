@@ -6,7 +6,12 @@ namespace BusinessLogicModels
 {
     public class Logic
     {
-        private readonly List<Character> units = new List<Character>();
+        private readonly IRepository<Character> repository;
+
+        public Logic(IRepository<Character> repository)
+        {
+            this.repository = repository;
+        }
 
         /// <summary>
         /// Возвращаемый список — независимая копия,
@@ -15,7 +20,7 @@ namespace BusinessLogicModels
         /// <returns>Копия текущего списка юнитов</returns>
         public List<Character> GetUnits()
         {
-            return units.ToList();
+            return repository.ReadAll().ToList();
         }
 
         /// <summary>
@@ -85,7 +90,7 @@ namespace BusinessLogicModels
                 weapon = Weapons.None;
 
             Fighter fighter = new Fighter(nName, nDisc, nHp, nStr, stam, weapon);
-            units.Add(fighter);
+            repository.Create(fighter);
         }
 
         /// <summary>
@@ -103,7 +108,7 @@ namespace BusinessLogicModels
             mana = ClampStat(mana, 0, 2000);
 
             Mage mage = new Mage(nName, nDisc, nHp, nStr, mana, School);
-            units.Add(mage);
+            repository.Create(mage);
         }
 
         /// <summary>
@@ -113,7 +118,7 @@ namespace BusinessLogicModels
         public void DeleteUnit(Character unit) 
         {
             if (unit == null) return;
-            units.Remove(unit); 
+            repository.Delete(unit); 
         }
 
         /// <summary>
@@ -139,6 +144,8 @@ namespace BusinessLogicModels
             unit.Strength = nStr;
             unit.Weapon = weapon;
             unit.Stamina = stam;
+
+            repository.Update(unit);
         }
 
         /// <summary>
@@ -164,6 +171,8 @@ namespace BusinessLogicModels
             unit.Strength = nStr;
             unit.Mana = mana;
             unit.School = School;
+
+            repository.Update(unit);
         }
 
         /// <summary>
@@ -223,22 +232,24 @@ namespace BusinessLogicModels
 
             if (char1.HP == 0 && char2.HP == 0)
             {
-                DeleteUnit(char1);
-                DeleteUnit(char2);
+                repository.Delete(char1);
+                repository.Delete(char1);
                 mes += "Оба бойца выбиты из группы.\n";
             }
             else if (char1.HP == 0) 
             {
-                DeleteUnit(char1);
+                repository.Delete(char1);
                 mes += $"{char1.Name} выбывает из группы\n";
             }
             else if (char2.HP == 0) 
             {
-                DeleteUnit(char2);
+                repository.Delete(char2);
                 mes += $"{char2.Name} выбывает из группы\n";
             }
             else
             {
+                repository.Update(char1);
+                repository.Update(char2);
                 mes += "Оба выжили. Поединок окончен\n";
             }
 
@@ -253,7 +264,8 @@ namespace BusinessLogicModels
         /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(Weapons weapon) 
         {
-            var marked = units.Where(p => ((p is Fighter fighter) && (fighter.Weapon==weapon))).ToList();
+            var allUnits = repository.ReadAll();
+            var marked = allUnits.Where(p => ((p is Fighter fighter) && (fighter.Weapon==weapon))).ToList();
             return marked;
         }
 
@@ -264,7 +276,8 @@ namespace BusinessLogicModels
         /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(MagicSchools magic)
         {
-            var marked = units.Where(p => ((p is Mage mage) && (mage.School == magic))).ToList();
+            var allUnits = repository.ReadAll();
+            var marked = allUnits.Where(p => ((p is Mage mage) && (mage.School == magic))).ToList();
             return marked;
         }
     }

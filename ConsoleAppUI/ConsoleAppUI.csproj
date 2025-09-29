@@ -54,6 +54,10 @@
       <Project>{8A300169-A46D-455C-990F-96B88DA0CAED}</Project>
       <Name>BusinessLogicModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
+      <Project>{5ff6ad3f-a9b3-43a8-900e-5dfbc9286789}</Project>
+      <Name>DataAccessLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

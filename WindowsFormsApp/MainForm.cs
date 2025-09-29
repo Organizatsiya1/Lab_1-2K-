@@ -1,4 +1,5 @@
 using BusinessLogicModels;
+using DataAccessLayer;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,12 +8,29 @@ namespace WinFormsApp
 {
     public partial class MainForm : Form
     {
-        private Logic logic = new Logic();
-        private Character character1 = new Character();
-        private Character character2 = new Character();
+        private Logic logic;
         public MainForm()
         {
             InitializeComponent();
+
+            string connectionString = "ваша_строка_подключения"; // из app.config
+            IRepository<Character> repository;
+
+            // Выбираем реализацию (EF или Dapper)
+            bool useEntityFramework = true; // или из настроек
+
+            if (useEntityFramework)
+            {
+                var context = new AdventureGuildContext();
+                repository = new EntityRepository<Character>(context);
+            }
+            else
+            {
+                repository = new DapperRepository<Character>(connectionString);
+            }
+
+            logic = new Logic(repository);
+
             InitializeDataGridView();
             RefreshGrid(); // таблица пустая при запуске
         }

@@ -1,12 +1,13 @@
 ﻿using BusinessLogicModels;
 using System;
 using System.Linq;
+using DataAccessLayer;
 
 namespace ConsoleApp
 {
     internal class Program
     {
-        static Logic logic = new Logic();
+        static Logic logic;
 
         /// <summary>
         /// Точка входа в консольное приложение с запуском консольного меню
