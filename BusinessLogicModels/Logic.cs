@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataAccessLayer;
 using Models;
 
 namespace BusinessLogic
 {
     public class Logic
     {
-        private readonly List<Character> units = new List<Character>();
+        private readonly IRepository<Character> repository;
+
+        public Logic()
+        {
+            // Подключаем EF-репозиторий
+            var context = new AdventureGuildContext();
+            repository = new EntityRepository<Character>(context);
+        }
+
 
         /// <summary>
         /// Возвращаемый список — независимая копия,
@@ -16,7 +25,7 @@ namespace BusinessLogic
         /// <returns>Копия текущего списка юнитов</returns>
         public List<Character> GetUnits()
         {
-            return units.ToList();
+            return repository.ReadAll().ToList();
         }
 
         /// <summary>
@@ -86,7 +95,7 @@ namespace BusinessLogic
                 weapon = Weapons.None;
 
             Fighter fighter = new Fighter(nName, nDisc, nHp, nStr, stam, weapon);
-            units.Add(fighter);
+            repository.Create(fighter);
         }
 
         /// <summary>
@@ -104,7 +113,7 @@ namespace BusinessLogic
             mana = ClampStat(mana, 0, 2000);
 
             Mage mage = new Mage(nName, nDisc, nHp, nStr, mana, School);
-            units.Add(mage);
+            repository.Create(mage);
         }
 
         /// <summary>
@@ -114,7 +123,7 @@ namespace BusinessLogic
         public void DeleteUnit(Character unit) 
         {
             if (unit == null) return;
-            units.Remove(unit); 
+            repository.Delete(unit); 
         }
 
         /// <summary>
@@ -254,7 +263,7 @@ namespace BusinessLogic
         /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(Weapons weapon) 
         {
-            var marked = units.Where(p => ((p is Fighter fighter) && (fighter.Weapon==weapon))).ToList();
+            var marked = repository.ReadAll().Where(p => ((p is Fighter fighter) && (fighter.Weapon==weapon))).ToList();
             return marked;
         }
 
@@ -265,7 +274,7 @@ namespace BusinessLogic
         /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(MagicSchools magic)
         {
-            var marked = units.Where(p => ((p is Mage mage) && (mage.School == magic))).ToList();
+            var marked = repository.ReadAll().Where(p => ((p is Mage mage) && (mage.School == magic))).ToList();
             return marked;
         }
     }

@@ -14,6 +14,7 @@ namespace ConsoleApp
         /// </summary>
         static void Main()
         {
+
             while (true)
             {
                 Console.Clear();

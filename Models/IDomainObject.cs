@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class IDomainObject
+    public interface IDomainObject
     {
         int Id { get; set; }
     }

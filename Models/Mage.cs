@@ -4,6 +4,9 @@
     {
         public int Mana {  get; set; }
         public MagicSchools School { get; set; }
+
+        public Mage() { }
+
         public Mage(string name, string descr, int hp, int str, int mana, MagicSchools sch) 
         {
             Name = name;

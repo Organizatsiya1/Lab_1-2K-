@@ -5,10 +5,10 @@ namespace DataAccessLayer
 {
     public interface IRepository<T> where T : IDomainObject
     {
-        void Create(T obj);
+        T Create(T obj);
         IEnumerable<T> ReadAll();
         T ReadById(int id);
-        void Update(T obj);
+        T Update(T obj);
         void Delete(T obj);
     }
 }
