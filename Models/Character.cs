@@ -1,4 +1,4 @@
-﻿namespace BusinessLogicModel
+﻿namespace Models
 {
     public class Character
     {

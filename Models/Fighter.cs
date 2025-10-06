@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BusinessLogicModels
+﻿namespace Models
 {
-    public class Fighter:Character
+    public class Fighter: Character
     {
         public int Stamina {  get; set; }
         public Weapons Weapon { get; set; }

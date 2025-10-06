@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using BusinessLogicModels;
+using BusinessLogic;
+using Models;
 
 namespace WinFormsApp
 {

@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-    internal interface IRepository
+    public interface IRepository<T> where T : IDomainObject
     {
+        void Create(T obj);
+        IEnumerable<T> ReadAll();
+        T ReadById(int id);
+        void Update(T obj);
+        void Delete(T obj);
     }
 }
