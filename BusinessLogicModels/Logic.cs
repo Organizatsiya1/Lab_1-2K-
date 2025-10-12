@@ -13,8 +13,8 @@ namespace BusinessLogic
         public Logic()
         {
             // Подключаем EF-репозиторий
-            var context = new AdventureGuildContext();
-            repository = new EntityRepository<Character>(context);
+            
+            repository = new DapperRepository<Character>("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Aster\\source\\repos\\Organizatsiya1\\Lab_1-2K-\\DataAccessLayer\\AdventureGuildDB.mdf;Integrated Security=True");
         }
 
 
