@@ -10,12 +10,17 @@ namespace BusinessLogic
     {
         private readonly IRepository<Character> characterRepository;
 
-        public Logic()
+        public Logic(bool rep)
         {
-            characterRepository = new DapperRepository<Character>();
+            if (rep)
+            {
+                characterRepository = new DapperRepository<Character>();
+            }
+            else
+            {
+
+            }
             
-
-
         }
 
 

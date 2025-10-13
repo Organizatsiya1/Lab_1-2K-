@@ -16,7 +16,9 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
         ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Aster\\source\\repos\\Organizatsiya1\\Lab_1-2K-\\DataAccessLayer\\AdventureGuildDB.mdf;Integrated Security=True";
         InitializeCharactersTable();
     }
-
+    /// <summary>
+    /// Создание таблицы сущностей
+    /// </summary>
     private void InitializeCharactersTable()
     {
         using (var db = new SqlConnection(ConnectionString))
@@ -36,7 +38,7 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
                     School INT NULL
                 )");
 
-            // Добавляем столбцы если их нет
+            
             db.Execute(@"
                 IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('Characters') AND name = 'Stamina')
                 ALTER TABLE Characters ADD Stamina INT NULL");
