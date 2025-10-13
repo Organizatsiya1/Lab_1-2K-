@@ -8,13 +8,14 @@ namespace BusinessLogic
 {
     public class Logic
     {
-        private readonly IRepository<Character> repository;
+        private readonly IRepository<Character> characterRepository;
 
         public Logic()
         {
-            // Подключаем EF-репозиторий
+            characterRepository = new DapperRepository<Character>();
             
-            repository = new DapperRepository<Character>("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Aster\\source\\repos\\Organizatsiya1\\Lab_1-2K-\\DataAccessLayer\\AdventureGuildDB.mdf;Integrated Security=True");
+
+
         }
 
 
@@ -25,7 +26,7 @@ namespace BusinessLogic
         /// <returns>Копия текущего списка юнитов</returns>
         public List<Character> GetUnits()
         {
-            return repository.ReadAll().ToList();
+            return characterRepository.ReadAll().ToList();
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace BusinessLogic
                 weapon = Weapons.None;
 
             Fighter fighter = new Fighter(nName, nDisc, nHp, nStr, stam, weapon);
-            repository.Create(fighter);
+            characterRepository.Create(fighter);
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace BusinessLogic
             mana = ClampStat(mana, 0, 2000);
 
             Mage mage = new Mage(nName, nDisc, nHp, nStr, mana, School);
-            repository.Create(mage);
+            characterRepository.Create(mage);
         }
 
         /// <summary>
@@ -123,7 +124,7 @@ namespace BusinessLogic
         public void DeleteUnit(Character unit) 
         {
             if (unit == null) return;
-            repository.Delete(unit); 
+            characterRepository.Delete(unit); 
         }
 
         /// <summary>
@@ -149,6 +150,7 @@ namespace BusinessLogic
             unit.Strength = nStr;
             unit.Weapon = weapon;
             unit.Stamina = stam;
+            characterRepository.Update(unit);
         }
 
         /// <summary>
@@ -174,6 +176,7 @@ namespace BusinessLogic
             unit.Strength = nStr;
             unit.Mana = mana;
             unit.School = School;
+            characterRepository.Update(unit);
         }
 
         /// <summary>
@@ -253,6 +256,8 @@ namespace BusinessLogic
             }
 
             mes += "\nПоединок завершён\n";
+            characterRepository.Update(char1);
+            characterRepository.Update(char2);
             return mes;
         }
 
@@ -263,7 +268,7 @@ namespace BusinessLogic
         /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(Weapons weapon) 
         {
-            var marked = repository.ReadAll().Where(p => ((p is Fighter fighter) && (fighter.Weapon==weapon))).ToList();
+            var marked = characterRepository.ReadAll().Where(p => ((p is Fighter fighter) && (fighter.Weapon==weapon))).ToList();
             return marked;
         }
 
@@ -274,7 +279,7 @@ namespace BusinessLogic
         /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(MagicSchools magic)
         {
-            var marked = repository.ReadAll().Where(p => ((p is Mage mage) && (mage.School == magic))).ToList();
+            var marked = characterRepository.ReadAll().Where(p => ((p is Mage mage) && (mage.School == magic))).ToList();
             return marked;
         }
     }
