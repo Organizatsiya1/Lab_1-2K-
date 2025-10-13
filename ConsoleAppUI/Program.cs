@@ -7,14 +7,26 @@ namespace ConsoleApp
 {
     internal class Program
     {
-        static Logic logic = new Logic();
+        static Logic logic;
 
         /// <summary>
         /// Точка входа в консольное приложение с запуском консольного меню
         /// </summary>
         static void Main()
         {
-
+            Console.WriteLine("Репозиторий:\n1 - Entity\n2 - Dapper");
+            int.TryParse(Console.ReadLine(), out int rep);
+            bool rtype = true;
+            switch (rep)
+            {
+                case 1:
+                    rtype = false;
+                    break;
+                case 2:
+                    rtype = true;
+                    break;
+            }
+            logic = new Logic(rtype);
             while (true)
             {
                 Console.Clear();

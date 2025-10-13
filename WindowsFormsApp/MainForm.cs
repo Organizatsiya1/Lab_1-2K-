@@ -8,7 +8,7 @@ namespace WinFormsApp
 {
     public partial class MainForm : Form
     {
-        private Logic logic = new Logic();
+        private Logic logic = new Logic(false);
 
         public MainForm()
         {
