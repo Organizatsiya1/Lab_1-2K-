@@ -18,7 +18,8 @@ namespace BusinessLogic
             }
             else
             {
-
+                var context = new AdventureGuildContext();
+                characterRepository = new EntityRepository<Character>(context);
             }
             
         }
