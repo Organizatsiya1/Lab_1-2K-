@@ -1,9 +1,8 @@
 ﻿using Dapper;
 using DataAccessLayer;
 using Models;
-using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -13,7 +12,7 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
 
     public DapperRepository()
     {
-        ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Aster\\source\\repos\\Organizatsiya1\\Lab_1-2K-\\DataAccessLayer\\AdventureGuildDB.mdf;Integrated Security=True";
+        ConnectionString = ConfigurationManager.ConnectionStrings["AdventureGuildDB"].ConnectionString;
         InitializeCharactersTable();
     }
     /// <summary>

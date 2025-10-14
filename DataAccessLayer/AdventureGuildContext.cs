@@ -3,12 +3,11 @@ using System.Data.Entity;
 
 namespace DataAccessLayer
 {
-    // DBContext - 5a.i
     public class AdventureGuildContext : DbContext
     {
         static AdventureGuildContext()
         {
-            // Эта строка гарантирует, что EF.SqlServer библиотека будет загружена в рантайме.
+            // Эта строка гарантирует, что EF.SqlServer библиотека будет загружена в рантайме
             var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
 

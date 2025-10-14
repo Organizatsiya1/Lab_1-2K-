@@ -18,12 +18,12 @@ namespace WinFormsApp
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewCharacters = new System.Windows.Forms.DataGridView();
             this.ColIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColType = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,6 +47,9 @@ namespace WinFormsApp
             this.labelFighter = new System.Windows.Forms.Label();
             this.buttonShowAll = new System.Windows.Forms.Button();
             this.buttonSort = new System.Windows.Forms.Button();
+            this.LabelRepo = new System.Windows.Forms.Label();
+            this.radioButtonEntityRepository = new System.Windows.Forms.RadioButton();
+            this.radioButtonDapperRepository = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,8 +80,8 @@ namespace WinFormsApp
             // 
             // ColIndex
             // 
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ColIndex.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ColIndex.DefaultCellStyle = dataGridViewCellStyle13;
             this.ColIndex.HeaderText = "№";
             this.ColIndex.MinimumWidth = 6;
             this.ColIndex.Name = "ColIndex";
@@ -104,8 +107,8 @@ namespace WinFormsApp
             // 
             // ColHP
             // 
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ColHP.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ColHP.DefaultCellStyle = dataGridViewCellStyle14;
             this.ColHP.HeaderText = "Здоровье";
             this.ColHP.MinimumWidth = 6;
             this.ColHP.Name = "ColHP";
@@ -114,8 +117,8 @@ namespace WinFormsApp
             // 
             // ColStr
             // 
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ColStr.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ColStr.DefaultCellStyle = dataGridViewCellStyle15;
             this.ColStr.HeaderText = "Сила";
             this.ColStr.MinimumWidth = 6;
             this.ColStr.Name = "ColStr";
@@ -124,8 +127,8 @@ namespace WinFormsApp
             // 
             // ColStamina
             // 
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ColStamina.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ColStamina.DefaultCellStyle = dataGridViewCellStyle16;
             this.ColStamina.HeaderText = "Выносливость";
             this.ColStamina.MinimumWidth = 6;
             this.ColStamina.Name = "ColStamina";
@@ -134,8 +137,8 @@ namespace WinFormsApp
             // 
             // ColMana
             // 
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ColMana.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ColMana.DefaultCellStyle = dataGridViewCellStyle17;
             this.ColMana.HeaderText = "Мана";
             this.ColMana.MinimumWidth = 6;
             this.ColMana.Name = "ColMana";
@@ -162,8 +165,8 @@ namespace WinFormsApp
             // ColDesc
             // 
             this.ColDesc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColDesc.DefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColDesc.DefaultCellStyle = dataGridViewCellStyle18;
             this.ColDesc.HeaderText = "Описание";
             this.ColDesc.MinimumWidth = 6;
             this.ColDesc.Name = "ColDesc";
@@ -326,6 +329,43 @@ namespace WinFormsApp
             this.buttonSort.UseVisualStyleBackColor = false;
             this.buttonSort.Click += new System.EventHandler(this.buttonSort_Click);
             // 
+            // LabelRepo
+            // 
+            this.LabelRepo.AutoSize = true;
+            this.LabelRepo.Font = new System.Drawing.Font("Ink Free", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LabelRepo.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.LabelRepo.Location = new System.Drawing.Point(21, 83);
+            this.LabelRepo.Name = "LabelRepo";
+            this.LabelRepo.Size = new System.Drawing.Size(212, 41);
+            this.LabelRepo.TabIndex = 13;
+            this.LabelRepo.Text = "Репозиторий:";
+            // 
+            // radioButtonEntityRepository
+            // 
+            this.radioButtonEntityRepository.AutoSize = true;
+            this.radioButtonEntityRepository.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.radioButtonEntityRepository.Location = new System.Drawing.Point(27, 131);
+            this.radioButtonEntityRepository.Name = "radioButtonEntityRepository";
+            this.radioButtonEntityRepository.Size = new System.Drawing.Size(118, 38);
+            this.radioButtonEntityRepository.TabIndex = 15;
+            this.radioButtonEntityRepository.TabStop = true;
+            this.radioButtonEntityRepository.Text = "Entity";
+            this.radioButtonEntityRepository.UseVisualStyleBackColor = true;
+            this.radioButtonEntityRepository.CheckedChanged += new System.EventHandler(this.radioButtonEntityRepository_CheckedChanged);
+            // 
+            // radioButtonDapperRepository
+            // 
+            this.radioButtonDapperRepository.AutoSize = true;
+            this.radioButtonDapperRepository.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.radioButtonDapperRepository.Location = new System.Drawing.Point(28, 186);
+            this.radioButtonDapperRepository.Name = "radioButtonDapperRepository";
+            this.radioButtonDapperRepository.Size = new System.Drawing.Size(130, 38);
+            this.radioButtonDapperRepository.TabIndex = 16;
+            this.radioButtonDapperRepository.TabStop = true;
+            this.radioButtonDapperRepository.Text = "Dapper";
+            this.radioButtonDapperRepository.UseVisualStyleBackColor = true;
+            this.radioButtonDapperRepository.CheckedChanged += new System.EventHandler(this.radioButtonDapperRepository_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 34F);
@@ -333,6 +373,9 @@ namespace WinFormsApp
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.DarkSlateGray;
             this.ClientSize = new System.Drawing.Size(1924, 1055);
+            this.Controls.Add(this.radioButtonDapperRepository);
+            this.Controls.Add(this.radioButtonEntityRepository);
+            this.Controls.Add(this.LabelRepo);
             this.Controls.Add(this.buttonShowAll);
             this.Controls.Add(this.buttonSort);
             this.Controls.Add(this.labelTitle);
@@ -384,5 +427,8 @@ namespace WinFormsApp
         private DataGridViewTextBoxColumn ColWeapon;
         private DataGridViewTextBoxColumn ColSchool;
         private DataGridViewTextBoxColumn ColDesc;
+        private Label LabelRepo;
+        private RadioButton radioButtonEntityRepository;
+        private RadioButton radioButtonDapperRepository;
     }
 }

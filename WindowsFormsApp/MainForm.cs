@@ -8,11 +8,13 @@ namespace WinFormsApp
 {
     public partial class MainForm : Form
     {
-        private Logic logic = new Logic(false);
+        private Logic logic = new Logic(true);
 
         public MainForm()
         {
             InitializeComponent();
+
+            radioButtonEntityRepository.Checked = true; // по умолчанию EF
             InitializeDataGridView();
             RefreshGrid(); // таблица пустая при запуске
         }
@@ -253,7 +255,11 @@ namespace WinFormsApp
             }
         }
 
-        
+        /// <summary>
+        /// Обрабатывает событие нажатия кнопки "Поединок", имитируя бой между двумя выбранными персонажами
+        /// </summary>
+        /// <param name="sender">Ссылка на объект</param>
+        /// <param name="e">Аргументы события</param>
         private void buttonSort_Click(object sender, EventArgs e)
         {
             var selRows = dataGridViewCharacters.SelectedRows;
@@ -290,6 +296,34 @@ namespace WinFormsApp
         private void buttonShowAll_Click(object sender, EventArgs e)
         {
             RefreshGrid();
+        }
+
+        /// <summary>
+        /// Обрабатывает изменение состояния радиокнопки выбора репозитория Entity
+        /// </summary>
+        /// <param name="sender">Ссылка на объект</param>
+        /// <param name="e">Аргументы события</param>
+        private void radioButtonEntityRepository_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonEntityRepository.Checked)
+            {
+                logic = new Logic(false);
+                RefreshGrid();
+            }
+        }
+
+        /// <summary>
+        /// Обрабатывает изменение состояния радиокнопки выбора репозитория Dapper
+        /// </summary>
+        /// <param name="sender">Ссылка на объект</param>
+        /// <param name="e">Аргументы события</param>
+        private void radioButtonDapperRepository_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonDapperRepository.Checked)
+            {
+                logic = new Logic(true);
+                RefreshGrid();
+            }
         }
     }
 }

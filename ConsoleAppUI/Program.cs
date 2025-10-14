@@ -14,19 +14,8 @@ namespace ConsoleApp
         /// </summary>
         static void Main()
         {
-            Console.WriteLine("Репозиторий:\n1 - Entity\n2 - Dapper");
-            int.TryParse(Console.ReadLine(), out int rep);
-            bool rtype = true;
-            switch (rep)
-            {
-                case 1:
-                    rtype = false;
-                    break;
-                case 2:
-                    rtype = true;
-                    break;
-            }
-            logic = new Logic(rtype);
+            logic = SelectRepository();
+
             while (true)
             {
                 Console.Clear();
@@ -38,6 +27,7 @@ namespace ConsoleApp
                 Console.WriteLine("3. Показать всех персонажей");
                 Console.WriteLine("4. Изменить персонажа");
                 Console.WriteLine("5. Дополнительные функции");
+                Console.WriteLine("6. Сменить репозиторий");
                 Console.WriteLine("0. Выход");
                 Console.Write("\nВыбор: ");
 
@@ -60,6 +50,9 @@ namespace ConsoleApp
                     case "5":
                         ExtraFunctions();
                         break;
+                    case "6":
+                        logic = SelectRepository();
+                        break;
                     case "0":
                         return;
                     default:
@@ -69,6 +62,36 @@ namespace ConsoleApp
 
                 Console.WriteLine("\nНажмите любую клавишу...");
                 Console.ReadKey();
+            }
+        }
+
+        /// <summary>
+        /// Выполняет выбор репозитория для логики приложения
+        /// </summary>
+        /// <returns>Возвращает объект логики, в зависимости от выбранного репозитория: false — Entity, true — Dapper</returns>
+        static Logic SelectRepository()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Выберите репозиторий для работы приложения:");
+                Console.WriteLine("1 - Entity");
+                Console.WriteLine("2 - Dapper");
+                Console.Write("Ваш выбор: ");
+
+                string input = Console.ReadLine()?.Trim();
+                switch (input)
+                {
+                    case "1":
+                        return new Logic(false);
+                    case "2":
+                        return new Logic(true);
+                    default:
+                        Console.WriteLine("Некорректный ввод. Попробуйте снова...");
+                        Console.WriteLine("Нажмите любую клавишу...");
+                        Console.ReadKey();
+                        break;
+                }
             }
         }
 
