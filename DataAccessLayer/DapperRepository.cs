@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DataAccessLayer;
 using Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -14,7 +15,11 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
 
     public DapperRepository()
     {
-        ConnectionString = ConfigurationManager.ConnectionStrings["AdventureGuildDB"].ConnectionString;
+        ConnectionString = ConfigurationManager.ConnectionStrings["AdventureGuildDB"]?.ConnectionString;
+        if (string.IsNullOrEmpty(ConnectionString))
+        {
+            throw new InvalidOperationException("Connection string not found");
+        }
         TableName = typeof(T).Name + "s";
     }
 

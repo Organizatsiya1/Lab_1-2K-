@@ -20,13 +20,12 @@ namespace DataAccessLayer
 
         public void SaveChanges()
         {
-            // В вашем DapperRepository изменения сохраняются сразу при каждом вызове,
-            // поэтому этот метод пустой, но оставлен для совместимости с интерфейсом
+            
         }
 
         public void Dispose()
         {
-            // Освобождение ресурсов если нужно
+            
         }
     }
 }

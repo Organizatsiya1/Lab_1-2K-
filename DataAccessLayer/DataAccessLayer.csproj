@@ -113,8 +113,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AdventureGuildDB.mdf" />
+    <Content Include="AdventureGuildDB.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="AdventureGuildDB_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>AdventureGuildDB.mdf</DependentUpon>
     </Content>
   </ItemGroup>
