@@ -350,8 +350,8 @@ namespace ConsoleApp
                     bool trigg1 = false;
                     bool trigg2 = false;
                     int picked = 0;
-                    Character ch1 = new Character();
-                    Character ch2 = new Character();
+                    Character ch1 = null;
+                    Character ch2 = null;
 
                     while (trigg1 == false) 
                     {

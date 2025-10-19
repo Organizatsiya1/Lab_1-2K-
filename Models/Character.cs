@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class Character : IDomainObject
+    public abstract class Character : IDomainObject
     {
         public int Id { get; set; }
         public string Name { get; set; }

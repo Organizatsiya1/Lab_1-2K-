@@ -1,25 +1,29 @@
-﻿using System;
+﻿using DataAccessLayer;
+using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataAccessLayer;
-using Models;
+using System.Runtime.Remoting.Contexts;
 
 namespace BusinessLogic
 {
     public class Logic
     {
-        private readonly IRepository<Character> characterRepository;
+        private IRepository<Fighter> fighterRepo;
+        private IRepository<Mage> mageRepo;
 
         public Logic(bool rep)
         {
             if (rep)
             {
-                characterRepository = new DapperRepository<Character>();
+                fighterRepo = new DapperRepository<Fighter>();
+                mageRepo = new DapperRepository<Mage>();
             }
             else
             {
                 var context = new AdventureGuildContext();
-                characterRepository = new EntityRepository<Character>(context);
+                fighterRepo = new EntityRepository<Fighter>(context);
+                mageRepo = new EntityRepository<Mage>(context);
             }
             
         }
@@ -32,7 +36,9 @@ namespace BusinessLogic
         /// <returns>Копия текущего списка юнитов</returns>
         public List<Character> GetUnits()
         {
-            return characterRepository.ReadAll().ToList();
+            var fighters = fighterRepo.ReadAll().Cast<Character>();
+            var mages = mageRepo.ReadAll().Cast<Character>();
+            return fighters.Concat(mages).ToList();
         }
 
         /// <summary>
@@ -102,7 +108,7 @@ namespace BusinessLogic
                 weapon = Weapons.None;
 
             Fighter fighter = new Fighter(nName, nDisc, nHp, nStr, stam, weapon);
-            characterRepository.Create(fighter);
+            fighterRepo.Create(fighter);
         }
 
         /// <summary>
@@ -120,7 +126,7 @@ namespace BusinessLogic
             mana = ClampStat(mana, 0, 2000);
 
             Mage mage = new Mage(nName, nDisc, nHp, nStr, mana, School);
-            characterRepository.Create(mage);
+            mageRepo.Create(mage);
         }
 
         /// <summary>
@@ -130,7 +136,11 @@ namespace BusinessLogic
         public void DeleteUnit(Character unit) 
         {
             if (unit == null) return;
-            characterRepository.Delete(unit); 
+
+            if (unit is Fighter f)
+                fighterRepo.Delete(f);
+            else if (unit is Mage m)
+                mageRepo.Delete(m);
         }
 
         /// <summary>
@@ -156,7 +166,7 @@ namespace BusinessLogic
             unit.Strength = nStr;
             unit.Weapon = weapon;
             unit.Stamina = stam;
-            characterRepository.Update(unit);
+            fighterRepo.Update(unit);
         }
 
         /// <summary>
@@ -182,7 +192,7 @@ namespace BusinessLogic
             unit.Strength = nStr;
             unit.Mana = mana;
             unit.School = School;
-            characterRepository.Update(unit);
+            mageRepo.Update(unit);
         }
 
         /// <summary>
@@ -262,8 +272,13 @@ namespace BusinessLogic
             }
 
             mes += "\nПоединок завершён\n";
-            characterRepository.Update(char1);
-            characterRepository.Update(char2);
+
+            if (char1 is Fighter f1) fighterRepo.Update(f1);
+            else if (char1 is Mage m1) mageRepo.Update(m1);
+
+            if (char2 is Fighter f2) fighterRepo.Update(f2);
+            else if (char2 is Mage m2) mageRepo.Update(m2);
+
             return mes;
         }
 
@@ -274,7 +289,10 @@ namespace BusinessLogic
         /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(Weapons weapon) 
         {
-            var marked = characterRepository.ReadAll().Where(p => ((p is Fighter fighter) && (fighter.Weapon==weapon))).ToList();
+            var marked = fighterRepo.ReadAll()
+                .Where(f => f.Weapon == weapon)
+                .Cast<Character>()
+                .ToList();
             return marked;
         }
 
@@ -285,7 +303,10 @@ namespace BusinessLogic
         /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(MagicSchools magic)
         {
-            var marked = characterRepository.ReadAll().Where(p => ((p is Mage mage) && (mage.School == magic))).ToList();
+            var marked = mageRepo.ReadAll()
+                .Where(f => f.School == magic)
+                .Cast<Character>()
+                .ToList();
             return marked;
         }
     }

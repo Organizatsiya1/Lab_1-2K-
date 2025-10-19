@@ -16,7 +16,6 @@ namespace DataAccessLayer
             Database.SetInitializer(new CreateDatabaseIfNotExists<AdventureGuildContext>());
         }
 
-        public DbSet<Character> Characters { get; set; }
         public DbSet<Fighter> Fighters { get; set; }
         public DbSet<Mage> Mages { get; set; }
 
@@ -29,9 +28,10 @@ namespace DataAccessLayer
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Character>().ToTable("Персонажи");
-            modelBuilder.Entity<Fighter>().ToTable("Воины");
-            modelBuilder.Entity<Mage>().ToTable("Маги");
+            modelBuilder.Ignore<Character>();
+
+            modelBuilder.Entity<Fighter>().ToTable("Fighters");
+            modelBuilder.Entity<Mage>().ToTable("Mages");
         }
     }
 }
