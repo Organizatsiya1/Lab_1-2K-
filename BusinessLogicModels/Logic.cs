@@ -9,25 +9,19 @@ namespace BusinessLogic
 {
     public class Logic
     {
-        private IRepository<Fighter> fighterRepo;
-        private IRepository<Mage> mageRepo;
+        private IUnitOfWork _unitOfWork;
 
-        public Logic(bool rep)
+        public Logic(bool useDapper)
         {
-            if (rep)
+            if (useDapper)
             {
-                fighterRepo = new DapperRepository<Fighter>();
-                mageRepo = new DapperRepository<Mage>();
+                _unitOfWork = new DapperUnitOfWork();
             }
             else
             {
-                var context = new AdventureGuildContext();
-                fighterRepo = new EntityRepository<Fighter>(context);
-                mageRepo = new EntityRepository<Mage>(context);
+                _unitOfWork = new EntityUnitOfWork();
             }
-            
         }
-
 
         /// <summary>
         /// Возвращаемый список — независимая копия,
@@ -36,8 +30,8 @@ namespace BusinessLogic
         /// <returns>Копия текущего списка юнитов</returns>
         public List<Character> GetUnits()
         {
-            var fighters = fighterRepo.ReadAll().Cast<Character>();
-            var mages = mageRepo.ReadAll().Cast<Character>();
+            var fighters = _unitOfWork.Fighters.ReadAll().Cast<Character>();
+            var mages = _unitOfWork.Mages.ReadAll().Cast<Character>();
             return fighters.Concat(mages).ToList();
         }
 
@@ -98,7 +92,7 @@ namespace BusinessLogic
         /// <param name="str">Сила</param>
         /// <param name="stam">Выносливость</param>
         /// <param name="weapon">Выбранный тип оружия</param>
-        public void AddFighter(string name, string disc, int hp, int str, int stam, Weapons weapon) 
+        public void AddFighter(string name, string disc, int hp, int str, int stam, Weapons weapon)
         {
             NormalizeCommon(name, disc, hp, str, out var nName, out var nDisc, out var nHp, out var nStr);
             stam = ClampStat(stam, 0, 1000);
@@ -108,7 +102,8 @@ namespace BusinessLogic
                 weapon = Weapons.None;
 
             Fighter fighter = new Fighter(nName, nDisc, nHp, nStr, stam, weapon);
-            fighterRepo.Create(fighter);
+            _unitOfWork.Fighters.Create(fighter);
+            _unitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -120,27 +115,30 @@ namespace BusinessLogic
         /// <param name="str">Сила</param>
         /// <param name="mana">Количество маны</param>
         /// <param name="School">Выбранная школа магии</param>
-        public void AddMage(string name, string disc, int hp, int str, int mana, MagicSchools School) 
+        public void AddMage(string name, string disc, int hp, int str, int mana, MagicSchools School)
         {
             NormalizeCommon(name, disc, hp, str, out var nName, out var nDisc, out var nHp, out var nStr);
             mana = ClampStat(mana, 0, 2000);
 
             Mage mage = new Mage(nName, nDisc, nHp, nStr, mana, School);
-            mageRepo.Create(mage);
+            _unitOfWork.Mages.Create(mage);
+            _unitOfWork.SaveChanges();
         }
 
         /// <summary>
         /// Удаляет юнита из отряда
         /// </summary>
         /// <param name="unit">Удаляемый юнит</param>
-        public void DeleteUnit(Character unit) 
+        public void DeleteUnit(Character unit)
         {
             if (unit == null) return;
 
             if (unit is Fighter f)
-                fighterRepo.Delete(f);
+                _unitOfWork.Fighters.Delete(f);
             else if (unit is Mage m)
-                mageRepo.Delete(m);
+                _unitOfWork.Mages.Delete(m);
+
+            _unitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -153,7 +151,7 @@ namespace BusinessLogic
         /// <param name="str">Сила</param>
         /// <param name="stam">Выносливость</param>
         /// <param name="weapon">Оружие</param>
-        public void ChangeFighter(Fighter unit, string name, string disc, int hp, int str, int stam, Weapons weapon) 
+        public void ChangeFighter(Fighter unit, string name, string disc, int hp, int str, int stam, Weapons weapon)
         {
             if (unit == null) return;
 
@@ -166,7 +164,8 @@ namespace BusinessLogic
             unit.Strength = nStr;
             unit.Weapon = weapon;
             unit.Stamina = stam;
-            fighterRepo.Update(unit);
+            _unitOfWork.Fighters.Update(unit);
+            _unitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -192,7 +191,8 @@ namespace BusinessLogic
             unit.Strength = nStr;
             unit.Mana = mana;
             unit.School = School;
-            mageRepo.Update(unit);
+            _unitOfWork.Mages.Update(unit);
+            _unitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -200,13 +200,13 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="unit">Юнит</param>
         /// <returns name="info">Прочитанная информация</returns>
-        public string ReadUnit(Character unit) 
+        public string ReadUnit(Character unit)
         {
             if (unit == null) return "";
 
             string info = "";
             var properties = unit.GetType().GetProperties();
-            foreach (var property in properties) 
+            foreach (var property in properties)
             {
                 info += $"{property.Name}: {property.GetValue(unit)}\n";
             }
@@ -256,12 +256,12 @@ namespace BusinessLogic
                 DeleteUnit(char2);
                 mes += "Оба бойца выбиты из группы.\n";
             }
-            else if (char1.HP == 0) 
+            else if (char1.HP == 0)
             {
                 DeleteUnit(char1);
                 mes += $"{char1.Name} выбывает из группы\n";
             }
-            else if (char2.HP == 0) 
+            else if (char2.HP == 0)
             {
                 DeleteUnit(char2);
                 mes += $"{char2.Name} выбывает из группы\n";
@@ -269,16 +269,22 @@ namespace BusinessLogic
             else
             {
                 mes += "Оба выжили. Поединок окончен\n";
+
+                // Обновляем данные в БД
+                if (char1 is Fighter f1)
+                    _unitOfWork.Fighters.Update(f1);
+                else if (char1 is Mage m1)
+                    _unitOfWork.Mages.Update(m1);
+
+                if (char2 is Fighter f2)
+                    _unitOfWork.Fighters.Update(f2);
+                else if (char2 is Mage m2)
+                    _unitOfWork.Mages.Update(m2);
+
+                _unitOfWork.SaveChanges();
             }
 
             mes += "\nПоединок завершён\n";
-
-            if (char1 is Fighter f1) fighterRepo.Update(f1);
-            else if (char1 is Mage m1) mageRepo.Update(m1);
-
-            if (char2 is Fighter f2) fighterRepo.Update(f2);
-            else if (char2 is Mage m2) mageRepo.Update(m2);
-
             return mes;
         }
 
@@ -287,9 +293,9 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="weapon">Тип оружия</param>
         /// <returns name="marked">Выбранные юниты</returns>
-        public List<Character> ChooseMarked(Weapons weapon) 
+        public List<Character> ChooseMarked(Weapons weapon)
         {
-            var marked = fighterRepo.ReadAll()
+            var marked = _unitOfWork.Fighters.ReadAll()
                 .Where(f => f.Weapon == weapon)
                 .Cast<Character>()
                 .ToList();
@@ -303,11 +309,19 @@ namespace BusinessLogic
         /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(MagicSchools magic)
         {
-            var marked = mageRepo.ReadAll()
+            var marked = _unitOfWork.Mages.ReadAll()
                 .Where(f => f.School == magic)
                 .Cast<Character>()
                 .ToList();
             return marked;
+        }
+
+        /// <summary>
+        /// Освобождение ресурсов
+        /// </summary>
+        public void Dispose()
+        {
+            _unitOfWork?.Dispose();
         }
     }
 }

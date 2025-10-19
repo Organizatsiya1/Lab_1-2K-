@@ -84,8 +84,11 @@
   <ItemGroup>
     <Compile Include="AdventureGuildContext.cs" />
     <Compile Include="DapperRepository.cs" />
+    <Compile Include="DapperUnitOfWork.cs" />
     <Compile Include="EntityRepository.cs" />
+    <Compile Include="EntityUnitOfWork.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
