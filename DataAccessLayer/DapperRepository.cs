@@ -23,7 +23,11 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
         TableName = typeof(T).Name + "s";
     }
 
-
+    /// <summary>
+    /// Создает новую запись в базе данных
+    /// </summary>
+    /// <param name="entity">Объект сущности для создания</param>
+    /// <returns>Созданная сущность</returns>
     public T Create(T entity)
     {
         var properties = typeof(T).GetProperties()
@@ -38,6 +42,10 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
         return entity;
     }
 
+    /// <summary>
+    /// Читает все записи из базы данных
+    /// </summary>
+    /// <returns>Список всех записей</returns>
     public IEnumerable<T> ReadAll()
     {
         List<T> entities;
@@ -48,12 +56,21 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
         return entities;
     }
 
+    /// <summary>
+    /// Удаляет запись из базы данных
+    /// </summary>
+    /// <param name="entity">Объект сущности для удаления</param>
     public void Delete(T entity)
     {
         string script = $"DELETE FROM {TableName} WHERE Id = {entity.Id}";
         UseScript(script);
     }
 
+    /// <summary>
+    /// Читает запись по идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор записи</param>
+    /// <returns></returns>
     public T ReadById(int id)
     {
         T entity;
@@ -64,6 +81,11 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
         return entity;
     }
 
+    /// <summary>
+    /// Обновляет запись в базе данных
+    /// </summary>
+    /// <param name="entity">Объект сущности для обновления</param>
+    /// <returns>Обновлённая сущность</returns>
     public T Update(T entity)
     {
         var properties = typeof(T).GetProperties()
@@ -77,6 +99,10 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
         return entity;
     }
 
+    /// <summary>
+    /// Выполняет SQL скрипт
+    /// </summary>
+    /// <param name="script">SQL скрипт для выполнения</param>
     private void UseScript(string script)
     {
         if (!string.IsNullOrEmpty(script))
