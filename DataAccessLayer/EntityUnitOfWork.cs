@@ -1,10 +1,4 @@
 ﻿using Models;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
@@ -26,11 +20,17 @@ namespace DataAccessLayer
             Mages = new EntityRepository<Mage>(Context);
         }
 
+        /// <summary>
+        /// Сохраняет все изменения, внесенные в контекст базы данных
+        /// </summary>
         public void SaveChanges()
         {
             Context.SaveChanges();
         }
 
+        /// <summary>
+        /// Освобождает все ресурсы, используемые контекстом базы данных
+        /// </summary>
         public void Dispose()
         {
             Context?.Dispose();

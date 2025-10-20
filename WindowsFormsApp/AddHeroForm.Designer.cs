@@ -31,298 +31,333 @@ namespace WinFormsApp
         /// </summary>
         private void InitializeComponent()
         {
-            labelTitle = new Label();
-            labelName = new Label();
-            textBoxName = new TextBox();
-            labelDesc = new Label();
-            textBoxDesc = new TextBox();
-            labelHP = new Label();
-            numericHP = new NumericUpDown();
-            labelStrength = new Label();
-            numericStrength = new NumericUpDown();
-            comboBoxType = new ComboBox();
-            labelType = new Label();
-            comboBoxWeapon = new ComboBox();
-            labelWeapon = new Label();
-            comboBoxSchool = new ComboBox();
-            labelSchool = new Label();
-            buttonSave = new Button();
-            buttonCancel = new Button();
-            labelStamina = new Label();
-            numericStamina = new NumericUpDown();
-            labelMana = new Label();
-            numericMana = new NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)numericHP).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericStrength).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericStamina).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericMana).BeginInit();
-            SuspendLayout();
+            this.labelTitle = new System.Windows.Forms.Label();
+            this.labelName = new System.Windows.Forms.Label();
+            this.textBoxName = new System.Windows.Forms.TextBox();
+            this.labelDesc = new System.Windows.Forms.Label();
+            this.textBoxDesc = new System.Windows.Forms.TextBox();
+            this.labelHP = new System.Windows.Forms.Label();
+            this.numericHP = new System.Windows.Forms.NumericUpDown();
+            this.labelStrength = new System.Windows.Forms.Label();
+            this.numericStrength = new System.Windows.Forms.NumericUpDown();
+            this.comboBoxType = new System.Windows.Forms.ComboBox();
+            this.labelType = new System.Windows.Forms.Label();
+            this.comboBoxWeapon = new System.Windows.Forms.ComboBox();
+            this.labelWeapon = new System.Windows.Forms.Label();
+            this.comboBoxSchool = new System.Windows.Forms.ComboBox();
+            this.labelSchool = new System.Windows.Forms.Label();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.labelStamina = new System.Windows.Forms.Label();
+            this.numericStamina = new System.Windows.Forms.NumericUpDown();
+            this.labelMana = new System.Windows.Forms.Label();
+            this.numericMana = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numericHP)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericStrength)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericStamina)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericMana)).BeginInit();
+            this.SuspendLayout();
             // 
             // labelTitle
             // 
-            labelTitle.AutoSize = true;
-            labelTitle.Font = new Font("Ink Free", 28.1999989F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            labelTitle.ForeColor = Color.Gold;
-            labelTitle.Location = new Point(112, 10);
-            labelTitle.Name = "labelTitle";
-            labelTitle.Size = new Size(429, 58);
-            labelTitle.TabIndex = 16;
-            labelTitle.Text = "✨ Новый герой ✨";
+            this.labelTitle.AutoSize = true;
+            this.labelTitle.Font = new System.Drawing.Font("Calibri", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelTitle.ForeColor = System.Drawing.Color.Gold;
+            this.labelTitle.Location = new System.Drawing.Point(147, 20);
+            this.labelTitle.Name = "labelTitle";
+            this.labelTitle.Size = new System.Drawing.Size(364, 49);
+            this.labelTitle.TabIndex = 16;
+            this.labelTitle.Text = "✨ Новый герой ✨";
             // 
             // labelName
             // 
-            labelName.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            labelName.ForeColor = Color.Gold;
-            labelName.Location = new Point(30, 157);
-            labelName.Name = "labelName";
-            labelName.Size = new Size(195, 46);
-            labelName.TabIndex = 15;
-            labelName.Text = "Имя:";
+            this.labelName.Font = new System.Drawing.Font("Calibri", 22.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelName.ForeColor = System.Drawing.Color.Gold;
+            this.labelName.Location = new System.Drawing.Point(30, 157);
+            this.labelName.Name = "labelName";
+            this.labelName.Size = new System.Drawing.Size(195, 46);
+            this.labelName.TabIndex = 15;
+            this.labelName.Text = "Имя:";
             // 
             // textBoxName
             // 
-            textBoxName.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            textBoxName.Location = new Point(284, 155);
-            textBoxName.Name = "textBoxName";
-            textBoxName.Size = new Size(342, 41);
-            textBoxName.TabIndex = 14;
+            this.textBoxName.Font = new System.Drawing.Font("Calibri", 16.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxName.Location = new System.Drawing.Point(284, 155);
+            this.textBoxName.Name = "textBoxName";
+            this.textBoxName.Size = new System.Drawing.Size(342, 40);
+            this.textBoxName.TabIndex = 14;
             // 
             // labelDesc
             // 
-            labelDesc.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            labelDesc.ForeColor = Color.Gold;
-            labelDesc.Location = new Point(30, 210);
-            labelDesc.Name = "labelDesc";
-            labelDesc.Size = new Size(234, 46);
-            labelDesc.TabIndex = 13;
-            labelDesc.Text = "Описание:";
+            this.labelDesc.Font = new System.Drawing.Font("Calibri", 22.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelDesc.ForeColor = System.Drawing.Color.Gold;
+            this.labelDesc.Location = new System.Drawing.Point(30, 210);
+            this.labelDesc.Name = "labelDesc";
+            this.labelDesc.Size = new System.Drawing.Size(234, 46);
+            this.labelDesc.TabIndex = 13;
+            this.labelDesc.Text = "Описание:";
             // 
             // textBoxDesc
             // 
-            textBoxDesc.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            textBoxDesc.Location = new Point(284, 210);
-            textBoxDesc.Multiline = true;
-            textBoxDesc.Name = "textBoxDesc";
-            textBoxDesc.Size = new Size(342, 129);
-            textBoxDesc.TabIndex = 12;
+            this.textBoxDesc.Font = new System.Drawing.Font("Calibri", 16.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxDesc.Location = new System.Drawing.Point(284, 210);
+            this.textBoxDesc.Multiline = true;
+            this.textBoxDesc.Name = "textBoxDesc";
+            this.textBoxDesc.Size = new System.Drawing.Size(342, 129);
+            this.textBoxDesc.TabIndex = 12;
             // 
             // labelHP
             // 
-            labelHP.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            labelHP.ForeColor = Color.Gold;
-            labelHP.Location = new Point(30, 355);
-            labelHP.Name = "labelHP";
-            labelHP.Size = new Size(195, 46);
-            labelHP.TabIndex = 11;
-            labelHP.Text = "Здоровье:";
+            this.labelHP.Font = new System.Drawing.Font("Calibri", 22.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelHP.ForeColor = System.Drawing.Color.Gold;
+            this.labelHP.Location = new System.Drawing.Point(30, 355);
+            this.labelHP.Name = "labelHP";
+            this.labelHP.Size = new System.Drawing.Size(195, 46);
+            this.labelHP.TabIndex = 11;
+            this.labelHP.Text = "Здоровье:";
             // 
             // numericHP
             // 
-            numericHP.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            numericHP.Location = new Point(284, 355);
-            numericHP.Name = "numericHP";
-            numericHP.Size = new Size(120, 41);
-            numericHP.TabIndex = 10;
-            numericHP.Value = new decimal(new int[] { 100, 0, 0, 0 });
+            this.numericHP.Font = new System.Drawing.Font("Ink Free", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericHP.Location = new System.Drawing.Point(284, 355);
+            this.numericHP.Name = "numericHP";
+            this.numericHP.Size = new System.Drawing.Size(120, 41);
+            this.numericHP.TabIndex = 10;
+            this.numericHP.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // labelStrength
             // 
-            labelStrength.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            labelStrength.ForeColor = Color.Gold;
-            labelStrength.Location = new Point(30, 414);
-            labelStrength.Name = "labelStrength";
-            labelStrength.Size = new Size(195, 46);
-            labelStrength.TabIndex = 9;
-            labelStrength.Text = "Сила:";
+            this.labelStrength.Font = new System.Drawing.Font("Calibri", 22.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStrength.ForeColor = System.Drawing.Color.Gold;
+            this.labelStrength.Location = new System.Drawing.Point(30, 414);
+            this.labelStrength.Name = "labelStrength";
+            this.labelStrength.Size = new System.Drawing.Size(195, 46);
+            this.labelStrength.TabIndex = 9;
+            this.labelStrength.Text = "Сила:";
             // 
             // numericStrength
             // 
-            numericStrength.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            numericStrength.Location = new Point(284, 414);
-            numericStrength.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
-            numericStrength.Name = "numericStrength";
-            numericStrength.Size = new Size(120, 41);
-            numericStrength.TabIndex = 8;
-            numericStrength.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            this.numericStrength.Font = new System.Drawing.Font("Ink Free", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericStrength.Location = new System.Drawing.Point(284, 414);
+            this.numericStrength.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericStrength.Name = "numericStrength";
+            this.numericStrength.Size = new System.Drawing.Size(120, 41);
+            this.numericStrength.TabIndex = 8;
+            this.numericStrength.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // comboBoxType
             // 
-            comboBoxType.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxType.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            comboBoxType.Items.AddRange(new object[] { "Воин", "Маг" });
-            comboBoxType.Location = new Point(284, 98);
-            comboBoxType.Name = "comboBoxType";
-            comboBoxType.Size = new Size(227, 42);
-            comboBoxType.TabIndex = 6;
-            comboBoxType.SelectedIndexChanged += comboBoxType_SelectedIndexChanged;
+            this.comboBoxType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxType.Font = new System.Drawing.Font("Calibri", 16.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxType.Items.AddRange(new object[] {
+            "Воин",
+            "Маг"});
+            this.comboBoxType.Location = new System.Drawing.Point(284, 98);
+            this.comboBoxType.Name = "comboBoxType";
+            this.comboBoxType.Size = new System.Drawing.Size(227, 41);
+            this.comboBoxType.TabIndex = 6;
             // 
             // labelType
             // 
-            labelType.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            labelType.ForeColor = Color.Gold;
-            labelType.Location = new Point(30, 100);
-            labelType.Name = "labelType";
-            labelType.Size = new Size(195, 46);
-            labelType.TabIndex = 7;
-            labelType.Text = "Тип:";
+            this.labelType.Font = new System.Drawing.Font("Calibri", 22.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelType.ForeColor = System.Drawing.Color.Gold;
+            this.labelType.Location = new System.Drawing.Point(30, 100);
+            this.labelType.Name = "labelType";
+            this.labelType.Size = new System.Drawing.Size(195, 46);
+            this.labelType.TabIndex = 7;
+            this.labelType.Text = "Тип:";
             // 
             // comboBoxWeapon
             // 
-            comboBoxWeapon.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxWeapon.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            comboBoxWeapon.Items.AddRange(new object[] { "Нет", "Булава", "Меч", "Топор" });
-            comboBoxWeapon.Location = new Point(285, 531);
-            comboBoxWeapon.Name = "comboBoxWeapon";
-            comboBoxWeapon.Size = new Size(226, 42);
-            comboBoxWeapon.TabIndex = 4;
-            comboBoxWeapon.Visible = false;
+            this.comboBoxWeapon.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxWeapon.Font = new System.Drawing.Font("Calibri", 16.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxWeapon.Items.AddRange(new object[] {
+            "Нет",
+            "Булава",
+            "Меч",
+            "Топор"});
+            this.comboBoxWeapon.Location = new System.Drawing.Point(285, 531);
+            this.comboBoxWeapon.Name = "comboBoxWeapon";
+            this.comboBoxWeapon.Size = new System.Drawing.Size(226, 41);
+            this.comboBoxWeapon.TabIndex = 4;
+            this.comboBoxWeapon.Visible = false;
             // 
             // labelWeapon
             // 
-            labelWeapon.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            labelWeapon.ForeColor = Color.Gold;
-            labelWeapon.Location = new Point(30, 531);
-            labelWeapon.Name = "labelWeapon";
-            labelWeapon.Size = new Size(195, 46);
-            labelWeapon.TabIndex = 5;
-            labelWeapon.Text = "Оружие:";
-            labelWeapon.Visible = false;
+            this.labelWeapon.Font = new System.Drawing.Font("Calibri", 22.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelWeapon.ForeColor = System.Drawing.Color.Gold;
+            this.labelWeapon.Location = new System.Drawing.Point(30, 531);
+            this.labelWeapon.Name = "labelWeapon";
+            this.labelWeapon.Size = new System.Drawing.Size(195, 46);
+            this.labelWeapon.TabIndex = 5;
+            this.labelWeapon.Text = "Оружие:";
+            this.labelWeapon.Visible = false;
             // 
             // comboBoxSchool
             // 
-            comboBoxSchool.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxSchool.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            comboBoxSchool.Items.AddRange(new object[] { "Огонь", "Лед", "Свет" });
-            comboBoxSchool.Location = new Point(285, 531);
-            comboBoxSchool.Name = "comboBoxSchool";
-            comboBoxSchool.Size = new Size(226, 42);
-            comboBoxSchool.TabIndex = 2;
-            comboBoxSchool.Visible = false;
+            this.comboBoxSchool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSchool.Font = new System.Drawing.Font("Calibri", 16.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxSchool.Items.AddRange(new object[] {
+            "Огонь",
+            "Лед",
+            "Свет"});
+            this.comboBoxSchool.Location = new System.Drawing.Point(285, 531);
+            this.comboBoxSchool.Name = "comboBoxSchool";
+            this.comboBoxSchool.Size = new System.Drawing.Size(226, 41);
+            this.comboBoxSchool.TabIndex = 2;
+            this.comboBoxSchool.Visible = false;
             // 
             // labelSchool
             // 
-            labelSchool.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            labelSchool.ForeColor = Color.Gold;
-            labelSchool.Location = new Point(30, 531);
-            labelSchool.Name = "labelSchool";
-            labelSchool.Size = new Size(195, 46);
-            labelSchool.TabIndex = 3;
-            labelSchool.Text = "Магия:";
-            labelSchool.Visible = false;
+            this.labelSchool.Font = new System.Drawing.Font("Calibri", 22.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSchool.ForeColor = System.Drawing.Color.Gold;
+            this.labelSchool.Location = new System.Drawing.Point(30, 531);
+            this.labelSchool.Name = "labelSchool";
+            this.labelSchool.Size = new System.Drawing.Size(195, 46);
+            this.labelSchool.TabIndex = 3;
+            this.labelSchool.Text = "Магия:";
+            this.labelSchool.Visible = false;
             // 
             // buttonSave
             // 
-            buttonSave.BackColor = Color.MidnightBlue;
-            buttonSave.Cursor = Cursors.PanNW;
-            buttonSave.FlatStyle = FlatStyle.Popup;
-            buttonSave.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            buttonSave.ForeColor = Color.Gold;
-            buttonSave.Location = new Point(92, 594);
-            buttonSave.Name = "buttonSave";
-            buttonSave.Size = new Size(214, 46);
-            buttonSave.TabIndex = 1;
-            buttonSave.Text = "💾 Сохранить";
-            buttonSave.UseVisualStyleBackColor = false;
-            buttonSave.Click += buttonSave_Click;
+            this.buttonSave.BackColor = System.Drawing.Color.MidnightBlue;
+            this.buttonSave.Cursor = System.Windows.Forms.Cursors.PanNW;
+            this.buttonSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonSave.Font = new System.Drawing.Font("Ink Free", 16.2F, System.Drawing.FontStyle.Bold);
+            this.buttonSave.ForeColor = System.Drawing.Color.Gold;
+            this.buttonSave.Location = new System.Drawing.Point(110, 599);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(214, 46);
+            this.buttonSave.TabIndex = 1;
+            this.buttonSave.Text = "💾 Сохранить";
+            this.buttonSave.UseVisualStyleBackColor = false;
             // 
             // buttonCancel
             // 
-            buttonCancel.BackColor = Color.Maroon;
-            buttonCancel.Cursor = Cursors.PanNW;
-            buttonCancel.FlatStyle = FlatStyle.Popup;
-            buttonCancel.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            buttonCancel.ForeColor = Color.White;
-            buttonCancel.Location = new Point(321, 594);
-            buttonCancel.Name = "buttonCancel";
-            buttonCancel.Size = new Size(214, 46);
-            buttonCancel.TabIndex = 0;
-            buttonCancel.Text = "❌ Отмена";
-            buttonCancel.UseVisualStyleBackColor = false;
-            buttonCancel.Click += buttonCancel_Click;
+            this.buttonCancel.BackColor = System.Drawing.Color.Maroon;
+            this.buttonCancel.Cursor = System.Windows.Forms.Cursors.PanNW;
+            this.buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonCancel.Font = new System.Drawing.Font("Ink Free", 16.2F, System.Drawing.FontStyle.Bold);
+            this.buttonCancel.ForeColor = System.Drawing.Color.White;
+            this.buttonCancel.Location = new System.Drawing.Point(339, 599);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(214, 46);
+            this.buttonCancel.TabIndex = 0;
+            this.buttonCancel.Text = "❌ Отмена";
+            this.buttonCancel.UseVisualStyleBackColor = false;
             // 
             // labelStamina
             // 
-            labelStamina.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            labelStamina.ForeColor = Color.Gold;
-            labelStamina.Location = new Point(30, 473);
-            labelStamina.Name = "labelStamina";
-            labelStamina.Size = new Size(234, 46);
-            labelStamina.TabIndex = 18;
-            labelStamina.Text = "Выносливость:";
-            labelStamina.Visible = false;
+            this.labelStamina.Font = new System.Drawing.Font("Calibri", 22.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStamina.ForeColor = System.Drawing.Color.Gold;
+            this.labelStamina.Location = new System.Drawing.Point(30, 473);
+            this.labelStamina.Name = "labelStamina";
+            this.labelStamina.Size = new System.Drawing.Size(234, 46);
+            this.labelStamina.TabIndex = 18;
+            this.labelStamina.Text = "Выносливость:";
+            this.labelStamina.Visible = false;
             // 
             // numericStamina
             // 
-            numericStamina.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            numericStamina.Location = new Point(284, 473);
-            numericStamina.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
-            numericStamina.Name = "numericStamina";
-            numericStamina.Size = new Size(120, 41);
-            numericStamina.TabIndex = 17;
-            numericStamina.Value = new decimal(new int[] { 20, 0, 0, 0 });
-            numericStamina.Visible = false;
+            this.numericStamina.Font = new System.Drawing.Font("Ink Free", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericStamina.Location = new System.Drawing.Point(284, 473);
+            this.numericStamina.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.numericStamina.Name = "numericStamina";
+            this.numericStamina.Size = new System.Drawing.Size(120, 41);
+            this.numericStamina.TabIndex = 17;
+            this.numericStamina.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.numericStamina.Visible = false;
             // 
             // labelMana
             // 
-            labelMana.Font = new Font("Ink Free", 19.7999973F, FontStyle.Bold);
-            labelMana.ForeColor = Color.Gold;
-            labelMana.Location = new Point(30, 468);
-            labelMana.Name = "labelMana";
-            labelMana.Size = new Size(241, 46);
-            labelMana.TabIndex = 20;
-            labelMana.Text = "Мана:";
-            labelMana.Visible = false;
+            this.labelMana.Font = new System.Drawing.Font("Calibri", 22.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMana.ForeColor = System.Drawing.Color.Gold;
+            this.labelMana.Location = new System.Drawing.Point(30, 468);
+            this.labelMana.Name = "labelMana";
+            this.labelMana.Size = new System.Drawing.Size(241, 46);
+            this.labelMana.TabIndex = 20;
+            this.labelMana.Text = "Мана:";
+            this.labelMana.Visible = false;
             // 
             // numericMana
             // 
-            numericMana.Font = new Font("Ink Free", 16.2F, FontStyle.Bold);
-            numericMana.Location = new Point(285, 473);
-            numericMana.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
-            numericMana.Name = "numericMana";
-            numericMana.Size = new Size(120, 41);
-            numericMana.TabIndex = 19;
-            numericMana.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            numericMana.Visible = false;
+            this.numericMana.Font = new System.Drawing.Font("Ink Free", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericMana.Location = new System.Drawing.Point(285, 473);
+            this.numericMana.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numericMana.Name = "numericMana";
+            this.numericMana.Size = new System.Drawing.Size(120, 41);
+            this.numericMana.TabIndex = 19;
+            this.numericMana.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numericMana.Visible = false;
             // 
             // AddHeroForm
             // 
-            AutoScaleDimensions = new SizeF(16F, 34F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.DarkSlateGray;
-            ClientSize = new Size(662, 667);
-            Controls.Add(buttonCancel);
-            Controls.Add(buttonSave);
-            Controls.Add(comboBoxSchool);
-            Controls.Add(labelSchool);
-            Controls.Add(comboBoxWeapon);
-            Controls.Add(labelWeapon);
-            Controls.Add(comboBoxType);
-            Controls.Add(labelType);
-            Controls.Add(numericStrength);
-            Controls.Add(labelStrength);
-            Controls.Add(numericHP);
-            Controls.Add(labelHP);
-            Controls.Add(textBoxDesc);
-            Controls.Add(labelDesc);
-            Controls.Add(textBoxName);
-            Controls.Add(labelName);
-            Controls.Add(labelTitle);
-            Controls.Add(labelStamina);
-            Controls.Add(numericStamina);
-            Controls.Add(labelMana);
-            Controls.Add(numericMana);
-            Cursor = Cursors.PanNW;
-            Font = new Font("Ink Free", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            Name = "AddHeroForm";
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "Создание героя";
-            ((System.ComponentModel.ISupportInitialize)numericHP).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericStrength).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericStamina).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericMana).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 34F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.ClientSize = new System.Drawing.Size(662, 667);
+            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.buttonSave);
+            this.Controls.Add(this.comboBoxSchool);
+            this.Controls.Add(this.labelSchool);
+            this.Controls.Add(this.comboBoxWeapon);
+            this.Controls.Add(this.labelWeapon);
+            this.Controls.Add(this.comboBoxType);
+            this.Controls.Add(this.labelType);
+            this.Controls.Add(this.numericStrength);
+            this.Controls.Add(this.labelStrength);
+            this.Controls.Add(this.numericHP);
+            this.Controls.Add(this.labelHP);
+            this.Controls.Add(this.textBoxDesc);
+            this.Controls.Add(this.labelDesc);
+            this.Controls.Add(this.textBoxName);
+            this.Controls.Add(this.labelName);
+            this.Controls.Add(this.labelTitle);
+            this.Controls.Add(this.labelStamina);
+            this.Controls.Add(this.numericStamina);
+            this.Controls.Add(this.labelMana);
+            this.Controls.Add(this.numericMana);
+            this.Cursor = System.Windows.Forms.Cursors.PanNW;
+            this.Font = new System.Drawing.Font("Ink Free", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Name = "AddHeroForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Создание героя";
+            ((System.ComponentModel.ISupportInitialize)(this.numericHP)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericStrength)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericStamina)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericMana)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion

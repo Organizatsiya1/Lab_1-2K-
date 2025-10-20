@@ -2,9 +2,9 @@
 {
     public enum Weapons
     {
-        None,
-        Mace,
-        Sword,
-        Axe,
+        None = 1,
+        Mace = 2,
+        Sword = 3,
+        Axe = 4,
     }
 }

@@ -3,7 +3,6 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 
 namespace BusinessLogic
 {
@@ -24,10 +23,9 @@ namespace BusinessLogic
         }
 
         /// <summary>
-        /// Возвращаемый список — независимая копия,
-        /// чтобы внешний код (UI) не мог напрямую изменить внутренний список Logic
+        /// Получает всех юнитов отряда
         /// </summary>
-        /// <returns>Копия текущего списка юнитов</returns>
+        /// <returns>Список юнитов</returns>
         public List<Character> GetUnits()
         {
             var fighters = _unitOfWork.Fighters.ReadAll().Cast<Character>();

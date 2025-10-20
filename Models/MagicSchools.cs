@@ -2,8 +2,8 @@
 {
     public enum MagicSchools
     {
-        Fire,
-        Ice,
-        Light,
+        Fire = 1,
+        Ice = 2,
+        Light = 3,
     }
 }

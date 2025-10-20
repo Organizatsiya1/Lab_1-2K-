@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Models;
+﻿using Models;
 
 namespace DataAccessLayer
 {
@@ -18,11 +13,17 @@ namespace DataAccessLayer
             Mages = new DapperRepository<Mage>();
         }
 
+        /// <summary>
+        /// Сохраняет все изменения, внесенные в контекст базы данных
+        /// </summary>
         public void SaveChanges()
         {
             
         }
 
+        /// <summary>
+        /// Освобождает все ресурсы, используемые контекстом базы данных
+        /// </summary>
         public void Dispose()
         {
             
