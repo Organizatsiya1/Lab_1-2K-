@@ -49,7 +49,7 @@ namespace BusinessLogic
         /// <param name="value">Значение</param>
         /// <param name="min">Минимум = 0</param>
         /// <param name="max">Максимум = 100</param>
-        /// <returns></returns>
+        /// <returns>Нормализованное значение</returns>
         private int ClampStat(int value, int min = 0, int max = 100)
         {
             if (value < min) return min;

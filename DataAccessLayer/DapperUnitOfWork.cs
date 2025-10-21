@@ -1,9 +1,17 @@
 ﻿using Models;
+using System;
+using System.Configuration;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
 
 namespace DataAccessLayer
 {
     public class DapperUnitOfWork : IUnitOfWork
     {
+        private readonly IDbConnection _connection;
+        private IDbTransaction _transaction;
+
         public IRepository<Fighter> Fighters { get; }
         public IRepository<Mage> Mages { get; }
 
@@ -11,6 +19,12 @@ namespace DataAccessLayer
         {
             Fighters = new DapperRepository<Fighter>();
             Mages = new DapperRepository<Mage>();
+
+            var connectionString = ConfigurationManager.ConnectionStrings["AdventureGuildDB"]?.ConnectionString;
+
+            _connection = new SqlConnection(connectionString);
+            _connection.Open();
+            _transaction = _connection.BeginTransaction();
         }
 
         /// <summary>
@@ -18,7 +32,20 @@ namespace DataAccessLayer
         /// </summary>
         public void SaveChanges()
         {
-            
+            try
+            {
+                _transaction?.Commit();
+            }
+            catch
+            {
+                _transaction?.Rollback();
+                throw;
+            }
+            //finally
+            //{
+            //    _transaction?.Dispose();
+            //    _transaction = null;
+            //}
         }
 
         /// <summary>
@@ -26,7 +53,11 @@ namespace DataAccessLayer
         /// </summary>
         public void Dispose()
         {
-            
+            _transaction?.Rollback();
+            _transaction?.Dispose();
+
+            _connection?.Close();
+            _connection?.Dispose();
         }
     }
 }
