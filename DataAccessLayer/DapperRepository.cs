@@ -35,7 +35,17 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
             .ToArray();
 
         var columns = string.Join(", ", properties.Select(p => p.Name));
-        var values = string.Join(", ", properties.Select(p => $"'{p.GetValue(entity)}'"));
+        var values = string.Join(", ", properties.Select(p =>
+        {
+            var value = p.GetValue(entity);
+            if (value is Enum)
+                return $"{Convert.ToInt32(value)}";
+            else if (value is string)
+                return $"N'{value}'";
+            else
+                return value?.ToString() ?? "NULL";
+        }));
+
 
         string script = $"INSERT INTO {TableName} ({columns}) VALUES({values})";
         UseScript(script);
@@ -92,7 +102,22 @@ public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
             .Where(p => p.Name != "Id" && p.CanRead)
             .ToArray();
 
-        var setClause = string.Join(", ", properties.Select(p => $"{p.Name} = '{p.GetValue(entity)}'"));
+        var setClause = string.Join(", ", properties.Select(p =>
+        {
+            var value = p.GetValue(entity);
+            string formattedValue;
+
+            if (value is Enum)
+                formattedValue = Convert.ToInt32(value).ToString();
+            else if (value is string)
+                formattedValue = $"N'{value}'";
+            else if (value == null)
+                formattedValue = "NULL";
+            else
+                formattedValue = value.ToString();
+
+            return $"{p.Name} = {formattedValue}";
+        }));
 
         string script = $"UPDATE {TableName} SET {setClause} WHERE Id = {entity.Id}";
         UseScript(script);

@@ -168,6 +168,7 @@ namespace WinFormsApp
             this.comboBoxType.Name = "comboBoxType";
             this.comboBoxType.Size = new System.Drawing.Size(227, 41);
             this.comboBoxType.TabIndex = 6;
+            this.comboBoxType.SelectedIndexChanged += new System.EventHandler(this.comboBoxType_SelectedIndexChanged);
             // 
             // labelType
             // 
@@ -243,6 +244,7 @@ namespace WinFormsApp
             this.buttonSave.TabIndex = 1;
             this.buttonSave.Text = "💾 Сохранить";
             this.buttonSave.UseVisualStyleBackColor = false;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // buttonCancel
             // 
@@ -257,6 +259,7 @@ namespace WinFormsApp
             this.buttonCancel.TabIndex = 0;
             this.buttonCancel.Text = "❌ Отмена";
             this.buttonCancel.UseVisualStyleBackColor = false;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // labelStamina
             // 
