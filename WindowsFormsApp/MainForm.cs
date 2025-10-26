@@ -1,5 +1,6 @@
 using BusinessLogic;
 using Models;
+using Ninject;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -8,7 +9,8 @@ namespace WinFormsApp
 {
     public partial class MainForm : Form
     {
-        private Logic logic = new Logic(true);
+        private Logic logic;
+        IKernel ninjectKernel = new StandardKernel(new SimpleConfigModule());
 
         public MainForm()
         {
@@ -307,7 +309,7 @@ namespace WinFormsApp
         {
             if (radioButtonEntityRepository.Checked)
             {
-                logic = new Logic(false);
+                logic = ninjectKernel.Get<Logic>();
                 RefreshGrid();
             }
         }
@@ -321,7 +323,7 @@ namespace WinFormsApp
         {
             if (radioButtonDapperRepository.Checked)
             {
-                logic = new Logic(true);
+                logic = ninjectKernel.Get<Logic>(); 
                 RefreshGrid();
             }
         }

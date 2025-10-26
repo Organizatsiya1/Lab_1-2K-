@@ -1,5 +1,6 @@
 ﻿using BusinessLogic;
 using Models;
+using Ninject;
 using System;
 using System.Linq;
 
@@ -8,6 +9,7 @@ namespace ConsoleApp
     internal class Program
     {
         static Logic logic;
+        static IKernel ninjectKernel = new StandardKernel(new SimpleConfigModule());
 
         /// <summary>
         /// Точка входа в консольное приложение с запуском консольного меню
@@ -83,9 +85,12 @@ namespace ConsoleApp
                 switch (input)
                 {
                     case "1":
-                        return new Logic(false);
+                        Logic bL = ninjectKernel.Get<Logic>();
+                        return bL;
                     case "2":
-                        return new Logic(true);
+                        Logic BL = ninjectKernel.Get<Logic>();
+                        return BL;
+                        
                     default:
                         Console.WriteLine("Некорректный ввод. Попробуйте снова...");
                         Console.WriteLine("Нажмите любую клавишу...");

@@ -8,18 +8,11 @@ namespace BusinessLogic
 {
     public class Logic
     {
-        private IUnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork { get; set; }
 
-        public Logic(bool useDapper)
+        public Logic(IUnitOfWork unit)
         {
-            if (useDapper)
-            {
-                _unitOfWork = new DapperUnitOfWork();
-            }
-            else
-            {
-                _unitOfWork = new EntityUnitOfWork();
-            }
+            _unitOfWork = unit;
         }
 
         /// <summary>
