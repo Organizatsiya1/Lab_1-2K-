@@ -32,20 +32,35 @@ namespace DataAccessLayer
         /// </summary>
         public void SaveChanges()
         {
-            try
             {
-                _transaction?.Commit();
+                try
+                {
+                    
+                    if (_transaction == null)
+                    {
+                      
+                        using (var transaction = _connection.BeginTransaction())
+                        {
+                            try
+                            {
+                                
+                                transaction.Commit();
+                            }
+                            catch
+                            {
+                                transaction.Rollback();
+                                throw;
+                            }
+                        }
+                    }
+                    
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Ошибка сохранения: {ex.Message}");
+                    throw;
+                }
             }
-            catch
-            {
-                _transaction?.Rollback();
-                throw;
-            }
-            //finally
-            //{
-            //    _transaction?.Dispose();
-            //    _transaction = null;
-            //}
         }
 
         /// <summary>
