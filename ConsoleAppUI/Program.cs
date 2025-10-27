@@ -9,7 +9,7 @@ namespace ConsoleApp
     internal class Program
     {
         static Logic logic;
-        static IKernel ninjectKernel = new StandardKernel(new SimpleConfigModule());
+        static IKernel ninjectKernel;
 
         /// <summary>
         /// Точка входа в консольное приложение с запуском консольного меню
@@ -85,12 +85,12 @@ namespace ConsoleApp
                 switch (input)
                 {
                     case "1":
-                        Logic bL = ninjectKernel.Get<Logic>();
-                        return bL;
+                        ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
+                        return ninjectKernel.Get<Logic>();
                     case "2":
-                        Logic BL = ninjectKernel.Get<Logic>();
-                        return BL;
-                        
+                        ninjectKernel = new StandardKernel(new SimpleConfigModule(true));
+                        return ninjectKernel.Get<Logic>();
+
                     default:
                         Console.WriteLine("Некорректный ввод. Попробуйте снова...");
                         Console.WriteLine("Нажмите любую клавишу...");

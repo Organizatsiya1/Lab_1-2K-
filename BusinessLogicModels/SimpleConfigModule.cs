@@ -1,18 +1,27 @@
 ﻿using DataAccessLayer;
 using Ninject.Modules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic
 {
     public class SimpleConfigModule : NinjectModule
     {
+        private readonly bool _useDapper;
+
+        public SimpleConfigModule(bool useDapper = false)
+        {
+            _useDapper = useDapper;
+        }
+
         public override void Load()
         {
-            Bind<IUnitOfWork>().To<EntityUnitOfWork>().InSingletonScope();
+            if (_useDapper)
+            {
+                Bind<IUnitOfWork>().To<DapperUnitOfWork>().InSingletonScope();
+            }
+            else
+            {
+                Bind<IUnitOfWork>().To<EntityUnitOfWork>().InSingletonScope();
+            }
         }
     }
 }

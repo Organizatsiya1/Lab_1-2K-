@@ -10,16 +10,21 @@ namespace WinFormsApp
     public partial class MainForm : Form
     {
         private Logic logic;
-        IKernel ninjectKernel = new StandardKernel(new SimpleConfigModule());
+        IKernel ninjectKernel;
 
         public MainForm()
         {
             InitializeComponent();
 
+            // »нициализируем с репозиторием по умолчанию (Entity)
+            ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
+            logic = ninjectKernel.Get<Logic>();
+
             radioButtonEntityRepository.Checked = true; // по умолчанию EF
             InitializeDataGridView();
             RefreshGrid(); // таблица пуста€ при запуске
         }
+
 
         /// <summary>
         /// ќбъ€вление шаблона таблицы, наполн€ет фильтры
@@ -309,6 +314,7 @@ namespace WinFormsApp
         {
             if (radioButtonEntityRepository.Checked)
             {
+                ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
                 logic = ninjectKernel.Get<Logic>();
                 RefreshGrid();
             }
@@ -323,7 +329,8 @@ namespace WinFormsApp
         {
             if (radioButtonDapperRepository.Checked)
             {
-                logic = ninjectKernel.Get<Logic>(); 
+                ninjectKernel = new StandardKernel(new SimpleConfigModule(true));
+                logic = ninjectKernel.Get<Logic>();
                 RefreshGrid();
             }
         }
