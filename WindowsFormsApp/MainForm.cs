@@ -1,4 +1,5 @@
 using BusinessLogic;
+using BusinessLogicModels;
 using Models;
 using Ninject;
 using System;
@@ -9,7 +10,7 @@ namespace WinFormsApp
 {
     public partial class MainForm : Form
     {
-        private Logic logic;
+        private Facade facade;
         IKernel ninjectKernel;
 
         public MainForm()
@@ -18,7 +19,7 @@ namespace WinFormsApp
 
             // »нициализируем с репозиторием по умолчанию (Entity)
             ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
-            logic = ninjectKernel.Get<Logic>();
+            facade = ninjectKernel.Get<Facade>();
 
             radioButtonEntityRepository.Checked = true; // по умолчанию EF
             InitializeDataGridView();
@@ -95,7 +96,7 @@ namespace WinFormsApp
         private void RefreshGrid()
         {
             dataGridViewCharacters.Rows.Clear();
-            var list = logic.GetUnits(); // берем список из логики
+            var list = facade.GetUnits(); // берем список из логики
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -117,7 +118,7 @@ namespace WinFormsApp
 
             // вычисл€ем индекс выбранной строки и сопоставл€ем с логикой
             int rowIndex = dataGridViewCharacters.CurrentRow.Index;
-            var list = logic.GetUnits();
+            var list = facade.GetUnits();
             if (rowIndex >= 0 && rowIndex < list.Count)
                 return list[rowIndex];
 
@@ -141,9 +142,9 @@ namespace WinFormsApp
                     Character hero = form.CreatedHero;
                     // используем методы логики (не внутренний список формы)
                     if (hero is Fighter f)
-                        logic.AddFighter(f.Name, f.Description, f.HP, f.Strength, f.Stamina, f.Weapon);
+                        facade.AddFighter(f.Name, f.Description, f.HP, f.Strength, f.Stamina, f.Weapon);
                     else if (hero is Mage m)
-                        logic.AddMage(m.Name, m.Description, m.HP, m.Strength, m.Mana, m.School);
+                        facade.AddMage(m.Name, m.Description, m.HP, m.Strength, m.Mana, m.School);
 
                     RefreshGrid();
                 }
@@ -161,7 +162,7 @@ namespace WinFormsApp
             Character selected = GetSelectedCharacter();
             if (selected == null) return;
 
-            logic.DeleteUnit(selected);
+            facade.DeleteUnit(selected);
             RefreshGrid();
             MessageBox.Show("ѕерсонаж удалЄн!");
         }
@@ -185,20 +186,20 @@ namespace WinFormsApp
 
                     if (selected is Fighter oldF && newValues is Fighter newF)
                     {
-                        logic.ChangeFighter(oldF, newF.Name, newF.Description, newF.HP, newF.Strength, newF.Stamina, newF.Weapon);
+                        facade.ChangeFighter(oldF, newF.Name, newF.Description, newF.HP, newF.Strength, newF.Stamina, newF.Weapon);
                     }
                     else if (selected is Mage oldM && newValues is Mage newM)
                     {
-                        logic.ChangeMage(oldM, newM.Name, newM.Description, newM.HP, newM.Strength, newM.Mana, newM.School);
+                        facade.ChangeMage(oldM, newM.Name, newM.Description, newM.HP, newM.Strength, newM.Mana, newM.School);
                     }
                     else
                     {
                         // тип изменЄн: удал€ем старый и добавл€ем новый через логику
-                        logic.DeleteUnit(selected);
+                        facade.DeleteUnit(selected);
                         if (newValues is Fighter nf)
-                            logic.AddFighter(nf.Name, nf.Description, nf.HP, nf.Strength, nf.Stamina, nf.Weapon);
+                            facade.AddFighter(nf.Name, nf.Description, nf.HP, nf.Strength, nf.Stamina, nf.Weapon);
                         else if (newValues is Mage nm)
-                            logic.AddMage(nm.Name, nm.Description, nm.HP, nm.Strength, nm.Mana, nm.School);
+                            facade.AddMage(nm.Name, nm.Description, nm.HP, nm.Strength, nm.Mana, nm.School);
                     }
 
                     RefreshGrid();
@@ -220,7 +221,7 @@ namespace WinFormsApp
                 kv => kv.Value == comboBoxFilterWeapon.SelectedItem.ToString()
             ).Key;
 
-            var filtered = logic.ChooseMarked(selectedWeapon);
+            var filtered =  facade.ChooseMarked(selectedWeapon);
             if (!filtered.Any())
             {
                 MessageBox.Show("Ќет воинов с выбранным оружием!");
@@ -248,7 +249,7 @@ namespace WinFormsApp
                 kv => kv.Value == comboBoxFilterSchool.SelectedItem.ToString()
             ).Key;
 
-            var filtered = logic.ChooseMarked(selectedSchool);
+            var filtered = facade.ChooseMarked(selectedSchool);
             if (!filtered.Any())
             {
                 MessageBox.Show("Ќет магов с выбранной школой!");
@@ -280,7 +281,7 @@ namespace WinFormsApp
             int idx1 = selRows[0].Index;
             int idx2 = selRows[1].Index;
 
-            var list = logic.GetUnits();
+            var list = facade.GetUnits();
             if (idx1 < 0 || idx1 >= list.Count || idx2 < 0 || idx2 >= list.Count)
             {
                 MessageBox.Show("ќшибка выбора персонажей.");
@@ -290,7 +291,7 @@ namespace WinFormsApp
             var ch1 = list[idx1];
             var ch2 = list[idx2];
 
-            string result = logic.Fight(ch1, ch2);
+            string result = facade.Fight(ch1, ch2);
             RefreshGrid();
             MessageBox.Show(result, "–езультат поединка");
         }
@@ -315,7 +316,7 @@ namespace WinFormsApp
             if (radioButtonEntityRepository.Checked)
             {
                 ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
-                logic = ninjectKernel.Get<Logic>();
+                facade = ninjectKernel.Get<Facade>();
                 RefreshGrid();
             }
         }
@@ -330,7 +331,7 @@ namespace WinFormsApp
             if (radioButtonDapperRepository.Checked)
             {
                 ninjectKernel = new StandardKernel(new SimpleConfigModule(true));
-                logic = ninjectKernel.Get<Logic>();
+                facade = ninjectKernel.Get<Facade>();
                 RefreshGrid();
             }
         }

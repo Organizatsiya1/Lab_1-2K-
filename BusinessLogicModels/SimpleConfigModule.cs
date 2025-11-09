@@ -1,4 +1,5 @@
-﻿using DataAccessLayer;
+﻿using BusinessLogicModels;
+using DataAccessLayer;
 using Ninject.Modules;
 
 namespace BusinessLogic
@@ -14,6 +15,7 @@ namespace BusinessLogic
 
         public override void Load()
         {
+            // Биндинг UnitOfWork
             if (_useDapper)
             {
                 Bind<IUnitOfWork>().To<DapperUnitOfWork>().InSingletonScope();
@@ -22,6 +24,15 @@ namespace BusinessLogic
             {
                 Bind<IUnitOfWork>().To<EntityUnitOfWork>().InSingletonScope();
             }
+
+            // Биндинг сервисов
+            Bind<IStandartizer>().To<Standartizer>().InSingletonScope();
+            Bind<ICharManipulator>().To<CharacterLogic>().InSingletonScope();
+            Bind<IFighterManipulator>().To<FighterLogic>().InSingletonScope();
+            Bind<IMageManipulator>().To<MageLogic>().InSingletonScope();
+
+            // Биндинг фасада
+            Bind<Facade>().ToSelf().InSingletonScope();
         }
     }
 }

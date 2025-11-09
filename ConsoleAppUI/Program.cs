@@ -1,4 +1,5 @@
 ﻿using BusinessLogic;
+using BusinessLogicModels;
 using Models;
 using Ninject;
 using System;
@@ -8,7 +9,7 @@ namespace ConsoleApp
 {
     internal class Program
     {
-        static Logic logic;
+        static Facade facade;
         static IKernel ninjectKernel;
 
         /// <summary>
@@ -16,7 +17,7 @@ namespace ConsoleApp
         /// </summary>
         static void Main()
         {
-            logic = SelectRepository();
+            facade = SelectRepository();
 
             while (true)
             {
@@ -53,7 +54,7 @@ namespace ConsoleApp
                         ExtraFunctions();
                         break;
                     case "6":
-                        logic = SelectRepository();
+                        facade = SelectRepository();
                         break;
                     case "0":
                         return;
@@ -71,7 +72,7 @@ namespace ConsoleApp
         /// Выполняет выбор репозитория для логики приложения
         /// </summary>
         /// <returns>Возвращает объект логики, в зависимости от выбранного репозитория: false — Entity, true — Dapper</returns>
-        static Logic SelectRepository()
+        static Facade SelectRepository()
         {
             while (true)
             {
@@ -86,10 +87,10 @@ namespace ConsoleApp
                 {
                     case "1":
                         ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
-                        return ninjectKernel.Get<Logic>();
+                        return ninjectKernel.Get<Facade>();
                     case "2":
                         ninjectKernel = new StandardKernel(new SimpleConfigModule(true));
-                        return ninjectKernel.Get<Logic>();
+                        return ninjectKernel.Get<Facade>();
 
                     default:
                         Console.WriteLine("Некорректный ввод. Попробуйте снова...");
@@ -141,7 +142,7 @@ namespace ConsoleApp
                 int stam = ReadInt("Выносливость", 20);
                 Weapons weapon = ChooseEnum<Weapons>("Тип оружия");
 
-                logic.AddFighter(name, desc, hp, str, stam, weapon);
+                facade.AddFighter(name, desc, hp, str, stam, weapon);
                 Console.WriteLine("Воин добавлен.");
             }
             else if (t == "2")
@@ -149,7 +150,7 @@ namespace ConsoleApp
                 int mana = ReadInt("Мана", 50);
                 MagicSchools school = ChooseEnum<MagicSchools>("Школа магии");
 
-                logic.AddMage(name, desc, hp, str, mana, school);
+                facade.AddMage(name, desc, hp, str, mana, school);
                 Console.WriteLine("Маг добавлен.");
             }
         }
@@ -162,7 +163,7 @@ namespace ConsoleApp
             Console.Clear();
             Console.WriteLine("Удаление персонажа");
 
-            var units = logic.GetUnits();
+            var units = facade.GetUnits();
             if (!units.Any())
             {
                 Console.WriteLine("Список пуст.");
@@ -173,7 +174,7 @@ namespace ConsoleApp
             int idx = ReadInt("Введите номер персонажа для удаления:", -1);
             if (idx >= 0 && idx < units.Count)
             {
-                logic.DeleteUnit(units[idx]);
+                facade.DeleteUnit(units[idx]);
                 Console.WriteLine("Персонаж удалён.");
             }
             else
@@ -190,7 +191,7 @@ namespace ConsoleApp
             Console.Clear();
             Console.WriteLine("Список персонажей:");
 
-            var units = logic.GetUnits();
+            var units = facade.GetUnits();
             if (!units.Any())
             {
                 Console.WriteLine("Пусто.");
@@ -257,7 +258,7 @@ namespace ConsoleApp
             Console.Clear();
             Console.WriteLine("Изменение персонажа");
 
-            var units = logic.GetUnits();
+            var units = facade.GetUnits();
             if (!units.Any())
             {
                 Console.WriteLine("Список пуст.");
@@ -298,7 +299,7 @@ namespace ConsoleApp
                     weapon = weaponKeys[wnum - 1];
                 }
 
-                logic.ChangeFighter(f, name, disc, hp, str, stam, weapon);
+                facade.ChangeFighter(f, name, disc, hp, str, stam, weapon);
                 Console.WriteLine("Данные воина обновлены.");
             }
             else if (selected is Mage m)
@@ -325,7 +326,7 @@ namespace ConsoleApp
                     school = schoolKeys[snum - 1];
                 }
 
-                logic.ChangeMage(m, name, desc, hp, str, mana, school);
+                facade.ChangeMage(m, name, desc, hp, str, mana, school);
                 Console.WriteLine("Данные мага обновлены.");
             }
             else
@@ -361,7 +362,7 @@ namespace ConsoleApp
                     while (trigg1 == false) 
                     {
                         Console.Clear();
-                        var units = logic.GetUnits();
+                        var units = facade.GetUnits();
                         if (!units.Any())
                         {
                             Console.WriteLine("Нет доступных персонажей для поединка.");
@@ -384,10 +385,10 @@ namespace ConsoleApp
                         pos1--;
                         picked = pos1;
 
-                        if (pos1>=0 && pos1 < logic.GetUnits().Count)
+                        if (pos1>=0 && pos1 < facade.GetUnits().Count)
                         {
                             trigg1 = true;
-                            ch1 = logic.GetUnits()[pos1];
+                            ch1 = facade.GetUnits()[pos1];
                             Console.WriteLine($"\nВыбран: {Displays.CharacterTypes[ch1.GetType()]} - {ch1.Name}");
                             Console.WriteLine("\nНажмите любую клавишу, чтобы перейти к выбору соперника...");
                             Console.ReadKey();
@@ -402,7 +403,7 @@ namespace ConsoleApp
                     while(trigg2 == false)
                     {
                         Console.Clear();
-                        var units = logic.GetUnits();
+                        var units = facade.GetUnits();
                         Console.WriteLine("Выберите номер соперника:");
                         for (int i = 0; i < units.Count; i++)
                         {
@@ -417,10 +418,10 @@ namespace ConsoleApp
                         int.TryParse(Console.ReadLine(), out int pos2);
                         pos2--;
 
-                        if (pos2 >= 0 && pos2 < logic.GetUnits().Count && pos2!=picked)
+                        if (pos2 >= 0 && pos2 < facade.GetUnits().Count && pos2!=picked)
                         {
                             trigg2 = true;
-                            ch2 = logic.GetUnits()[pos2];
+                            ch2 = facade.GetUnits()[pos2];
 
                             Console.WriteLine($"\nВыбран соперник: {Displays.CharacterTypes[ch2.GetType()]} - {ch2.Name}");
                             Console.WriteLine("\nНажмите любую клавишу, чтобы начать поединок...");
@@ -435,13 +436,13 @@ namespace ConsoleApp
                     }
 
                     Console.Clear();
-                    Console.WriteLine(logic.Fight(ch1, ch2));
+                    Console.WriteLine(facade.Fight(ch1, ch2));
                     Console.ReadKey();
                 }
                 else if (c == "2")
                 {
                     Weapons weapon = ChooseEnum<Weapons>("Выберите оружие");
-                    var res = logic.ChooseMarked(weapon);
+                    var res = facade.ChooseMarked(weapon);
                     if (!res.Any()) Console.WriteLine("Нет воинов с выбранным оружием.");
                     else
                     {
@@ -452,7 +453,7 @@ namespace ConsoleApp
                 else if (c == "3")
                 {
                     MagicSchools school = ChooseEnum<MagicSchools>("Выберите школу");
-                    var res = logic.ChooseMarked(school);
+                    var res = facade.ChooseMarked(school);
                     if (!res.Any()) Console.WriteLine("Нет магов с выбранной школой.");
                     else
                     {
@@ -513,7 +514,7 @@ namespace ConsoleApp
         /// </summary>
         static void ShowShortList()
         {
-            var units = logic.GetUnits();
+            var units = facade.GetUnits();
             for (int i = 0; i < units.Count; i++)
             {
                 var typeName = Displays.CharacterTypes[units[i].GetType()];
