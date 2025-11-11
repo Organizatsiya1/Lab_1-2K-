@@ -10,7 +10,7 @@ namespace WinFormsApp
 {
     public partial class MainForm : Form
     {
-        private Facade facade;
+        private IFacade facade;
         IKernel ninjectKernel;
 
         public MainForm()
@@ -316,7 +316,7 @@ namespace WinFormsApp
             if (radioButtonEntityRepository.Checked)
             {
                 ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
-                facade = ninjectKernel.Get<Facade>();
+                facade = ninjectKernel.Get<IFacade>();
                 RefreshGrid();
             }
         }
@@ -331,7 +331,7 @@ namespace WinFormsApp
             if (radioButtonDapperRepository.Checked)
             {
                 ninjectKernel = new StandardKernel(new SimpleConfigModule(true));
-                facade = ninjectKernel.Get<Facade>();
+                facade = ninjectKernel.Get<IFacade>();
                 RefreshGrid();
             }
         }

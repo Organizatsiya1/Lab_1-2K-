@@ -35,7 +35,7 @@ namespace BusinessLogic
             Bind<IMageManipulator>().To<MageLogic>().InSingletonScope();
 
             // Биндинг фасада
-            Bind<Facade>().ToSelf().InSingletonScope();
+            Bind<IFacade>().To<Facade>().InSingletonScope();
         }
     }
 }

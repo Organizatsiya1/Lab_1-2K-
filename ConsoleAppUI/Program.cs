@@ -9,7 +9,7 @@ namespace ConsoleApp
 {
     internal class Program
     {
-        static Facade facade;
+        static IFacade facade;
         static IKernel ninjectKernel;
 
         /// <summary>
