@@ -9,7 +9,7 @@ namespace ConsoleApp
 {
     internal class Program
     {
-        static Facade facade;
+        static IFacade facade;
         static IKernel ninjectKernel;
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace ConsoleApp
         /// Выполняет выбор репозитория для логики приложения
         /// </summary>
         /// <returns>Возвращает объект логики, в зависимости от выбранного репозитория: false — Entity, true — Dapper</returns>
-        static Facade SelectRepository()
+        static IFacade SelectRepository()
         {
             while (true)
             {
@@ -87,10 +87,10 @@ namespace ConsoleApp
                 {
                     case "1":
                         ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
-                        return ninjectKernel.Get<Facade>();
+                        return ninjectKernel.Get<IFacade>();
                     case "2":
                         ninjectKernel = new StandardKernel(new SimpleConfigModule(true));
-                        return ninjectKernel.Get<Facade>();
+                        return ninjectKernel.Get<IFacade>();
 
                     default:
                         Console.WriteLine("Некорректный ввод. Попробуйте снова...");
