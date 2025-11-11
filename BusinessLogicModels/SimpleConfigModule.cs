@@ -13,6 +13,9 @@ namespace BusinessLogic
             _useDapper = useDapper;
         }
 
+        /// <summary>
+        /// Настраивает DI контейнер (Ninject) для регистрации всех зависимостей приложения
+        /// </summary>
         public override void Load()
         {
             // Биндинг UnitOfWork

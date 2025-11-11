@@ -19,6 +19,15 @@ namespace BusinessLogicModels
             _standartizer = normalizer;
         }
 
+        /// <summary>
+        /// Добавляет бойца в отряд
+        /// </summary>
+        /// <param name="name">Имя</param>
+        /// <param name="disc">Описание</param>
+        /// <param name="hp">Здоровье</param>
+        /// <param name="str">Сила</param>
+        /// <param name="stam">Выносливость</param>
+        /// <param name="weapon">Выбранный тип оружия</param>
         public void AddFighter(string name, string disc, int hp, int str, int stam, Weapons weapon)
         {
             _standartizer.StandartizeCommon(name, disc, hp, str, out var nName, out var nDisc, out var nHp, out var nStr);
@@ -32,6 +41,16 @@ namespace BusinessLogicModels
             _unitOfWork.SaveChanges();
         }
 
+        /// <summary>
+        /// Изменение данных бойца
+        /// </summary>
+        /// <param name="unit">Юнит</param>
+        /// <param name="name">Имя</param>
+        /// <param name="disc">Досье</param>
+        /// <param name="hp">Здоровье</param>
+        /// <param name="str">Сила</param>
+        /// <param name="stam">Выносливость</param>
+        /// <param name="weapon">Оружие</param>
         public void ChangeFighter(Fighter unit, string name, string disc, int hp, int str, int stam, Weapons weapon)
         {
             if (unit == null) return;
@@ -50,6 +69,11 @@ namespace BusinessLogicModels
             _unitOfWork.SaveChanges();
         }
 
+        /// <summary>
+        /// Выбрать владельцев определённого типа оружия
+        /// </summary>
+        /// <param name="weapon">Тип оружия</param>
+        /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(Weapons weapon)
         {
             return _unitOfWork.Fighters.ReadAll()

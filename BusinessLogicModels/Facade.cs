@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicModels
 {
-    public class Facade
+    public class Facade : IFacade
     {
         private readonly ICharManipulator _characterLogic;
         private readonly IFighterManipulator _fighterLogic;
@@ -140,9 +140,11 @@ namespace BusinessLogicModels
 
         // === Dispose Pattern ===
 
+        /// <summary>
+        /// Освобождение ресурсов (только те ресурсы, которые реализуют IDisposable)
+        /// </summary>
         public void Dispose()
         {
-            // Освобождаем только те ресурсы, которые реализуют IDisposable
             (_characterLogic as IDisposable)?.Dispose();
             (_fighterLogic as IDisposable)?.Dispose();
             (_mageLogic as IDisposable)?.Dispose();

@@ -17,6 +17,10 @@ namespace BusinessLogicModels
             _unitOfWork = unitOfWork;
         }
 
+        /// <summary>
+        /// Получает всех юнитов отряда
+        /// </summary>
+        /// <returns>Список юнитов</returns>
         public List<Character> GetUnits()
         {
             var fighters = _unitOfWork.Fighters.ReadAll().Cast<Character>();
@@ -24,6 +28,10 @@ namespace BusinessLogicModels
             return fighters.Concat(mages).ToList();
         }
 
+        /// <summary>
+        /// Удаляет юнита из отряда
+        /// </summary>
+        /// <param name="unit">Удаляемый юнит</param>
         public void DeleteUnit(Character unit)
         {
             if (unit == null) return;
@@ -36,6 +44,11 @@ namespace BusinessLogicModels
             _unitOfWork.SaveChanges();
         }
 
+        /// <summary>
+        /// Прочитать данные юнита
+        /// </summary>
+        /// <param name="unit">Юнит</param>
+        /// <returns name="info">Прочитанная информация</returns>
         public string ReadUnit(Character unit)
         {
             if (unit == null) return "";
@@ -61,6 +74,11 @@ namespace BusinessLogicModels
             return info.ToString();
         }
 
+        /// <summary>
+        /// Метод, проводящий поединок между персонажами, если здоровье кого-то опускается до 0 и ниже, он выбывает из списка
+        /// </summary>
+        /// <param name="char1">Первый персонаж</param>
+        /// <param name="char2">Второй персонаж</param>
         public string Fight(Character char1, Character char2)
         {
             var mes = new StringBuilder();
@@ -109,6 +127,10 @@ namespace BusinessLogicModels
             return mes.ToString();
         }
 
+        /// <summary>
+        /// Обновляет данные персонажа в соответствующем репозитории в зависимости от его типа
+        /// </summary>
+        /// <param name="character">Персонаж для обновления</param>
         private void UpdateCharacter(Character character)
         {
             switch (character)
@@ -122,6 +144,9 @@ namespace BusinessLogicModels
             }
         }
 
+        /// <summary>
+        /// Освобождает ресурсы Unit of Work
+        /// </summary>
         public void Dispose()
         {
             _unitOfWork?.Dispose();
