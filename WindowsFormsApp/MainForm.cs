@@ -262,7 +262,7 @@ namespace WinFormsApp
                 AddCharacterRow(i, filtered[i]);
             }
         }
-
+        
         /// <summary>
         /// Обрабатывает событие нажатия кнопки "Поединок", имитируя бой между двумя выбранными персонажами
         /// </summary>

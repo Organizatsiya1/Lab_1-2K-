@@ -1,14 +1,16 @@
 ﻿using Models;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogicModels
 {
-    public class Facade : IFacade
+    public class Facade : IFacade, IModel
     {
+        public event Action DataChanged;
+
         private readonly ICharManipulator _characterLogic;
         private readonly IFighterManipulator _fighterLogic;
         private readonly IMageManipulator _mageLogic;
@@ -35,7 +37,11 @@ namespace BusinessLogicModels
         /// <summary>
         /// Удаляет юнита из отряда
         /// </summary>
-        public void DeleteUnit(Character unit) => _characterLogic.DeleteUnit(unit);
+        public void DeleteUnit(Character unit)
+        {
+            _characterLogic.DeleteUnit(unit);
+            DataChanged?.Invoke();
+        }
 
         /// <summary>
         /// Прочитать данные юнита
@@ -53,13 +59,19 @@ namespace BusinessLogicModels
         /// Добавляет бойца в отряд
         /// </summary>
         public void AddFighter(string name, string disc, int hp, int str, int stam, Weapons weapon)
-            => _fighterLogic.AddFighter(name, disc, hp, str, stam, weapon);
+        {
+            _fighterLogic.AddFighter(name, disc, hp, str, stam, weapon);
+            DataChanged?.Invoke();
+        }
 
         /// <summary>
         /// Изменение данных бойца
         /// </summary>
         public void ChangeFighter(Fighter unit, string name, string disc, int hp, int str, int stam, Weapons weapon)
-            => _fighterLogic.ChangeFighter(unit, name, disc, hp, str, stam, weapon);
+        {
+            _fighterLogic.ChangeFighter(unit, name, disc, hp, str, stam, weapon);
+            DataChanged?.Invoke();
+        }
 
         /// <summary>
         /// Выбрать владельцев определённого типа оружия
@@ -72,13 +84,19 @@ namespace BusinessLogicModels
         /// Добавляет мага в отряд
         /// </summary>
         public void AddMage(string name, string disc, int hp, int str, int mana, MagicSchools school)
-            => _mageLogic.AddMage(name, disc, hp, str, mana, school);
+        {
+            _mageLogic.AddMage(name, disc, hp, str, mana, school);
+            DataChanged?.Invoke();
+        }
 
         /// <summary>
         /// Изменение данных мага
         /// </summary>
         public void ChangeMage(Mage unit, string name, string disc, int hp, int str, int mana, MagicSchools school)
-            => _mageLogic.ChangeMage(unit, name, disc, hp, str, mana, school);
+        {
+            _mageLogic.ChangeMage(unit, name, disc, hp, str, mana, school);
+            DataChanged?.Invoke();
+        }
 
         /// <summary>
         /// Выбрать владельцев определённого типа магии
