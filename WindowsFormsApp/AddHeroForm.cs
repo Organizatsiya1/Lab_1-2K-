@@ -1,12 +1,62 @@
 ﻿using Models;
+using Shared;
 using System;
 using System.Windows.Forms;
 
 namespace WinFormsApp
 {
-    public partial class AddHeroForm : Form
+    public partial class AddHeroForm : Form, IAddHeroView
     {
         public Character CreatedHero { get; private set; } // результат
+        public event Action SaveEvent;
+        public event Action CancelEvent;
+        public event Action TypeChangedEvent;
+
+        public string HeroName { get => textBoxName.Text; set => textBoxName.Text = value; }
+        public string HeroDescription { get => textBoxDesc.Text; set => textBoxDesc.Text = value; }
+        public int HeroHP { get => (int)numericHP.Value; set => numericHP.Value = value; }
+        public int HeroStrength { get => (int)numericStrength.Value; set => numericStrength.Value = value; }
+        public bool IsFighter { get => comboBoxType.SelectedItem?.ToString() == "Воин"; set => comboBoxType.SelectedItem = value ? "Воин" : "Маг"; }
+        public bool IsMage { get => comboBoxType.SelectedItem?.ToString() == "Маг"; set => comboBoxType.SelectedItem = value ? "Маг" : "Воин"; }
+        public int HeroStamina { get => (int)numericStamina.Value; set => numericStamina.Value = value; }
+        public int HeroMana { get => (int)numericMana.Value; set => numericMana.Value = value; }
+        public Weapons SelectedWeapon
+        {
+            get
+            {
+                if (comboBoxWeapon.SelectedItem == null) return Weapons.None;
+                var sel = comboBoxWeapon.SelectedItem.ToString();
+                foreach (var kv in Displays.WeaponsNames)
+                    if (kv.Value == sel) return kv.Key;
+                return Weapons.None;
+            }
+            set
+            {
+                if (Displays.WeaponsNames.ContainsKey(value))
+                    comboBoxWeapon.SelectedItem = Displays.WeaponsNames[value];
+            }
+        }
+        public MagicSchools SelectedSchool
+        {
+            get
+            {
+                if (comboBoxSchool.SelectedItem == null) return MagicSchools.Fire;
+                var sel = comboBoxSchool.SelectedItem.ToString();
+                foreach (var kv in Displays.MagicNames)
+                    if (kv.Value == sel) return kv.Key;
+                return MagicSchools.Fire;
+            }
+            set
+            {
+                if (Displays.MagicNames.ContainsKey(value))
+                    comboBoxSchool.SelectedItem = Displays.MagicNames[value];
+            }
+        }
+        public new object DialogResult
+        {
+            get => base.DialogResult;
+            set => base.DialogResult = (DialogResult)value;
+        }
 
         /// <summary>
         /// Конструктор по умолчанию: инициализирует компоненты формы и безопасно
@@ -46,7 +96,21 @@ namespace WinFormsApp
             numericMana.Visible = !isFighter;
             labelMana.Visible = !isFighter;
         }
-
+        public new void Show() => base.Show();
+        public new void Close() => base.Close();
+        public void ClearForm()
+        {
+            textBoxName.Text = "";
+            textBoxDesc.Text = "";
+            numericHP.Value = 50;
+            numericStrength.Value = 5;
+            numericStamina.Value = 50;
+            numericMana.Value = 100;
+            comboBoxType.SelectedIndex = 0;
+            comboBoxWeapon.SelectedIndex = 0;
+            comboBoxSchool.SelectedIndex = 0;
+            CreatedHero = null;
+        }
         /// <summary>
         /// Конструктор для редактирования существующего персонажа: заполняет
         /// поля формы значениями из переданного объекта
@@ -78,6 +142,31 @@ namespace WinFormsApp
             }
         }
 
+        public void SetFormForEdit(Character character)
+        {
+            if (character == null) return;
+
+            textBoxName.Text = character.Name;
+            textBoxDesc.Text = character.Description;
+            numericHP.Value = Math.Max(numericHP.Minimum, Math.Min(numericHP.Maximum, character.HP));
+            numericStrength.Value = Math.Max(numericStrength.Minimum, Math.Min(numericStrength.Maximum, character.Strength));
+
+            if (character is Fighter f)
+            {
+                comboBoxType.SelectedItem = "Воин";
+                comboBoxWeapon.SelectedItem = Displays.WeaponsNames.ContainsKey(f.Weapon) ? Displays.WeaponsNames[f.Weapon] : Displays.WeaponsNames[Weapons.None];
+                numericStamina.Value = Math.Max(numericStamina.Minimum, Math.Min(numericStamina.Maximum, f.Stamina));
+                ToggleFields(true);
+            }
+            else if (character is Mage m)
+            {
+                comboBoxType.SelectedItem = "Маг";
+                comboBoxSchool.SelectedItem = Displays.MagicNames.ContainsKey(m.School) ? Displays.MagicNames[m.School] : Displays.MagicNames[MagicSchools.Fire];
+                numericMana.Value = Math.Max(numericMana.Minimum, Math.Min(numericMana.Maximum, m.Mana));
+                ToggleFields(false);
+            }
+        }
+
         /// <summary>
         /// Обработчик изменения выбранного типа персонажа
         /// Переключает видимость аборов полей между набором для воина и набором для мага
@@ -90,6 +179,7 @@ namespace WinFormsApp
 
             var sel = comboBoxType.SelectedItem.ToString();
             ToggleFields(sel == "Воин");
+            TypeChangedEvent?.Invoke();
         }
 
         /// <summary>
@@ -157,6 +247,8 @@ namespace WinFormsApp
                 CreatedHero = new Mage(name, desc, hp, str, mana, school);
             }
 
+            SaveEvent?.Invoke();
+
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -168,6 +260,8 @@ namespace WinFormsApp
         /// <param name="e">Аргументы события</param>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
+            CancelEvent?.Invoke();
+
             DialogResult = DialogResult.Cancel;
             Close();
         }

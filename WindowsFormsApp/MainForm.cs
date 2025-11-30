@@ -2,16 +2,23 @@ using BusinessLogic;
 using BusinessLogicModels;
 using Models;
 using Ninject;
+using Shared;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace WinFormsApp
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IView
     {
         private IFacade facade;
         IKernel ninjectKernel;
+        public event Action AddDataEvent;
+        public event Action DeleteDataEvent;
+        public event Action EditDataEvent;
+        public event Action LoadDataEvent;
+        public event Action FightEvent;
 
         public MainForm()
         {
@@ -24,6 +31,17 @@ namespace WinFormsApp
             radioButtonEntityRepository.Checked = true; // по умолчанию EF
             InitializeDataGridView();
             RefreshGrid(); // таблица пустая при запуске
+            BindEvents();
+        }
+
+        private void BindEvents()
+        {
+            // Привязываем кнопки к событиям интерфейса
+            buttonAddHero.Click += (s, e) => AddDataEvent?.Invoke();
+            buttonDeleteHero.Click += (s, e) => DeleteDataEvent?.Invoke();
+            buttonEditHero.Click += (s, e) => EditDataEvent?.Invoke();
+            buttonShowAll.Click += (s, e) => LoadDataEvent?.Invoke();
+            buttonSort.Click += (s, e) => FightEvent?.Invoke();
         }
 
 
@@ -90,6 +108,14 @@ namespace WinFormsApp
             );
         }
 
+        public void Redraw(List<Character> units)
+        {
+            dataGridViewCharacters.Rows.Clear();
+            for (int i = 0; i < units.Count; i++)
+            {
+                AddCharacterRow(i, units[i]);
+            }
+        }
         /// <summary>
         /// Заполнение таблица текущими юнитами и обновление таблицы
         /// </summary>
@@ -108,7 +134,7 @@ namespace WinFormsApp
         /// Возвращает объест персонажа, соответствующей выбранной строки таблицы 
         /// </summary>
         /// <returns>Выбранный объект персонажа, или же значение null при ошибке выбора</returns>
-        private Character GetSelectedCharacter()
+        public Character GetSelectedCharacter()
         {
             if (dataGridViewCharacters.CurrentRow == null || dataGridViewCharacters.CurrentRow.Index < 0)
             {
@@ -334,6 +360,10 @@ namespace WinFormsApp
                 facade = ninjectKernel.Get<IFacade>();
                 RefreshGrid();
             }
+        }
+        public void ShowMessage(string text)
+        {
+            MessageBox.Show(text, "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

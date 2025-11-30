@@ -8,7 +8,7 @@ namespace Presenter
     {
         private readonly IView view;
         private readonly IModel model;
-
+        private readonly IAddHeroView addHeroView;
         public MainPresenter(IView view, IModel model)
         {
             this.view = view;
@@ -22,6 +22,7 @@ namespace Presenter
 
             // Подписка на событие Model
             this.model.DataChanged += OnDataChanged;
+            OnLoadData();
         }
 
         private void OnEditData()
@@ -31,7 +32,18 @@ namespace Presenter
 
         private void OnAddData()
         {
-            throw new NotImplementedException();
+            try
+            {
+                addHeroView.SetCreateMode();
+                if (addHeroView.ShowDialog())
+                {
+                    view.ShowMessage("Персонаж успешно добавлен!");
+                }
+            }
+            catch (Exception ex)
+            {
+                view.ShowError($"Ошибка при добавлении: {ex.Message}");
+            }
         }
 
         private void OnDataChanged()
