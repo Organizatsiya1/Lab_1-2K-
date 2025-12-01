@@ -1,6 +1,7 @@
 ﻿using BusinessLogicModels;
 using DataAccessLayer;
 using Ninject.Modules;
+using Shared;
 
 namespace BusinessLogic
 {
@@ -36,6 +37,7 @@ namespace BusinessLogic
 
             // Биндинг фасада
             Bind<IFacade>().To<Facade>().InSingletonScope();
+            Bind<IModel>().To<Facade>().InSingletonScope();
         }
     }
 }

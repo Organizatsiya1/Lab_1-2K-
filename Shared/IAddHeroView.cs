@@ -21,6 +21,8 @@ namespace Shared
         Weapons SelectedWeapon { get; }
         MagicSchools SelectedSchool { get; }
 
+        Character CreatedHero { get; }
+        void LoadCharacter(Character c);
         void SetCreateMode();
         DialogResult ShowDialog();
         void Show();

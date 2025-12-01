@@ -78,6 +78,11 @@ namespace WinFormsApp
                 comboBoxType.SelectedIndex = 0;
         }
 
+        public void LoadCharacter(Character character)
+        {
+            SetFormForEdit(character);
+        }
+
         /// <summary>
         /// Переключает видимость полей формы в зависимости от выбранного типа персонажа
         /// </summary>

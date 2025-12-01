@@ -136,7 +136,6 @@ namespace WinFormsApp
             this.buttonFilterMages.TabIndex = 10;
             this.buttonFilterMages.Text = "🔮";
             this.buttonFilterMages.UseVisualStyleBackColor = false;
-            this.buttonFilterMages.Click += new System.EventHandler(this.buttonFilterMages_Click);
             // 
             // buttonFilterFighters
             // 
@@ -151,7 +150,6 @@ namespace WinFormsApp
             this.buttonFilterFighters.TabIndex = 7;
             this.buttonFilterFighters.Text = "🛡";
             this.buttonFilterFighters.UseVisualStyleBackColor = false;
-            this.buttonFilterFighters.Click += new System.EventHandler(this.buttonFilterFighters_Click);
             // 
             // comboBoxFilterSchool
             // 
@@ -232,7 +230,6 @@ namespace WinFormsApp
             this.buttonSort.TabIndex = 12;
             this.buttonSort.Text = "⚔ Устроить поединок";
             this.buttonSort.UseVisualStyleBackColor = false;
-            this.buttonSort.Click += new System.EventHandler(this.buttonSort_Click);
             // 
             // LabelRepo
             // 
@@ -256,7 +253,6 @@ namespace WinFormsApp
             this.radioButtonEntityRepository.TabStop = true;
             this.radioButtonEntityRepository.Text = "Entity";
             this.radioButtonEntityRepository.UseVisualStyleBackColor = true;
-            this.radioButtonEntityRepository.CheckedChanged += new System.EventHandler(this.radioButtonEntityRepository_CheckedChanged);
             // 
             // radioButtonDapperRepository
             // 
@@ -269,7 +265,6 @@ namespace WinFormsApp
             this.radioButtonDapperRepository.TabStop = true;
             this.radioButtonDapperRepository.Text = "Dapper";
             this.radioButtonDapperRepository.UseVisualStyleBackColor = true;
-            this.radioButtonDapperRepository.CheckedChanged += new System.EventHandler(this.radioButtonDapperRepository_CheckedChanged);
             // 
             // ColIndex
             // 

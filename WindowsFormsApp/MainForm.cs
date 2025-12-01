@@ -1,7 +1,4 @@
-using BusinessLogic;
-using BusinessLogicModels;
 using Models;
-using Ninject;
 using Shared;
 using System;
 using System.Collections.Generic;
@@ -12,38 +9,63 @@ namespace WinFormsApp
 {
     public partial class MainForm : Form, IView
     {
-        private IFacade facade;
-        IKernel ninjectKernel;
+        //private IFacade facade;
+        //IKernel ninjectKernel;
         public event Action AddDataEvent;
         public event Action DeleteDataEvent;
         public event Action EditDataEvent;
         public event Action LoadDataEvent;
-        public event Action FightEvent;
+
+        public event Action<string> FilterFightersEvent;
+        public event Action<string> FilterMagesEvent;
+        public event Action<int, int> FightEvent;
+
+        public event Action<bool> ChangeRepositoryEvent;
 
         public MainForm()
         {
             InitializeComponent();
-
-            // Инициализируем с репозиторием по умолчанию (Entity)
-            ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
-            facade = ninjectKernel.Get<Facade>();
-
-            radioButtonEntityRepository.Checked = true; // по умолчанию EF
             InitializeDataGridView();
-            RefreshGrid(); // таблица пустая при запуске
             BindEvents();
         }
 
         private void BindEvents()
         {
-            // Привязываем кнопки к событиям интерфейса
-            buttonAddHero.Click += (s, e) => AddDataEvent?.Invoke();
-            buttonDeleteHero.Click += (s, e) => DeleteDataEvent?.Invoke();
-            buttonEditHero.Click += (s, e) => EditDataEvent?.Invoke();
-            buttonShowAll.Click += (s, e) => LoadDataEvent?.Invoke();
-            buttonSort.Click += (s, e) => FightEvent?.Invoke();
-        }
+            buttonFilterFighters.Click += (s, e) =>
+            {
+                var weapon = comboBoxFilterWeapon.SelectedItem?.ToString();
+                if (weapon != null)
+                    FilterFightersEvent?.Invoke(weapon);
+            };
 
+            buttonFilterMages.Click += (s, e) =>
+            {
+                var school = comboBoxFilterSchool.SelectedItem?.ToString();
+                if (school != null)
+                    FilterMagesEvent?.Invoke(school);
+            };
+
+            buttonSort.Click += (s, e) =>
+            {
+                var rows = dataGridViewCharacters.SelectedRows;
+                if (rows.Count == 2)
+                    FightEvent?.Invoke(rows[0].Index, rows[1].Index);
+                else
+                    ShowMessage("Выберите ровно двух персонажей!");
+            };
+
+            radioButtonEntityRepository.CheckedChanged += (s, e) =>
+            {
+                if (radioButtonEntityRepository.Checked)
+                    ChangeRepositoryEvent?.Invoke(false); // false = Entity
+            };
+
+            radioButtonDapperRepository.CheckedChanged += (s, e) =>
+            {
+                if (radioButtonDapperRepository.Checked)
+                    ChangeRepositoryEvent?.Invoke(true); // true = Dapper
+            };
+        }
 
         /// <summary>
         /// Объявление шаблона таблицы, наполняет фильтры
@@ -103,9 +125,9 @@ namespace WinFormsApp
                 school = Displays.MagicNames[m.School];
             }
 
-            dataGridViewCharacters.Rows.Add(
-                index, type, name, hp, str, stamina, mana, weapon, school, desc
-            );
+            int rowIndex = dataGridViewCharacters.Rows.Add(index, type, name, hp, str, stamina, mana, weapon, school, desc);
+
+            dataGridViewCharacters.Rows[rowIndex].Tag = c;
         }
 
         public void Redraw(List<Character> units)
@@ -114,19 +136,6 @@ namespace WinFormsApp
             for (int i = 0; i < units.Count; i++)
             {
                 AddCharacterRow(i, units[i]);
-            }
-        }
-        /// <summary>
-        /// Заполнение таблица текущими юнитами и обновление таблицы
-        /// </summary>
-        private void RefreshGrid()
-        {
-            dataGridViewCharacters.Rows.Clear();
-            var list = facade.GetUnits(); // берем список из логики
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                AddCharacterRow(i, list[i]);
             }
         }
 
@@ -143,13 +152,7 @@ namespace WinFormsApp
             }
 
             // вычисляем индекс выбранной строки и сопоставляем с логикой
-            int rowIndex = dataGridViewCharacters.CurrentRow.Index;
-            var list = facade.GetUnits();
-            if (rowIndex >= 0 && rowIndex < list.Count)
-                return list[rowIndex];
-
-            MessageBox.Show("Неверный выбор.");
-            return null;
+            return dataGridViewCharacters.CurrentRow.Tag as Character;
         }
 
         /// <summary>
@@ -161,20 +164,7 @@ namespace WinFormsApp
         /// <param name="e">Аргументы события</param>
         private void buttonAddHero_Click(object sender, EventArgs e)
         {
-            using (AddHeroForm form = new AddHeroForm())
-            {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    Character hero = form.CreatedHero;
-                    // используем методы логики (не внутренний список формы)
-                    if (hero is Fighter f)
-                        facade.AddFighter(f.Name, f.Description, f.HP, f.Strength, f.Stamina, f.Weapon);
-                    else if (hero is Mage m)
-                        facade.AddMage(m.Name, m.Description, m.HP, m.Strength, m.Mana, m.School);
-
-                    RefreshGrid();
-                }
-            }
+            AddDataEvent?.Invoke();
         }
 
         /// <summary>
@@ -185,12 +175,7 @@ namespace WinFormsApp
         /// <param name="e">Аргументы события</param>
         private void buttonDeleteHero_Click(object sender, EventArgs e)
         {
-            Character selected = GetSelectedCharacter();
-            if (selected == null) return;
-
-            facade.DeleteUnit(selected);
-            RefreshGrid();
-            MessageBox.Show("Персонаж удалён!");
+            DeleteDataEvent?.Invoke();
         }
 
         /// <summary>
@@ -201,125 +186,7 @@ namespace WinFormsApp
         /// <param name="e">Аргументы события</param>
         private void buttonEditHero_Click(object sender, EventArgs e)
         {
-            Character selected = GetSelectedCharacter();
-            if (selected == null) return;
-
-            using (AddHeroForm form = new AddHeroForm(selected))
-            {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    var newValues = form.CreatedHero;
-
-                    if (selected is Fighter oldF && newValues is Fighter newF)
-                    {
-                        facade.ChangeFighter(oldF, newF.Name, newF.Description, newF.HP, newF.Strength, newF.Stamina, newF.Weapon);
-                    }
-                    else if (selected is Mage oldM && newValues is Mage newM)
-                    {
-                        facade.ChangeMage(oldM, newM.Name, newM.Description, newM.HP, newM.Strength, newM.Mana, newM.School);
-                    }
-                    else
-                    {
-                        // тип изменён: удаляем старый и добавляем новый через логику
-                        facade.DeleteUnit(selected);
-                        if (newValues is Fighter nf)
-                            facade.AddFighter(nf.Name, nf.Description, nf.HP, nf.Strength, nf.Stamina, nf.Weapon);
-                        else if (newValues is Mage nm)
-                            facade.AddMage(nm.Name, nm.Description, nm.HP, nm.Strength, nm.Mana, nm.School);
-                    }
-
-                    RefreshGrid();
-                    MessageBox.Show("Персонаж обновлён.");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Отображает в таблице только воинов с выбранным типом оружия
-        /// </summary>
-        /// <param name="sender">Ссылка на объект</param>
-        /// <param name="e">Аргументы события</param>
-        private void buttonFilterFighters_Click(object sender, EventArgs e)
-        {
-            if (comboBoxFilterWeapon.SelectedItem == null) return;
-
-            var selectedWeapon = Displays.WeaponsNames.FirstOrDefault(
-                kv => kv.Value == comboBoxFilterWeapon.SelectedItem.ToString()
-            ).Key;
-
-            var filtered =  facade.ChooseMarked(selectedWeapon);
-            if (!filtered.Any())
-            {
-                MessageBox.Show("Нет воинов с выбранным оружием!");
-                return;
-            }
-
-            // показываем результат (заменим RefreshGrid -> временно показываем отфильтрованное)
-            dataGridViewCharacters.Rows.Clear();
-            for (int i = 0; i < filtered.Count; i++)
-            {
-                AddCharacterRow(i, filtered[i]);
-            }
-        }
-
-        /// <summary>
-        /// Отображает в таблице только магов с выбранной школой магии
-        /// </summary>
-        /// <param name="sender">Ссылка на объект</param>
-        /// <param name="e">Аргументы события</param>
-        private void buttonFilterMages_Click(object sender, EventArgs e)
-        {
-            if (comboBoxFilterSchool.SelectedItem == null) return;
-
-            var selectedSchool = Displays.MagicNames.FirstOrDefault(
-                kv => kv.Value == comboBoxFilterSchool.SelectedItem.ToString()
-            ).Key;
-
-            var filtered = facade.ChooseMarked(selectedSchool);
-            if (!filtered.Any())
-            {
-                MessageBox.Show("Нет магов с выбранной школой!");
-                return;
-            }
-
-            dataGridViewCharacters.Rows.Clear();
-            for (int i = 0; i < filtered.Count; i++)
-            {
-                AddCharacterRow(i, filtered[i]);
-            }
-        }
-        
-        /// <summary>
-        /// Обрабатывает событие нажатия кнопки "Поединок", имитируя бой между двумя выбранными персонажами
-        /// </summary>
-        /// <param name="sender">Ссылка на объект</param>
-        /// <param name="e">Аргументы события</param>
-        private void buttonSort_Click(object sender, EventArgs e)
-        {
-            var selRows = dataGridViewCharacters.SelectedRows;
-            if (selRows.Count != 2)
-            {
-                MessageBox.Show("Выберите ровно двух персонажей (держите Ctrl и кликните по строкам).");
-                return;
-            }
-
-            // Получаем индексы строк
-            int idx1 = selRows[0].Index;
-            int idx2 = selRows[1].Index;
-
-            var list = facade.GetUnits();
-            if (idx1 < 0 || idx1 >= list.Count || idx2 < 0 || idx2 >= list.Count)
-            {
-                MessageBox.Show("Ошибка выбора персонажей.");
-                return;
-            }
-
-            var ch1 = list[idx1];
-            var ch2 = list[idx2];
-
-            string result = facade.Fight(ch1, ch2);
-            RefreshGrid();
-            MessageBox.Show(result, "Результат поединка");
+            EditDataEvent?.Invoke();
         }
 
         /// <summary>
@@ -329,38 +196,10 @@ namespace WinFormsApp
         /// <param name="e">Аргументы события</param>
         private void buttonShowAll_Click(object sender, EventArgs e)
         {
-            RefreshGrid();
+            LoadDataEvent?.Invoke();
         }
 
-        /// <summary>
-        /// Обрабатывает изменение состояния радиокнопки выбора репозитория Entity
-        /// </summary>
-        /// <param name="sender">Ссылка на объект</param>
-        /// <param name="e">Аргументы события</param>
-        private void radioButtonEntityRepository_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButtonEntityRepository.Checked)
-            {
-                ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
-                facade = ninjectKernel.Get<IFacade>();
-                RefreshGrid();
-            }
-        }
-
-        /// <summary>
-        /// Обрабатывает изменение состояния радиокнопки выбора репозитория Dapper
-        /// </summary>
-        /// <param name="sender">Ссылка на объект</param>
-        /// <param name="e">Аргументы события</param>
-        private void radioButtonDapperRepository_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButtonDapperRepository.Checked)
-            {
-                ninjectKernel = new StandardKernel(new SimpleConfigModule(true));
-                facade = ninjectKernel.Get<IFacade>();
-                RefreshGrid();
-            }
-        }
+        
         public void ShowMessage(string text)
         {
             MessageBox.Show(text, "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);

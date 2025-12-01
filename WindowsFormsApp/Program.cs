@@ -1,3 +1,7 @@
+using BusinessLogic;
+using Ninject;
+using Presenter;
+using Shared;
 using System;
 using System.Windows.Forms;
 
@@ -15,7 +19,17 @@ namespace WinFormsApp
             // see https://aka.ms/applicationconfiguration.
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            var kernel = new StandardKernel(new SimpleConfigModule(false));
+            var model = kernel.Get<IModel>();
+
+
+            var mainView = new MainForm();
+            var addHeroView = new AddHeroForm();
+
+            var presenter = new MainPresenter(mainView, model, addHeroView);
+
+            Application.Run(mainView);
         }
     }
 }
