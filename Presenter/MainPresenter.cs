@@ -3,7 +3,7 @@ using Models;
 using Shared;
 using System;
 using System.Linq;
-using System.Windows.Forms;
+
 
 namespace Presenter
 {
@@ -52,7 +52,7 @@ namespace Presenter
 
         private void OnAdd()
         {
-            
+
             if (addHeroView.ShowDialog() == Shared.DialogResult.OK)
             {
                 Character c = addHeroView.CreatedHero;
