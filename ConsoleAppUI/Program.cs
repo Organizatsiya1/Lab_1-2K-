@@ -2,482 +2,30 @@
 using BusinessLogicModels;
 using Models;
 using Ninject;
+using Shared;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleApp
 {
-    internal class Program
+    internal class Program : IView
     {
-        static IFacade facade;
-        static IKernel ninjectKernel;
+        // Реализация событий интерфейса
+        public event Action AddDataEvent;
+        public event Action DeleteDataEvent;
+        public event Action EditDataEvent;
+        public event Action LoadDataEvent;
+        public event Action<string> FilterFightersEvent;
+        public event Action<string> FilterMagesEvent;
+        public event Action<int, int> FightEvent;
+        public event Action<bool> ChangeRepositoryEvent;
 
-        /// <summary>
-        /// Точка входа в консольное приложение с запуском консольного меню
-        /// </summary>
-        static void Main()
-        {
-            facade = SelectRepository();
+        private List<Character> _currentCharacters = new List<Character>();
+        private int _selectedIndex = -1;
 
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("Гильдия искателей приключений");
-                Console.WriteLine("Добро пожаловать!");
-                Console.WriteLine("\nВыберите действие:");
-                Console.WriteLine("1. Создать персонажа");
-                Console.WriteLine("2. Удалить персонажа");
-                Console.WriteLine("3. Показать всех персонажей");
-                Console.WriteLine("4. Изменить персонажа");
-                Console.WriteLine("5. Дополнительные функции");
-                Console.WriteLine("6. Сменить репозиторий");
-                Console.WriteLine("0. Выход");
-                Console.Write("\nВыбор: ");
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "1":
-                        CreateCharacter();
-                        break;
-                    case "2":
-                        DeleteCharacter();
-                        break;
-                    case "3":
-                        ShowAll();
-                        break;
-                    case "4":
-                        EditCharacter();
-                        break;
-                    case "5":
-                        ExtraFunctions();
-                        break;
-                    case "6":
-                        facade = SelectRepository();
-                        break;
-                    case "0":
-                        return;
-                    default:
-                        Console.WriteLine("Неверный ввод, попробуйте снова");
-                        break;
-                }
-
-                Console.WriteLine("\nНажмите любую клавишу...");
-                Console.ReadKey();
-            }
-        }
-
-        /// <summary>
-        /// Выполняет выбор репозитория для логики приложения
-        /// </summary>
-        /// <returns>Возвращает объект логики, в зависимости от выбранного репозитория: false — Entity, true — Dapper</returns>
-        static IFacade SelectRepository()
-        {
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("Выберите репозиторий для работы приложения:");
-                Console.WriteLine("1 - Entity");
-                Console.WriteLine("2 - Dapper");
-                Console.Write("Ваш выбор: ");
-
-                string input = Console.ReadLine()?.Trim();
-                switch (input)
-                {
-                    case "1":
-                        ninjectKernel = new StandardKernel(new SimpleConfigModule(false));
-                        return ninjectKernel.Get<IFacade>();
-                    case "2":
-                        ninjectKernel = new StandardKernel(new SimpleConfigModule(true));
-                        return ninjectKernel.Get<IFacade>();
-
-                    default:
-                        Console.WriteLine("Некорректный ввод. Попробуйте снова...");
-                        Console.WriteLine("Нажмите любую клавишу...");
-                        Console.ReadKey();
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Создает персонажа через консольный ввод и добавляет его в логику
-        /// </summary>
-        static void CreateCharacter()
-        {
-            Console.Clear();
-            Console.WriteLine("Создание персонажа");
-            Console.WriteLine("Оставьте поле пустым если хотите установить значение по умолчанию");
-
-            string t;
-            while (true)
-            {
-                Console.Write("Тип (1 - Воин, 2 - Маг, 0 - Отмена): ");
-                t = (Console.ReadLine() ?? "").Trim();
-
-                if (t == "0")
-                {
-                    Console.WriteLine("Создание отменено.");
-                    return;
-                }
-
-                if (t == "1" || t == "2")
-                    break;
-
-                Console.WriteLine("Неверный ввод. Введите 1 - Воин, 2 - Маг, 0 - Отмена");
-            }
-
-            Console.Write("Имя: ");
-            string name = Console.ReadLine() ?? "";
-
-            Console.Write("Описание: ");
-            string desc = Console.ReadLine() ?? "";
-
-            int hp = ReadInt("Здоровье", 100);
-            int str = ReadInt("Сила", 10);
-
-            if (t == "1")
-            {
-                int stam = ReadInt("Выносливость", 20);
-                Weapons weapon = ChooseEnum<Weapons>("Тип оружия");
-
-                facade.AddFighter(name, desc, hp, str, stam, weapon);
-                Console.WriteLine("Воин добавлен.");
-            }
-            else if (t == "2")
-            {
-                int mana = ReadInt("Мана", 50);
-                MagicSchools school = ChooseEnum<MagicSchools>("Школа магии");
-
-                facade.AddMage(name, desc, hp, str, mana, school);
-                Console.WriteLine("Маг добавлен.");
-            }
-        }
-
-        /// <summary>
-        /// Удаляет персонажа по индексу, выбранному пользователем из списка
-        /// </summary>
-        static void DeleteCharacter()
-        {
-            Console.Clear();
-            Console.WriteLine("Удаление персонажа");
-
-            var units = facade.GetUnits();
-            if (!units.Any())
-            {
-                Console.WriteLine("Список пуст.");
-                return;
-            }
-
-            ShowShortList();
-            int idx = ReadInt("Введите номер персонажа для удаления:", -1);
-            if (idx >= 0 && idx < units.Count)
-            {
-                facade.DeleteUnit(units[idx]);
-                Console.WriteLine("Персонаж удалён.");
-            }
-            else
-            {
-                Console.WriteLine("Неверный индекс.");
-            }
-        }
-
-        /// <summary>
-        /// Выводит в консоль подробную информацию обо всех персонажах
-        /// </summary>
-        static void ShowAll()
-        {
-            Console.Clear();
-            Console.WriteLine("Список персонажей:");
-
-            var units = facade.GetUnits();
-            if (!units.Any())
-            {
-                Console.WriteLine("Пусто.");
-                return;
-            }
-
-            // Заголовки таблицы
-            // Формат строки с вертикальными разделителями
-            string rowFormat = "| {0,4} | {1,-10} | {2,-15} | {3,7} | {4,6} | {5,12} | {6,6} | {7,-12} | {8,-12} | {9,-30} |";
-            int tableWidth = 150; //общая ширина столбца
-
-            // Верхняя граница
-            Console.WriteLine(new string('-', tableWidth));
-
-            // Заголовок таблицы (ширины подобраны для аккуратного вывода)
-            Console.WriteLine(rowFormat,
-                "№", "Тип", "Имя", "Здоровье", "Сила", "Выносливость", "Мана", "Оружие", "Школа магии", "Описание");
-
-            // Разделитель под заголовком
-            Console.WriteLine(new string('-', tableWidth));
-
-            for (int i = 0; i < units.Count; i++)
-            {
-                var u = units[i];
-                string type = Displays.CharacterTypes[u.GetType()];
-                string name = u.Name;
-                int hp = u.HP;
-                int str = u.Strength;
-
-                // Defaults
-                int stamina = 0;
-                int mana = 0;
-                string weapon = Weapons.None.ToString();
-                string school = "-";
-                string desc = u.Description ?? "";
-
-                if (u is Fighter f)
-                {
-                    stamina = f.Stamina;
-                    weapon = Displays.WeaponsNames[f.Weapon];
-                }
-                else if (u is Mage m)
-                {
-                    mana = m.Mana;
-                    school = Displays.MagicNames[m.School];
-                }
-
-                // Обрезаем описание, чтобы не ломать таблицу
-                if (desc.Length > 30) desc = desc.Substring(0, 27) + "...";
-
-                Console.WriteLine(rowFormat,
-                    i, type, name, hp, str, stamina, mana, weapon, school, desc);
-            }
-
-            // Нижняя граница
-            Console.WriteLine(new string('-', tableWidth));
-        }
-
-        /// <summary>
-        /// Редактирование выбранного персонажа, сохранение текущих значений при пустом вводе
-        /// </summary>
-        static void EditCharacter()
-        {
-            Console.Clear();
-            Console.WriteLine("Изменение персонажа");
-
-            var units = facade.GetUnits();
-            if (!units.Any())
-            {
-                Console.WriteLine("Список пуст.");
-                return;
-            }
-
-            ShowShortList();
-            int idx = ReadInt("Введите номер персонажа для изменения", -1);
-            if (idx < 0 || idx >= units.Count)
-            {
-                Console.WriteLine("Неверный индекс.");
-                return;
-            }
-
-            var selected = units[idx];
-
-            if (selected is Fighter f)
-            {
-                Console.WriteLine("Редактирование воина. Оставьте поле пустым, чтобы сохранить текущее значение.");
-                string name = ReadStringWithDefault("Имя", f.Name);
-                string disc = ReadStringWithDefault("Описание", f.Description);
-                int hp = ReadIntWithDefault("Здоровье", f.HP);
-                int str = ReadIntWithDefault("Сила", f.Strength);
-                int stam = ReadIntWithDefault("Выносливость", f.Stamina);
-
-                var weaponKeys = Displays.WeaponsNames.Keys.ToArray();
-                Console.WriteLine("Оружие:");
-                for (int i = 0; i < weaponKeys.Length; i++)
-                {
-                    var wk = weaponKeys[i];
-                    Console.WriteLine($"{i + 1}. {Displays.WeaponsNames[wk]}");
-                }
-                Console.Write($"Введите номер (1..{weaponKeys.Length}) или нажмите Enter, чтобы оставить текущее [{Displays.WeaponsNames[f.Weapon]}]: ");
-                var wInput = (Console.ReadLine() ?? "").Trim();
-                Weapons weapon = f.Weapon;
-                if (!string.IsNullOrWhiteSpace(wInput) && int.TryParse(wInput, out int wnum) && wnum >= 1 && wnum <= weaponKeys.Length)
-                {
-                    weapon = weaponKeys[wnum - 1];
-                }
-
-                facade.ChangeFighter(f, name, disc, hp, str, stam, weapon);
-                Console.WriteLine("Данные воина обновлены.");
-            }
-            else if (selected is Mage m)
-            {
-                Console.WriteLine("Редактирование мага. Оставьте поле пустым, чтобы сохранить текущее значение.");
-                string name = ReadStringWithDefault("Имя", m.Name);
-                string desc = ReadStringWithDefault("Описание", m.Description);
-                int hp = ReadIntWithDefault("Здоровье", m.HP);
-                int str = ReadIntWithDefault("Сила", m.Strength);
-                int mana = ReadIntWithDefault("Мана", m.Mana);
-
-                var schoolKeys = Displays.MagicNames.Keys.ToArray();
-                Console.WriteLine("Школы магии:");
-                for (int i = 0; i < schoolKeys.Length; i++)
-                {
-                    var sk = schoolKeys[i];
-                    Console.WriteLine($"{i + 1}. {Displays.MagicNames[sk]}");
-                }
-                Console.Write($"Введите номер (1..{schoolKeys.Length}) или нажмите Enter, чтобы оставить текущее [{Displays.MagicNames[m.School]}]: ");
-                var sInput = (Console.ReadLine() ?? "").Trim();
-                MagicSchools school = m.School;
-                if (!string.IsNullOrWhiteSpace(sInput) && int.TryParse(sInput, out int snum) && snum >= 1 && snum <= schoolKeys.Length)
-                {
-                    school = schoolKeys[snum - 1];
-                }
-
-                facade.ChangeMage(m, name, desc, hp, str, mana, school);
-                Console.WriteLine("Данные мага обновлены.");
-            }
-            else
-            {
-                Console.WriteLine("Неизвестный тип персонажа.");
-            }
-        }
-
-        /// <summary>
-        /// Меню дополнительных бизнес функций (выстраивание отряда, фильтры по оружию/школе)
-        /// </summary>
-        static void ExtraFunctions()
-        {
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("Дополнительные функции:");
-                Console.WriteLine("1. Устроить поединок");
-                Console.WriteLine("2. Показать владельцев выбранного оружия");
-                Console.WriteLine("3. Показать магов выбранной школы");
-                Console.WriteLine("0. Назад");
-                Console.Write("Выбор: ");
-                var c = Console.ReadLine();
-
-                if (c == "1")
-                {
-                    bool trigg1 = false;
-                    bool trigg2 = false;
-                    int picked = 0;
-                    Character ch1 = null;
-                    Character ch2 = null;
-
-                    while (trigg1 == false) 
-                    {
-                        Console.Clear();
-                        var units = facade.GetUnits();
-                        if (!units.Any())
-                        {
-                            Console.WriteLine("Нет доступных персонажей для поединка.");
-                            Console.WriteLine("\nНажмите любую клавишу...");
-                            Console.ReadKey();
-                            return;
-                        }
-
-                        Console.WriteLine("Выберите номер бойца:");
-                        for (int i = 0; i < units.Count; i++)
-                        {
-                            var u = units[i];
-                            string type = Displays.CharacterTypes[u.GetType()];
-
-                            Console.WriteLine($"{i + 1,2}. {type,-6} | {u.Name,-15} | Здоровье:{u.HP,3} | Сила:{u.Strength,2}");
-                        }
-
-                        Console.Write("\nВаш выбор: ");
-                        int.TryParse(Console.ReadLine(), out int pos1);
-                        pos1--;
-                        picked = pos1;
-
-                        if (pos1>=0 && pos1 < facade.GetUnits().Count)
-                        {
-                            trigg1 = true;
-                            ch1 = facade.GetUnits()[pos1];
-                            Console.WriteLine($"\nВыбран: {Displays.CharacterTypes[ch1.GetType()]} - {ch1.Name}");
-                            Console.WriteLine("\nНажмите любую клавишу, чтобы перейти к выбору соперника...");
-                            Console.ReadKey();
-                        }
-                        else
-                        {
-                            Console.WriteLine("\nВыбран несуществующий персонаж.");
-                            Console.WriteLine("\nНажмите любую клавишу, чтобы попробовать снова...");
-                            Console.ReadKey();
-                        }
-                    }
-                    while(trigg2 == false)
-                    {
-                        Console.Clear();
-                        var units = facade.GetUnits();
-                        Console.WriteLine("Выберите номер соперника:");
-                        for (int i = 0; i < units.Count; i++)
-                        {
-                            var u = units[i];
-                            string type = Displays.CharacterTypes[u.GetType()];
-
-                            string mark = (i == picked) ? "  <- (УЖЕ ВЫБРАН)" : "";
-                            Console.WriteLine($"{i + 1,2}. {type,-6} | {u.Name,-15} | Здоровье:{u.HP,3} | Сила:{u.Strength,2} | {mark}");
-                        }
-
-                        Console.Write("\nВаш выбор: ");
-                        int.TryParse(Console.ReadLine(), out int pos2);
-                        pos2--;
-
-                        if (pos2 >= 0 && pos2 < facade.GetUnits().Count && pos2!=picked)
-                        {
-                            trigg2 = true;
-                            ch2 = facade.GetUnits()[pos2];
-
-                            Console.WriteLine($"\nВыбран соперник: {Displays.CharacterTypes[ch2.GetType()]} - {ch2.Name}");
-                            Console.WriteLine("\nНажмите любую клавишу, чтобы начать поединок...");
-                            Console.ReadKey();
-                        }
-                        else
-                        {
-                            Console.WriteLine("\nВыбран несуществующий персонаж, или поединок хотят провести самим с собой");
-                            Console.WriteLine("\nНажмите любую клавишу, чтобы попробовать снова...");
-                            Console.ReadKey();
-                        }
-                    }
-
-                    Console.Clear();
-                    Console.WriteLine(facade.Fight(ch1, ch2));
-                    Console.ReadKey();
-                }
-                else if (c == "2")
-                {
-                    Weapons weapon = ChooseEnum<Weapons>("Выберите оружие");
-                    var res = facade.ChooseMarked(weapon);
-                    if (!res.Any()) Console.WriteLine("Нет воинов с выбранным оружием.");
-                    else
-                    {
-                        Console.WriteLine("Найденные персонажи:");
-                        foreach (var u in res) Console.WriteLine($"{Displays.CharacterTypes[u.GetType()]}: {u.Name}");
-                    }
-                }
-                else if (c == "3")
-                {
-                    MagicSchools school = ChooseEnum<MagicSchools>("Выберите школу");
-                    var res = facade.ChooseMarked(school);
-                    if (!res.Any()) Console.WriteLine("Нет магов с выбранной школой.");
-                    else
-                    {
-                        Console.WriteLine("Найденные персонажи:");
-                        foreach (var u in res) Console.WriteLine($"{Displays.CharacterTypes[u.GetType()]}: {u.Name}");
-                    }
-                }
-                else if (c == "0") return;
-                else Console.WriteLine("Неверный ввод.");
-
-                Console.WriteLine("\nНажмите любую клавишу...");
-                Console.ReadKey();
-            }
-        }
-
-        #region вспомогательные методы ввода
-
-        /// <summary>
-        /// Показывает список значений enum и позволяет выбрать по номеру
-        /// </summary>
-        /// <typeparam name="T">Тип перечисления</typeparam>
-        /// <param name="title">Заголовок выбора</param>
-        /// <returns>Выбранное значение перечисления</returns>
-        static T ChooseEnum<T>(string title) where T : Enum
+        // Ваши вспомогательные методы (добавляем их сюда)
+        private T ChooseEnum<T>(string title) where T : Enum
         {
             var values = Enum.GetValues(typeof(T));
             Console.WriteLine($"{title}:");
@@ -497,7 +45,6 @@ namespace ConsoleApp
                 Console.WriteLine($"{i + 1}. {display}");
             }
 
-
             while (true)
             {
                 Console.Write($"Введите число (1..{values.Length}): ");
@@ -509,26 +56,50 @@ namespace ConsoleApp
             }
         }
 
-        /// <summary>
-        /// Выводит короткий и удобный список юнитов с индексами (для выбора по индексу в меню)
-        /// </summary>
-        static void ShowShortList()
+        private T ChooseEnumWithDefault<T>(string title, T defaultValue) where T : Enum
         {
-            var units = facade.GetUnits();
-            for (int i = 0; i < units.Count; i++)
+            var values = Enum.GetValues(typeof(T));
+            Console.WriteLine($"{title}:");
+
+            for (int i = 0; i < values.Length; i++)
             {
-                var typeName = Displays.CharacterTypes[units[i].GetType()];
-                Console.WriteLine($"[{i}] {typeName} - {units[i].Name}");
+                var value = (T)values.GetValue(i);
+                string display;
+
+                if (typeof(T) == typeof(Weapons))
+                    display = Displays.WeaponsNames[(Weapons)(object)value];
+                else if (typeof(T) == typeof(MagicSchools))
+                    display = Displays.MagicNames[(MagicSchools)(object)value];
+                else
+                    display = value.ToString();
+
+                string defaultMark = value.Equals(defaultValue) ? " [текущее]" : "";
+                Console.WriteLine($"{i + 1}. {display}{defaultMark}");
+            }
+
+            Console.Write($"Введите число (1..{values.Length}) или Enter для текущего: ");
+            var input = (Console.ReadLine() ?? "").Trim();
+
+            if (string.IsNullOrEmpty(input))
+                return defaultValue;
+
+            if (int.TryParse(input, out int n) && n >= 1 && n <= values.Length)
+                return (T)values.GetValue(n - 1);
+
+            Console.WriteLine("Некорректный ввод — сохраняется текущее значение.");
+            return defaultValue;
+        }
+
+        private void ShowShortList()
+        {
+            for (int i = 0; i < _currentCharacters.Count; i++)
+            {
+                var typeName = Displays.CharacterTypes[_currentCharacters[i].GetType()];
+                Console.WriteLine($"[{i}] {typeName} - {_currentCharacters[i].Name}");
             }
         }
 
-        /// <summary>
-        /// Считывает целое число из консоли
-        /// </summary>
-        /// <param name="prompt">Текст подсказки для пользователя</param>
-        /// <param name="defaultValue">Значение по умолчанию, возвращаемое при некорректном вводе</param>
-        /// <returns>Введённое целое число либо значение по умолчанию</returns>
-        static int ReadInt(string prompt, int defaultValue)
+        private int ReadInt(string prompt, int defaultValue)
         {
             Console.Write($"{prompt} (число) [{defaultValue}]: ");
             var s = Console.ReadLine();
@@ -536,13 +107,7 @@ namespace ConsoleApp
             return defaultValue;
         }
 
-        /// <summary>
-        /// Считывает целое число с возможностью оставить пустой ввод для сохранения текущего значения (редактирование персонажа)
-        /// </summary>
-        /// <param name="prompt">Текст подсказки для пользователя</param>
-        /// <param name="current">Текущее значение, которое будет возвращено при пустом или некорректном вводе</param>
-        /// <returns>Новое значение или сохранённое текущее значение при пустом или некорректном вводе</returns>
-        static int ReadIntWithDefault(string prompt, int current)
+        private int ReadIntWithDefault(string prompt, int current)
         {
             Console.Write($"{prompt} [{current}]: ");
             var s = Console.ReadLine();
@@ -552,19 +117,348 @@ namespace ConsoleApp
             return current;
         }
 
-        /// <summary>
-        /// Считывает строку с возможностью оставить пустой ввод для сохранения текущего значения
-        /// </summary>
-        /// <param name="prompt">Текст подсказки для пользователя</param>
-        /// <param name="current">Текущее значение, которое будет возвращено при пустом вводе</param>
-        /// <returns>Введённая строка или текущее значение при пустом вводе</returns>
-        static string ReadStringWithDefault(string prompt, string current)
+        private string ReadStringWithDefault(string prompt, string current)
         {
             Console.Write($"{prompt} [{current}]: ");
             var s = Console.ReadLine();
             return string.IsNullOrWhiteSpace(s) ? current : s;
         }
-    }
 
-    #endregion
+        // Основные методы интерфейса
+        public void Main()
+        {
+            LoadDataEvent?.Invoke();
+
+            while (true)
+            {
+                ShowMainMenu();
+                var choice = Console.ReadLine();
+                HandleMenuChoice(choice);
+            }
+        }
+
+        private void ShowMainMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ГИЛЬДИЯ ИСКАТЕЛЕЙ ПРИКЛЮЧЕНИЙ ===");
+            Console.WriteLine($"Всего персонажей: {_currentCharacters.Count}");
+            Console.WriteLine($"Выбран: {(_selectedIndex >= 0 ? _currentCharacters[_selectedIndex].Name : "нет")}");
+            Console.WriteLine();
+            Console.WriteLine("1. Показать всех персонажей");
+            Console.WriteLine("2. Добавить персонажа");
+            Console.WriteLine("3. Редактировать выбранного");
+            Console.WriteLine("4. Удалить выбранного");
+            Console.WriteLine("5. Выбрать персонажа");
+            Console.WriteLine("6. Дополнительные функции");
+            Console.WriteLine("7. Сменить репозиторий");
+            Console.WriteLine("0. Выход");
+            Console.Write("\nВыбор: ");
+        }
+
+        private void HandleMenuChoice(string choice)
+        {
+            switch (choice)
+            {
+                case "1":
+                    LoadDataEvent?.Invoke();
+                    WaitForContinue();
+                    break;
+                case "2":
+                    AddDataEvent?.Invoke();
+                    break;
+                case "3":
+                    if (_selectedIndex >= 0)
+                        EditDataEvent?.Invoke();
+                    else
+                        ShowError("Сначала выберите персонажа!");
+                    break;
+                case "4":
+                    if (_selectedIndex >= 0)
+                        DeleteDataEvent?.Invoke();
+                    else
+                        ShowError("Сначала выберите персонажа!");
+                    break;
+                case "5":
+                    SelectCharacter();
+                    break;
+                case "6":
+                    ShowExtraFunctionsMenu();
+                    break;
+                case "7":
+                    ShowRepositorySelection();
+                    break;
+                case "0":
+                    Environment.Exit(0);
+                    break;
+                default:
+                    ShowError("Неверный ввод");
+                    WaitForContinue();
+                    break;
+            }
+        }
+
+        public void Redraw(List<Character> units)
+        {
+            _currentCharacters = units ?? new List<Character>();
+
+            Console.Clear();
+            Console.WriteLine("=== СПИСОК ПЕРСОНАЖЕЙ ===");
+
+            if (!_currentCharacters.Any())
+            {
+                Console.WriteLine("Список пуст.");
+                return;
+            }
+
+            string rowFormat = "| {0,4} | {1,-10} | {2,-15} | {3,7} | {4,6} | {5,12} | {6,6} | {7,-12} | {8,-12} | {9,-30} |";
+            int tableWidth = 150;
+
+            Console.WriteLine(new string('-', tableWidth));
+            Console.WriteLine(rowFormat,
+                "№", "Тип", "Имя", "Здоровье", "Сила", "Выносливость", "Мана", "Оружие", "Школа магии", "Описание");
+            Console.WriteLine(new string('-', tableWidth));
+
+            for (int i = 0; i < _currentCharacters.Count; i++)
+            {
+                var u = _currentCharacters[i];
+                string type = Displays.CharacterTypes[u.GetType()];
+                string name = u.Name;
+                int hp = u.HP;
+                int str = u.Strength;
+
+                int stamina = 0;
+                int mana = 0;
+                string weapon = Weapons.None.ToString();
+                string school = "-";
+                string desc = u.Description ?? "";
+
+                if (u is Fighter f)
+                {
+                    stamina = f.Stamina;
+                    weapon = Displays.WeaponsNames[f.Weapon];
+                }
+                else if (u is Mage m)
+                {
+                    mana = m.Mana;
+                    school = Displays.MagicNames[m.School];
+                }
+
+                if (desc.Length > 30) desc = desc.Substring(0, 27) + "...";
+
+                string selected = (i == _selectedIndex) ? "→" : " ";
+                Console.WriteLine(rowFormat,
+                    $"{selected}{i}", type, name, hp, str, stamina, mana, weapon, school, desc);
+            }
+
+            Console.WriteLine(new string('-', tableWidth));
+        }
+
+        public Character GetSelectedCharacter()
+        {
+            if (_selectedIndex >= 0 && _selectedIndex < _currentCharacters.Count)
+            {
+                return _currentCharacters[_selectedIndex];
+            }
+            return null;
+        }
+
+        public void ShowMessage(string text)
+        {
+            Console.WriteLine($"\n✓ {text}");
+            WaitForContinue();
+        }
+
+        public void ShowError(string text)
+        {
+            Console.WriteLine($"\n✗ ОШИБКА: {text}");
+            WaitForContinue();
+        }
+
+        private void SelectCharacter()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ВЫБОР ПЕРСОНАЖА ===");
+
+            if (!_currentCharacters.Any())
+            {
+                ShowError("Нет персонажей для выбора");
+                return;
+            }
+
+            ShowShortList();
+
+            Console.Write("\nВведите номер: ");
+            if (int.TryParse(Console.ReadLine(), out int index) && index >= 0 && index < _currentCharacters.Count)
+            {
+                _selectedIndex = index;
+                ShowMessage($"Выбран персонаж: {_currentCharacters[index].Name}");
+            }
+            else
+            {
+                ShowError("Неверный номер");
+            }
+        }
+
+        private void ShowExtraFunctionsMenu()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("=== ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ ===");
+                Console.WriteLine("1. Поединок персонажей");
+                Console.WriteLine("2. Показать владельцев выбранного оружия");
+                Console.WriteLine("3. Показать магов выбранной школы");
+                Console.WriteLine("0. Назад");
+                Console.Write("\nВыбор: ");
+
+                var choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        ShowFightSelection();
+                        break;
+                    case "2":
+                        ShowWeaponFilter();
+                        break;
+                    case "3":
+                        ShowSchoolFilter();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        ShowError("Неверный ввод");
+                        break;
+                }
+            }
+        }
+
+        private void ShowFightSelection()
+        {
+            if (_currentCharacters.Count < 2)
+            {
+                ShowMessage("Для поединка нужно минимум 2 персонажа.");
+                return;
+            }
+
+            bool trigg1 = false;
+            bool trigg2 = false;
+            int picked = 0;
+            int pos2 = 0; // Объявляем здесь!
+            Character ch1 = null;
+            Character ch2 = null;
+
+            while (trigg1 == false)
+            {
+                Console.Clear();
+                Console.WriteLine("Выберите номер бойца:");
+                for (int i = 0; i < _currentCharacters.Count; i++)
+                {
+                    var u = _currentCharacters[i];
+                    string type = Displays.CharacterTypes[u.GetType()];
+
+                    Console.WriteLine($"{i + 1,2}. {type,-6} | {u.Name,-15} | Здоровье:{u.HP,3} | Сила:{u.Strength,2}");
+                }
+
+                Console.Write("\nВаш выбор: ");
+                int.TryParse(Console.ReadLine(), out int pos1);
+                pos1--;
+                picked = pos1;
+
+                if (pos1 >= 0 && pos1 < _currentCharacters.Count)
+                {
+                    trigg1 = true;
+                    ch1 = _currentCharacters[pos1];
+                    Console.WriteLine($"\nВыбран: {Displays.CharacterTypes[ch1.GetType()]} - {ch1.Name}");
+                    Console.WriteLine("\nНажмите любую клавишу, чтобы перейти к выбору соперника...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("\nВыбран несуществующий персонаж.");
+                    Console.WriteLine("\nНажмите любую клавишу, чтобы попробовать снова...");
+                    Console.ReadKey();
+                }
+            }
+
+            while (trigg2 == false)
+            {
+                Console.Clear();
+                Console.WriteLine("Выберите номер соперника:");
+                for (int i = 0; i < _currentCharacters.Count; i++)
+                {
+                    var u = _currentCharacters[i];
+                    string type = Displays.CharacterTypes[u.GetType()];
+
+                    string mark = (i == picked) ? "  <- (УЖЕ ВЫБРАН)" : "";
+                    Console.WriteLine($"{i + 1,2}. {type,-6} | {u.Name,-15} | Здоровье:{u.HP,3} | Сила:{u.Strength,2} | {mark}");
+                }
+
+                Console.Write("\nВаш выбор: ");
+                int.TryParse(Console.ReadLine(), out pos2); // Используем уже объявленную переменную
+                pos2--;
+
+                if (pos2 >= 0 && pos2 < _currentCharacters.Count && pos2 != picked)
+                {
+                    trigg2 = true;
+                    ch2 = _currentCharacters[pos2];
+
+                    Console.WriteLine($"\nВыбран соперник: {Displays.CharacterTypes[ch2.GetType()]} - {ch2.Name}");
+                    Console.WriteLine("\nНажмите любую клавишу, чтобы начать поединок...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("\nВыбран несуществующий персонаж, или поединок хотят провести самим с собой");
+                    Console.WriteLine("\nНажмите любую клавишу, чтобы попробовать снова...");
+                    Console.ReadKey();
+                }
+            }
+
+            Console.Clear();
+            FightEvent?.Invoke(picked, pos2); // Теперь pos2 доступна!
+            Console.ReadKey();
+        }
+
+        private void ShowWeaponFilter()
+        {
+            Weapons weapon = ChooseEnum<Weapons>("Выберите оружие");
+            FilterFightersEvent?.Invoke(Displays.WeaponsNames[weapon]);
+        }
+
+        private void ShowSchoolFilter()
+        {
+            MagicSchools school = ChooseEnum<MagicSchools>("Выберите школу");
+            FilterMagesEvent?.Invoke(Displays.MagicNames[school]);
+        }
+
+        private void ShowRepositorySelection()
+        {
+            Console.Clear();
+            Console.WriteLine("Выберите репозиторий для работы приложения:");
+            Console.WriteLine("1 - Entity");
+            Console.WriteLine("2 - Dapper");
+            Console.Write("Ваш выбор: ");
+
+            string input = Console.ReadLine()?.Trim();
+            bool useDapper = input == "2";
+            ChangeRepositoryEvent?.Invoke(useDapper);
+
+            if (input == "1" || input == "2")
+            {
+                ShowMessage($"Репозиторий изменен на: {(useDapper ? "Dapper" : "Entity")}");
+            }
+            else
+            {
+                ShowError("Некорректный ввод");
+            }
+        }
+
+        private void WaitForContinue()
+        {
+            Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+            Console.ReadKey();
+        }
+
+    }
 }

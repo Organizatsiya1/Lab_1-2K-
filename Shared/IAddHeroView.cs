@@ -24,6 +24,8 @@ namespace Shared
         Character CreatedHero { get; }
         void LoadCharacter(Character c);
         void SetCreateMode();
+
+        // Изменено: теперь используется Shared.DialogResult вместо System.Windows.Forms.DialogResult
         DialogResult ShowDialog();
         void Show();
         void Close();

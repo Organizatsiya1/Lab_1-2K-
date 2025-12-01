@@ -11,7 +11,27 @@ namespace WinFormsApp
         public event Action SaveEvent;
         public event Action CancelEvent;
         public event Action TypeChangedEvent;
+        public Shared.DialogResult ShowDialog() 
+        {
+            var winFormsResult = base.ShowDialog();
 
+            if (winFormsResult == System.Windows.Forms.DialogResult.OK)
+                return Shared.DialogResult.OK;
+            else if (winFormsResult == System.Windows.Forms.DialogResult.Cancel)
+                return Shared.DialogResult.Cancel;
+            else if (winFormsResult == System.Windows.Forms.DialogResult.Yes)
+                return Shared.DialogResult.Yes;
+            else if (winFormsResult == System.Windows.Forms.DialogResult.No)
+                return Shared.DialogResult.No;
+            else if (winFormsResult == System.Windows.Forms.DialogResult.Abort)
+                return Shared.DialogResult.Abort;
+            else if (winFormsResult == System.Windows.Forms.DialogResult.Retry)
+                return Shared.DialogResult.Retry;
+            else if (winFormsResult == System.Windows.Forms.DialogResult.Ignore)
+                return Shared.DialogResult.Ignore;
+            else
+                return Shared.DialogResult.None;
+        }
         public string HeroName { get => textBoxName.Text; set => textBoxName.Text = value; }
         public string HeroDescription { get => textBoxDesc.Text; set => textBoxDesc.Text = value; }
         public int HeroHP { get => (int)numericHP.Value; set => numericHP.Value = value; }
@@ -55,7 +75,7 @@ namespace WinFormsApp
         public new object DialogResult
         {
             get => base.DialogResult;
-            set => base.DialogResult = (DialogResult)value;
+            set => base.DialogResult = (System.Windows.Forms.DialogResult)value;
         }
 
         /// <summary>
@@ -235,6 +255,7 @@ namespace WinFormsApp
 
                 int stamina = (int)numericStamina.Value;
                 CreatedHero = new Fighter(name, desc, hp, str, stamina, weapon);
+
             }
             else // Маг
             {
@@ -261,6 +282,7 @@ namespace WinFormsApp
             SaveEvent?.Invoke();
 
             DialogResult = System.Windows.Forms.DialogResult.OK;
+            
             Close();
         }
 
@@ -275,6 +297,7 @@ namespace WinFormsApp
 
             DialogResult = System.Windows.Forms.DialogResult.Cancel;
             Close();
+            
         }
     }
 }

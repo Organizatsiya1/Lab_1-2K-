@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DialogResult.cs" />
     <Compile Include="IAddHeroView.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="IView.cs" />

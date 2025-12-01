@@ -52,7 +52,8 @@ namespace Presenter
 
         private void OnAdd()
         {
-            if (addHeroView.ShowDialog() == DialogResult.OK)
+            
+            if (addHeroView.ShowDialog() == Shared.DialogResult.OK)
             {
                 Character c = addHeroView.CreatedHero;
 
@@ -82,7 +83,7 @@ namespace Presenter
 
             addHeroView.LoadCharacter(selected);
 
-            if (addHeroView.ShowDialog() == DialogResult.OK)
+            if (addHeroView.ShowDialog() == Shared.DialogResult.OK)
             {
                 Character updated = addHeroView.CreatedHero;
 
