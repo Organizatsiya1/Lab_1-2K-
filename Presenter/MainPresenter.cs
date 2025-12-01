@@ -35,7 +35,8 @@ namespace Presenter
             try
             {
                 addHeroView.SetCreateMode();
-                if (addHeroView.ShowDialog())
+                var result = addHeroView.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     view.ShowMessage("Персонаж успешно добавлен!");
                 }

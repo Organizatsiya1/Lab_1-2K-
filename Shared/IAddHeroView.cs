@@ -1,5 +1,6 @@
 ﻿using Models;
 using System;
+using System.Windows.Forms;
 
 namespace Shared
 {
@@ -20,8 +21,9 @@ namespace Shared
         Weapons SelectedWeapon { get; }
         MagicSchools SelectedSchool { get; }
 
+        void SetCreateMode();
+        DialogResult ShowDialog();
         void Show();
         void Close();
-        object DialogResult { get; set; }
     }
 }

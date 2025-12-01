@@ -365,5 +365,10 @@ namespace WinFormsApp
         {
             MessageBox.Show(text, "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        public void ShowError(string text)
+        {
+            MessageBox.Show(text, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

@@ -111,6 +111,12 @@ namespace WinFormsApp
             comboBoxSchool.SelectedIndex = 0;
             CreatedHero = null;
         }
+
+        public void SetCreateMode()
+        {
+            ClearForm();
+        }
+
         /// <summary>
         /// Конструктор для редактирования существующего персонажа: заполняет
         /// поля формы значениями из переданного объекта
@@ -249,7 +255,7 @@ namespace WinFormsApp
 
             SaveEvent?.Invoke();
 
-            DialogResult = DialogResult.OK;
+            DialogResult = System.Windows.Forms.DialogResult.OK;
             Close();
         }
 
@@ -262,7 +268,7 @@ namespace WinFormsApp
         {
             CancelEvent?.Invoke();
 
-            DialogResult = DialogResult.Cancel;
+            DialogResult = System.Windows.Forms.DialogResult.Cancel;
             Close();
         }
     }

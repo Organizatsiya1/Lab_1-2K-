@@ -15,6 +15,7 @@ namespace Shared
         void Redraw(List<Character> units);
         Character GetSelectedCharacter();
         void ShowMessage(string text);
+        void ShowError(string text);
 
     }
 }
