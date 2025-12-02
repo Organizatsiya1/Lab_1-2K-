@@ -135,7 +135,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BusinessLogicModels\BusinessLogic.csproj">
+    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
       <Project>{8A300169-A46D-455C-990F-96B88DA0CAED}</Project>
       <Name>BusinessLogic</Name>
     </ProjectReference>
