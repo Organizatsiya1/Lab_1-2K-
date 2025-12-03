@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAddHeroView.cs" />
+    <Compile Include="IAddHeroForm.cs" />
     <Compile Include="IConsoleView.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="IView.cs" />

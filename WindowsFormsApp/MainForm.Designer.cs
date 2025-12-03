@@ -36,7 +36,7 @@ namespace WinFormsApp
             this.labelMage = new System.Windows.Forms.Label();
             this.labelFighter = new System.Windows.Forms.Label();
             this.buttonShowAll = new System.Windows.Forms.Button();
-            this.buttonSort = new System.Windows.Forms.Button();
+            this.buttonFight = new System.Windows.Forms.Button();
             this.LabelRepo = new System.Windows.Forms.Label();
             this.radioButtonEntityRepository = new System.Windows.Forms.RadioButton();
             this.radioButtonDapperRepository = new System.Windows.Forms.RadioButton();
@@ -217,19 +217,19 @@ namespace WinFormsApp
             this.buttonShowAll.UseVisualStyleBackColor = false;
             this.buttonShowAll.Click += new System.EventHandler(this.buttonShowAll_Click);
             // 
-            // buttonSort
+            // buttonFight
             // 
-            this.buttonSort.BackColor = System.Drawing.Color.MidnightBlue;
-            this.buttonSort.Cursor = System.Windows.Forms.Cursors.PanNW;
-            this.buttonSort.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonSort.Font = new System.Drawing.Font("Calibri", 19.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonSort.ForeColor = System.Drawing.Color.Gold;
-            this.buttonSort.Location = new System.Drawing.Point(1089, 221);
-            this.buttonSort.Name = "buttonSort";
-            this.buttonSort.Size = new System.Drawing.Size(256, 144);
-            this.buttonSort.TabIndex = 12;
-            this.buttonSort.Text = "⚔ Устроить поединок";
-            this.buttonSort.UseVisualStyleBackColor = false;
+            this.buttonFight.BackColor = System.Drawing.Color.MidnightBlue;
+            this.buttonFight.Cursor = System.Windows.Forms.Cursors.PanNW;
+            this.buttonFight.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonFight.Font = new System.Drawing.Font("Calibri", 19.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonFight.ForeColor = System.Drawing.Color.Gold;
+            this.buttonFight.Location = new System.Drawing.Point(1089, 221);
+            this.buttonFight.Name = "buttonFight";
+            this.buttonFight.Size = new System.Drawing.Size(256, 144);
+            this.buttonFight.TabIndex = 12;
+            this.buttonFight.Text = "⚔ Устроить поединок";
+            this.buttonFight.UseVisualStyleBackColor = false;
             // 
             // LabelRepo
             // 
@@ -371,7 +371,7 @@ namespace WinFormsApp
             this.Controls.Add(this.radioButtonEntityRepository);
             this.Controls.Add(this.LabelRepo);
             this.Controls.Add(this.buttonShowAll);
-            this.Controls.Add(this.buttonSort);
+            this.Controls.Add(this.buttonFight);
             this.Controls.Add(this.labelTitle);
             this.Controls.Add(this.dataGridViewCharacters);
             this.Controls.Add(this.buttonAddHero);
@@ -409,7 +409,7 @@ namespace WinFormsApp
         private Label labelMage;
         private Label labelFighter;
         private Button buttonShowAll;
-        private Button buttonSort;
+        private Button buttonFight;
         private Label LabelRepo;
         private RadioButton radioButtonEntityRepository;
         private RadioButton radioButtonDapperRepository;

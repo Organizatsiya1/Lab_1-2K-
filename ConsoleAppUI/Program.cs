@@ -8,6 +8,9 @@ namespace ConsoleAppUI
 {
     public class Program
     {
+        /// <summary>
+        /// Точка запуска консольного приложения
+        /// </summary>
         static void Main()
         {
             var kernel = new StandardKernel(new SimpleConfigModule(false));
@@ -15,8 +18,7 @@ namespace ConsoleAppUI
             var model = kernel.Get<IModel>();
             var view = new ConsoleView();
 
-            var presenter = new ConsolePresenter(view, model, kernel);
-            presenter.Start();
+            var presenter = new MainPresenter(view, model, null, kernel);
         }
     }
 }

@@ -10,19 +10,33 @@ namespace Shared
         event Action DeleteDataEvent;
         event Action EditDataEvent;
         event Action LoadDataEvent;
-
+        
+        event Action FightEvent;
         event Action<string> FilterFightersEvent;
         event Action<string> FilterMagesEvent;
-
-        event Action<int, int> FightEvent;
-
+        
         event Action<bool> ChangeRepositoryEvent;
 
         // Методы, через которые Presenter управляет View
-        void Redraw(List<Character> units);
-        Character GetSelectedCharacter();
-        void ShowMessage(string text);
-        void ShowError(string text);
 
+        /// <summary>
+        /// Обновить отображение списка персонажей
+        /// </summary>
+        void Redraw(List<Character> units);
+
+        /// <summary>
+        /// Получить выбранного персонажа
+        /// </summary>
+        Character GetSelectedCharacter();
+
+        /// <summary>
+        /// Показать информационное сообщение
+        /// </summary>
+        void ShowMessage(string text);
+
+        /// <summary>
+        /// Показать сообщение об ошибке
+        /// </summary>
+        void ShowError(string text);
     }
 }

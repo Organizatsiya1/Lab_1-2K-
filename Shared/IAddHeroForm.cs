@@ -8,7 +8,6 @@ namespace Shared
     {
         event Action SaveEvent;
         event Action CancelEvent;
-        event Action TypeChangedEvent;
 
         string HeroName { get; }
         string HeroDescription { get; }
@@ -22,6 +21,7 @@ namespace Shared
         MagicSchools SelectedSchool { get; }
 
         Character CreatedHero { get; }
+
         void LoadCharacter(Character c);
         void SetCreateMode();
         DialogResult ShowDialog();

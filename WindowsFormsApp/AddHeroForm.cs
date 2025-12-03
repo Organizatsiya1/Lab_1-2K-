@@ -12,14 +12,42 @@ namespace WinFormsApp
         public event Action CancelEvent;
         public event Action TypeChangedEvent;
 
-        public string HeroName { get => textBoxName.Text; set => textBoxName.Text = value; }
-        public string HeroDescription { get => textBoxDesc.Text; set => textBoxDesc.Text = value; }
-        public int HeroHP { get => (int)numericHP.Value; set => numericHP.Value = value; }
-        public int HeroStrength { get => (int)numericStrength.Value; set => numericStrength.Value = value; }
-        public bool IsFighter { get => comboBoxType.SelectedItem?.ToString() == "Воин"; set => comboBoxType.SelectedItem = value ? "Воин" : "Маг"; }
-        public bool IsMage { get => comboBoxType.SelectedItem?.ToString() == "Маг"; set => comboBoxType.SelectedItem = value ? "Маг" : "Воин"; }
-        public int HeroStamina { get => (int)numericStamina.Value; set => numericStamina.Value = value; }
-        public int HeroMana { get => (int)numericMana.Value; set => numericMana.Value = value; }
+        // Свойства с приведением к нужному виду данных
+        public string HeroName { 
+            get => textBoxName.Text; 
+            set => textBoxName.Text = value; }
+
+        public string HeroDescription { 
+            get => textBoxDesc.Text; 
+            set => textBoxDesc.Text = value; }
+
+        public int HeroHP { 
+            get => (int)numericHP.Value; 
+            set => numericHP.Value = value; }
+
+        public int HeroStrength { 
+            get => (int)numericStrength.Value; 
+            set => numericStrength.Value = value; }
+
+        public bool IsFighter { 
+            get => comboBoxType.SelectedItem?.ToString() == "Воин"; 
+            set => comboBoxType.SelectedItem = value ? "Воин" : "Маг"; }
+
+        public bool IsMage { 
+            get => comboBoxType.SelectedItem?.ToString() == "Маг"; 
+            set => comboBoxType.SelectedItem = value ? "Маг" : "Воин"; }
+
+        public int HeroStamina { 
+            get => (int)numericStamina.Value; 
+            set => numericStamina.Value = value; }
+
+        public int HeroMana { 
+            get => (int)numericMana.Value; 
+            set => numericMana.Value = value; }
+
+        /// <summary>
+        /// Перебор выбора оружия для воина с приведением к нужному виду
+        /// </summary>
         public Weapons SelectedWeapon
         {
             get
@@ -36,6 +64,10 @@ namespace WinFormsApp
                     comboBoxWeapon.SelectedItem = Displays.WeaponsNames[value];
             }
         }
+
+        /// <summary>
+        /// Перебор выбора школы магии для мага с приведением к нужному виду
+        /// </summary>
         public MagicSchools SelectedSchool
         {
             get
@@ -52,6 +84,10 @@ namespace WinFormsApp
                     comboBoxSchool.SelectedItem = Displays.MagicNames[value];
             }
         }
+
+        /// <summary>
+        /// Свойство для хранения результата с диалоговым окном
+        /// </summary>
         public new object DialogResult
         {
             get => base.DialogResult;
@@ -78,6 +114,10 @@ namespace WinFormsApp
                 comboBoxType.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Загрузить данные персонажа для редактирования
+        /// </summary>
+        /// <param name="character">Персонаж для отредактирования</param>
         public void LoadCharacter(Character character)
         {
             SetFormForEdit(character);
@@ -101,9 +141,22 @@ namespace WinFormsApp
             numericMana.Visible = !isFighter;
             labelMana.Visible = !isFighter;
         }
+
+        /// <summary>
+        /// Метод показа формы
+        /// </summary>
         public new void Show() => base.Show();
+
+        /// <summary>
+        /// Метод закрытия формы
+        /// </summary>
         public new void Close() => base.Close();
-        public void ClearForm()
+
+
+        /// <summary>
+        /// Очистка формы, приведение к призентабельному виду формы (обозначение начальных данных)
+        /// </summary>
+        public void SetCreateMode()
         {
             textBoxName.Text = "";
             textBoxDesc.Text = "";
@@ -117,42 +170,11 @@ namespace WinFormsApp
             CreatedHero = null;
         }
 
-        public void SetCreateMode()
-        {
-            ClearForm();
-        }
-
         /// <summary>
-        /// Конструктор для редактирования существующего персонажа: заполняет
-        /// поля формы значениями из переданного объекта
+        /// заполняет поля формы значениями из переданного объекта
         /// Дизайнер видимости определенных полей для война и мага
         /// </summary>
-        /// <param name="exist">Существующий персонаж для отображения в форме. Если null — ничего не делает</param>
-        public AddHeroForm(Character exist) : this()
-        {
-            if (exist == null) return;
-
-            textBoxName.Text = exist.Name;
-            textBoxDesc.Text = exist.Description;
-            numericHP.Value = Math.Max(numericHP.Minimum, Math.Min(numericHP.Maximum, exist.HP));
-            numericStrength.Value = Math.Max(numericStrength.Minimum, Math.Min(numericStrength.Maximum, exist.Strength));
-
-            if (exist is Fighter f)
-            {
-                comboBoxType.SelectedItem = "Воин";
-                comboBoxWeapon.SelectedItem = Displays.WeaponsNames.ContainsKey(f.Weapon) ? Displays.WeaponsNames[f.Weapon] : Displays.WeaponsNames[Weapons.None];
-                numericStamina.Value = Math.Max(numericStamina.Minimum, Math.Min(numericStamina.Maximum, f.Stamina));
-                ToggleFields(true);
-            }
-            else if (exist is Mage m)
-            {
-                comboBoxType.SelectedItem = "Маг";
-                comboBoxSchool.SelectedItem = Displays.MagicNames.ContainsKey(m.School) ? Displays.MagicNames[m.School] : Displays.MagicNames[MagicSchools.Fire];
-                numericMana.Value = Math.Max(numericMana.Minimum, Math.Min(numericMana.Maximum, m.Mana));
-                ToggleFields(false);
-            }
-        }
-
+        /// <param name="character">Существующий персонаж для отображения в форме. Если null — ничего не делает</param>
         public void SetFormForEdit(Character character)
         {
             if (character == null) return;

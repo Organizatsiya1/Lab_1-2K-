@@ -9,16 +9,14 @@ namespace WinFormsApp
 {
     public partial class MainForm : Form, IView
     {
-        //private IFacade facade;
-        //IKernel ninjectKernel;
         public event Action AddDataEvent;
         public event Action DeleteDataEvent;
         public event Action EditDataEvent;
         public event Action LoadDataEvent;
 
+        public event Action FightEvent;
         public event Action<string> FilterFightersEvent;
         public event Action<string> FilterMagesEvent;
-        public event Action<int, int> FightEvent;
 
         public event Action<bool> ChangeRepositoryEvent;
 
@@ -29,42 +27,20 @@ namespace WinFormsApp
             BindEvents();
         }
 
+        /// <summary>
+        /// Подписка на собития
+        /// </summary>
         private void BindEvents()
         {
-            buttonFilterFighters.Click += (s, e) =>
-            {
-                var weapon = comboBoxFilterWeapon.SelectedItem?.ToString();
-                if (weapon != null)
-                    FilterFightersEvent?.Invoke(weapon);
-            };
+            buttonFilterFighters.Click += ButtonFilterFighters_Click;
+            buttonFilterMages.Click += ButtonFilterMages_Click;
 
-            buttonFilterMages.Click += (s, e) =>
-            {
-                var school = comboBoxFilterSchool.SelectedItem?.ToString();
-                if (school != null)
-                    FilterMagesEvent?.Invoke(school);
-            };
+            // Подписка на кнопку поединка
+            buttonFight.Click += ButtonFight_Click;
 
-            buttonSort.Click += (s, e) =>
-            {
-                var rows = dataGridViewCharacters.SelectedRows;
-                if (rows.Count == 2)
-                    FightEvent?.Invoke(rows[0].Index, rows[1].Index);
-                else
-                    ShowMessage("Выберите ровно двух персонажей!");
-            };
-
-            radioButtonEntityRepository.CheckedChanged += (s, e) =>
-            {
-                if (radioButtonEntityRepository.Checked)
-                    ChangeRepositoryEvent?.Invoke(false); // false = Entity
-            };
-
-            radioButtonDapperRepository.CheckedChanged += (s, e) =>
-            {
-                if (radioButtonDapperRepository.Checked)
-                    ChangeRepositoryEvent?.Invoke(true); // true = Dapper
-            };
+            // Подписка на радиокнопки выбора репозитория
+            radioButtonEntityRepository.CheckedChanged += RadioButtonRepository_CheckedChanged;
+            radioButtonDapperRepository.CheckedChanged += RadioButtonRepository_CheckedChanged;
         }
 
         /// <summary>
@@ -130,6 +106,10 @@ namespace WinFormsApp
             dataGridViewCharacters.Rows[rowIndex].Tag = c;
         }
 
+        /// <summary>
+        /// Обновление таблицы
+        /// </summary>
+        /// <param name="units">Список персонаж</param>
         public void Redraw(List<Character> units)
         {
             dataGridViewCharacters.Rows.Clear();
@@ -151,8 +131,25 @@ namespace WinFormsApp
                 return null;
             }
 
-            // вычисляем индекс выбранной строки и сопоставляем с логикой
             return dataGridViewCharacters.CurrentRow.Tag as Character;
+        }
+
+        /// <summary>
+        /// Показ сообщения пользователю
+        /// </summary>
+        /// <param name="text">Сообщение</param>
+        public void ShowMessage(string text)
+        {
+            MessageBox.Show(text, "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        /// <summary>
+        /// Показ сообщения ошибки пользователю
+        /// </summary>
+        /// <param name="text">Сообщение ошибки</param>
+        public void ShowError(string text)
+        {
+            MessageBox.Show(text, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
@@ -199,15 +196,55 @@ namespace WinFormsApp
             LoadDataEvent?.Invoke();
         }
 
-        
-        public void ShowMessage(string text)
+        /// <summary>
+        /// Обработчик нажатия кнопки "Фильтр воинов"
+        /// </summary>
+        private void ButtonFilterFighters_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(text, "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string selectedWeapon = comboBoxFilterWeapon.SelectedItem?.ToString();
+
+            if (!string.IsNullOrEmpty(selectedWeapon))
+                FilterFightersEvent?.Invoke(selectedWeapon);
         }
 
-        public void ShowError(string text)
+        /// <summary>
+        /// Обработчик нажатия кнопки "Фильтр магов"
+        /// </summary>
+        private void ButtonFilterMages_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(text, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            string selectedSchool = comboBoxFilterSchool.SelectedItem?.ToString();
+
+            if (!string.IsNullOrEmpty(selectedSchool))
+                FilterMagesEvent?.Invoke(selectedSchool);
+        }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки "Поединок"
+        /// </summary>
+        private void ButtonFight_Click(object sender, EventArgs e)
+        {
+            var selectedRows = dataGridViewCharacters.SelectedRows;
+
+            if (selectedRows.Count == 2)
+                FightEvent?.Invoke();
+            else
+                ShowMessage("Для поединка необходимо выбрать ровно двух персонажей!");
+        }
+
+        /// <summary>
+        /// Обработчик изменения состояния радиокнопок репозитория
+        /// </summary>
+        private void RadioButtonRepository_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonEntityRepository.Checked)
+            {
+                // выбран Entity Framework 
+                ChangeRepositoryEvent?.Invoke(false);
+            }
+            else if (radioButtonDapperRepository.Checked)
+            {
+                ChangeRepositoryEvent?.Invoke(true);
+            }
         }
     }
 }

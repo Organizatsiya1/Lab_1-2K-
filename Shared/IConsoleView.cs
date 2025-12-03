@@ -6,18 +6,11 @@ using System.Threading.Tasks;
 
 namespace Shared
 {
-    public interface IConsoleView
+    public interface IConsoleView : IView
     {
-        event Action AddDataEvent;
-        event Action DeleteDataEvent;
-        event Action LoadDataEvent;
-        event Action EditDataEvent;
-        event Action ExtraFunctionsEvent;
-        event Action ChangeRepositoryEvent;
-
-        void ShowMessage(string text);
-        void ShowError(string text);
-        void ShowUnits(string title, List<Models.Character> units);
+        /// <summary>
+        /// Метод вывода меню для консольного приложения
+        /// </summary>
         void ShowMenu();
     }
 }

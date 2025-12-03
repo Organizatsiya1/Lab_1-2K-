@@ -45,27 +45,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsolePresenter.cs" />
     <Compile Include="MainPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
-      <Project>{8A300169-A46D-455C-990F-96B88DA0CAED}</Project>
+      <Project>{8a300169-a46d-455c-990f-96b88da0caed}</Project>
       <Name>BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{C8803571-216D-4967-A25D-E4B66B92FAC0}</Project>
+      <Project>{c8803571-216d-4967-a25d-e4b66b92fac0}</Project>
       <Name>Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Shared\Shared.csproj">
-      <Project>{F62BB5E4-EC7F-4E3A-9852-BFF719E71315}</Project>
+      <Project>{f62bb5e4-ec7f-4e3a-9852-bff719e71315}</Project>
       <Name>Shared</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

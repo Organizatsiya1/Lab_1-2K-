@@ -23,7 +23,6 @@ namespace WinFormsApp
             var kernel = new StandardKernel(new SimpleConfigModule(false));
             var model = kernel.Get<IModel>();
 
-
             var mainView = new MainForm();
             var addHeroView = new AddHeroForm();
 
