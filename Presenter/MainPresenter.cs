@@ -15,7 +15,6 @@ namespace Presenter
         private readonly IAddHeroView addHeroView;
         private StandardKernel kernel;
         private bool isConsoleMode;
-        private bool isWinFormsMode;
 
         public MainPresenter(IView view, IModel model, IAddHeroView addHeroView = null, StandardKernel kernel = null)
         {
@@ -25,7 +24,6 @@ namespace Presenter
             this.kernel = kernel;
 
             this.isConsoleMode = view is IConsoleView;
-            this.isWinFormsMode = view is IMainFormView;
 
             BindViewEvents();
             model.DataChanged += RedrawAll;

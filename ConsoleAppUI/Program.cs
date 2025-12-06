@@ -1,5 +1,4 @@
 ﻿using BusinessLogic;
-using ConsoleApp;
 using Ninject;
 using Presenter;
 using Shared;

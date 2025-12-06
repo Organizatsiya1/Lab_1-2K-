@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ConsoleApp
+namespace ConsoleAppUI
 {
-    internal class ConsoleView : IConsoleView
+    public class ConsoleView : IConsoleView
     {
         public event Action AddDataEvent;
         public event Action DeleteDataEvent;
