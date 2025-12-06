@@ -63,9 +63,9 @@
       <Project>{C8803571-216D-4967-A25D-E4B66B92FAC0}</Project>
       <Name>Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PresenterForView\PresenterForView.csproj">
+    <ProjectReference Include="..\Presenter\Presenter.csproj">
       <Project>{144DD2A9-A7E6-4571-A9FE-B004145A0D87}</Project>
-      <Name>PresenterForView</Name>
+      <Name>Presenter</Name>
     </ProjectReference>
     <ProjectReference Include="..\Shared\Shared.csproj">
       <Project>{f62bb5e4-ec7f-4e3a-9852-bff719e71315}</Project>

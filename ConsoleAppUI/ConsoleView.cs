@@ -78,7 +78,7 @@ namespace ConsoleApp
                     case "0":
                         return;
                     default:
-                        ShowError("Команда не найден.");
+                        ShowError("Команда не найдена");
                         break;
                 }
                 Console.WriteLine("\nНажмите любую клавишу...");
@@ -86,6 +86,10 @@ namespace ConsoleApp
             }
         }
 
+        /// <summary>
+        /// Выводит список всех персонажей с их характеристиками
+        /// </summary>
+        /// <param name="characters">Список персонажей</param>
         public void Redraw(List<Character> characters)
         {
             currentCharacters = characters;
@@ -93,7 +97,7 @@ namespace ConsoleApp
 
             if (characters == null || characters.Count == 0)
             {
-                Console.WriteLine("Список персонажей пуст.");
+                Console.WriteLine("Список персонажей пуст");
                 return;
             }
 
@@ -104,7 +108,7 @@ namespace ConsoleApp
                 var character = characters[i];
                 var typeName = Displays.CharacterTypes[character.GetType()];
 
-                Console.WriteLine($"[{i}] {typeName}: {character.Name}");
+                Console.WriteLine($"\n[{i}] {typeName}: {character.Name}");
                 Console.WriteLine($"\tHP: {character.HP}, Сила: {character.Strength}");
 
                 if (character is Fighter fighter)
@@ -121,6 +125,7 @@ namespace ConsoleApp
 
             Console.WriteLine($"Всего персонажей: {characters.Count}");
         }
+
 
         public Character GetSelectedCharacter()
         {

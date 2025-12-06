@@ -13,37 +13,53 @@ namespace WinFormsApp
         public event Action TypeChangedEvent;
 
         // Свойства с приведением к нужному виду данных
-        public string HeroName { 
+        public string HeroName 
+        { 
             get => textBoxName.Text; 
-            set => textBoxName.Text = value; }
+            set => textBoxName.Text = value; 
+        }
 
-        public string HeroDescription { 
+        public string HeroDescription 
+        { 
             get => textBoxDesc.Text; 
-            set => textBoxDesc.Text = value; }
+            set => textBoxDesc.Text = value; 
+        }
 
-        public int HeroHP { 
+        public int HeroHP 
+        { 
             get => (int)numericHP.Value; 
-            set => numericHP.Value = value; }
+            set => numericHP.Value = value; 
+        }
 
-        public int HeroStrength { 
+        public int HeroStrength 
+        { 
             get => (int)numericStrength.Value; 
-            set => numericStrength.Value = value; }
+            set => numericStrength.Value = value; 
+        }
 
-        public bool IsFighter { 
+        public bool IsFighter 
+        { 
             get => comboBoxType.SelectedItem?.ToString() == "Воин"; 
-            set => comboBoxType.SelectedItem = value ? "Воин" : "Маг"; }
+            set => comboBoxType.SelectedItem = value ? "Воин" : "Маг"; 
+        }
 
-        public bool IsMage { 
+        public bool IsMage 
+        { 
             get => comboBoxType.SelectedItem?.ToString() == "Маг"; 
-            set => comboBoxType.SelectedItem = value ? "Маг" : "Воин"; }
+            set => comboBoxType.SelectedItem = value ? "Маг" : "Воин"; 
+        }
 
-        public int HeroStamina { 
+        public int HeroStamina 
+        { 
             get => (int)numericStamina.Value; 
-            set => numericStamina.Value = value; }
+            set => numericStamina.Value = value; 
+        }
 
-        public int HeroMana { 
+        public int HeroMana 
+        { 
             get => (int)numericMana.Value; 
-            set => numericMana.Value = value; }
+            set => numericMana.Value = value; 
+        }
 
         /// <summary>
         /// Перебор выбора оружия для воина с приведением к нужному виду
@@ -160,10 +176,12 @@ namespace WinFormsApp
         {
             textBoxName.Text = "";
             textBoxDesc.Text = "";
-            numericHP.Value = 50;
-            numericStrength.Value = 5;
-            numericStamina.Value = 50;
-            numericMana.Value = 100;
+
+            numericHP.Value = Math.Max(numericHP.Minimum, Math.Min(numericHP.Maximum, 100));
+            numericStrength.Value = Math.Max(numericStrength.Minimum, Math.Min(numericStrength.Maximum, 10));
+            numericStamina.Value = Math.Max(numericStamina.Minimum, Math.Min(numericStamina.Maximum, 20));
+            numericMana.Value = Math.Max(numericMana.Minimum, Math.Min(numericMana.Maximum, 50));
+
             comboBoxType.SelectedIndex = 0;
             comboBoxWeapon.SelectedIndex = 0;
             comboBoxSchool.SelectedIndex = 0;

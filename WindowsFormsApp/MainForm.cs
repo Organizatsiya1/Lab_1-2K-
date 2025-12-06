@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace WinFormsApp
 {
-    public partial class MainForm : Form, IView
+    public partial class MainForm : Form, IMainFormView
     {
         public event Action AddDataEvent;
         public event Action DeleteDataEvent;
@@ -23,6 +23,7 @@ namespace WinFormsApp
         public MainForm()
         {
             InitializeComponent();
+            radioButtonEntityRepository.Checked = true;
             InitializeDataGridView();
             BindEvents();
         }
@@ -135,6 +136,29 @@ namespace WinFormsApp
         }
 
         /// <summary>
+        /// Получить список выбранных персонажей (для поединка)
+        /// </summary>
+        public List<Character> GetSelectedCharacters()
+        {
+            var selectedCharacters = new List<Character>();
+
+            if (dataGridViewCharacters.SelectedRows.Count == 0)
+            {
+                return selectedCharacters;
+            }
+
+            foreach (DataGridViewRow row in dataGridViewCharacters.SelectedRows)
+            {
+                if (row.Tag is Character character)
+                {
+                    selectedCharacters.Add(character);
+                }
+            }
+
+            return selectedCharacters;
+        }
+
+        /// <summary>
         /// Показ сообщения пользователю
         /// </summary>
         /// <param name="text">Сообщение</param>
@@ -228,7 +252,11 @@ namespace WinFormsApp
             if (selectedRows.Count == 2)
                 FightEvent?.Invoke();
             else
-                ShowMessage("Для поединка необходимо выбрать ровно двух персонажей!");
+                ShowMessage("Для поединка необходимо выбрать ровно двух персонажей!\n" +
+                                      "Как выбрать:\n" +
+                                      "1. Кликните на первого персонажа\n" +
+                                      "2. Удерживая Ctrl, кликните на второго персонажа\n" +
+                                      "3. Нажмите кнопку 'Устроить поединок'");
         }
 
         /// <summary>
@@ -236,14 +264,16 @@ namespace WinFormsApp
         /// </summary>
         private void RadioButtonRepository_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButtonEntityRepository.Checked)
+            if (sender is RadioButton radioButton && radioButton.Checked)
             {
-                // выбран Entity Framework 
-                ChangeRepositoryEvent?.Invoke(false);
-            }
-            else if (radioButtonDapperRepository.Checked)
-            {
-                ChangeRepositoryEvent?.Invoke(true);
+                if (radioButton == radioButtonEntityRepository)
+                {
+                    ChangeRepositoryEvent?.Invoke(false);
+                }
+                else if (radioButton == radioButtonDapperRepository)
+                {
+                    ChangeRepositoryEvent?.Invoke(true);
+                }
             }
         }
     }

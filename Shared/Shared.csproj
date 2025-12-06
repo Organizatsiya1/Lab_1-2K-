@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="IAddHeroForm.cs" />
     <Compile Include="IConsoleView.cs" />
+    <Compile Include="IMainFormView.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="IView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
