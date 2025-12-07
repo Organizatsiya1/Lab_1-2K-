@@ -7,7 +7,8 @@ using System.Windows.Forms;
 using WinFormsApp;
 using ConsoleAppUI;
 
-namespace Launcher
+namespace Presenter
+
 {
     internal static class Program
     {
