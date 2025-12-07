@@ -1,6 +1,6 @@
 ﻿using BusinessLogic;
 using Ninject;
-using Presenter;
+
 using Shared;
 
 namespace ConsoleAppUI
@@ -12,12 +12,7 @@ namespace ConsoleAppUI
         /// </summary>
         static void Main()
         {
-            var kernel = new StandardKernel(new SimpleConfigModule(false));
-
-            var model = kernel.Get<IModel>();
-            var view = new ConsoleView();
-
-            var presenter = new MainPresenter(view, model, null, kernel);
+           
         }
     }
 }
