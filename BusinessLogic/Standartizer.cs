@@ -8,6 +8,11 @@ namespace BusinessLogicModels
 {
     public class Standartizer : IStandartizer
     {
+        /// <summary>
+        /// Нормализует имя персонажа, заполняет параметр имя "Безымянный", если он пустой
+        /// </summary>
+        /// <param name="name">Имя персонажа</param>
+        /// <returns>Имя персонажа или "Безымянный", если пусто</returns>
         public string StandartizeName(string name) =>
         string.IsNullOrWhiteSpace(name) ? "Безымянный" : name.Trim();
 

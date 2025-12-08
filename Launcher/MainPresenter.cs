@@ -14,8 +14,15 @@ namespace Presenter
         private IModel model;
         private readonly IAddHeroView addHeroView;
         private StandardKernel kernel;
-        private bool isConsoleMode;
+        private readonly bool isConsoleMode;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр MainPresenter и настраивает взаимодействие между компонентами
+        /// </summary>
+        /// <param name="view">Интерфейс представления для отображения данных и получения ввода от пользователя</param>
+        /// <param name="model">Интерфейс модели, содержащей бизнес-логику и данные приложения</param>
+        /// <param name="addHeroView">Интерфейс формы добавления/редактирования персонажа</param>
+        /// <param name="kernel">Контейнер зависимостей Ninject для управления репозиториями</param>
         public MainPresenter(IView view, IModel model, IAddHeroView addHeroView = null, StandardKernel kernel = null)
         {
             this.view = view;
@@ -23,7 +30,7 @@ namespace Presenter
             this.addHeroView = addHeroView;
             this.kernel = kernel;
 
-            this.isConsoleMode = view is IConsoleView;
+            isConsoleMode = view is IConsoleView;
 
             BindViewEvents();
             model.DataChanged += RedrawAll;
@@ -136,6 +143,7 @@ namespace Presenter
         /// <summary>
         /// Добавление персонажа в модель
         /// </summary>
+        /// <param name="c">Персонаж для добавления</param>
         private void AddCharacterToModel(Character c)
         {
             if (c is Fighter f)
@@ -306,6 +314,8 @@ namespace Presenter
         /// <summary>
         /// Обновление персонажа в модели
         /// </summary>
+        /// <param name="oldChar">Данные о персонаже до обновления</param>
+        /// <param name="newChar">Данные о персонаже после обновления</param>
         private void UpdateCharacterInModel(Character oldChar, Character newChar)
         {
             if (oldChar is Fighter oldF && newChar is Fighter f)
@@ -321,6 +331,7 @@ namespace Presenter
         /// <summary>
         /// Метод фильтрации воинов по оружию
         /// </summary>
+        /// <param name="weaponName">Выбранное оружие для фильтра</param>
         private void OnFilterFighters(string weaponName)
         {
             try
@@ -349,6 +360,7 @@ namespace Presenter
         /// <summary>
         /// Метод фильтрации магов по школе магии
         /// </summary>
+        /// <param name="schoolName">Выбранная школа магии для фильтра</param>
         private void OnFilterMages(string schoolName)
         {
             try
@@ -387,8 +399,7 @@ namespace Presenter
                 }
                 else
                 {
-                    IMainFormView winFormsView = view as IMainFormView;
-                    if (winFormsView == null) return;
+                    if (!(view is IMainFormView winFormsView)) return;
 
                     var selectedCharacters = winFormsView.GetSelectedCharacters();
 
@@ -413,6 +424,9 @@ namespace Presenter
             }
         }
 
+        /// <summary>
+        /// Метод дуэли консольного представления
+        /// </summary>
         private void FightConsole()
         {
             var units = model.GetUnits();

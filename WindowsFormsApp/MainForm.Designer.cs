@@ -91,7 +91,7 @@ namespace WinFormsApp
             this.buttonAddHero.TabIndex = 2;
             this.buttonAddHero.Text = "➕ Добавить героя";
             this.buttonAddHero.UseVisualStyleBackColor = false;
-            this.buttonAddHero.Click += new System.EventHandler(this.buttonAddHero_Click);
+            this.buttonAddHero.Click += new System.EventHandler(this.ButtonAddHero_Click);
             // 
             // buttonDeleteHero
             // 
@@ -106,7 +106,7 @@ namespace WinFormsApp
             this.buttonDeleteHero.TabIndex = 3;
             this.buttonDeleteHero.Text = "🗑 Удалить героя";
             this.buttonDeleteHero.UseVisualStyleBackColor = false;
-            this.buttonDeleteHero.Click += new System.EventHandler(this.buttonDeleteHero_Click);
+            this.buttonDeleteHero.Click += new System.EventHandler(this.ButtonDeleteHero_Click);
             // 
             // buttonEditHero
             // 
@@ -121,7 +121,7 @@ namespace WinFormsApp
             this.buttonEditHero.TabIndex = 4;
             this.buttonEditHero.Text = "✏ Изменить героя";
             this.buttonEditHero.UseVisualStyleBackColor = false;
-            this.buttonEditHero.Click += new System.EventHandler(this.buttonEditHero_Click);
+            this.buttonEditHero.Click += new System.EventHandler(this.ButtonEditHero_Click);
             // 
             // buttonFilterMages
             // 
@@ -215,7 +215,7 @@ namespace WinFormsApp
             this.buttonShowAll.TabIndex = 11;
             this.buttonShowAll.Text = "Показать всех героев";
             this.buttonShowAll.UseVisualStyleBackColor = false;
-            this.buttonShowAll.Click += new System.EventHandler(this.buttonShowAll_Click);
+            this.buttonShowAll.Click += new System.EventHandler(this.ButtonShowAll_Click);
             // 
             // buttonFight
             // 

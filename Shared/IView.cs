@@ -20,23 +20,27 @@ namespace Shared
         // Методы, через которые Presenter управляет View
 
         /// <summary>
-        /// Обновить отображение списка персонажей
+        /// Выводит список всех персонажей с их характеристиками
         /// </summary>
-        void Redraw(List<Character> units);
+        /// <param name="characters">Список персонажей</param>
+        void Redraw(List<Character> characters);
 
         /// <summary>
         /// Получить выбранного персонажа
         /// </summary>
+        /// <returns>Выбранный персонаж</returns>
         Character GetSelectedCharacter();
 
         /// <summary>
-        /// Показать информационное сообщение
+        /// Показ сообщения пользователю
         /// </summary>
+        /// <param name="text">Текст сообщения</param>
         void ShowMessage(string text);
 
         /// <summary>
-        /// Показать сообщение об ошибке
+        /// Показ сообщения-ошибки пользователю
         /// </summary>
+        /// <param name="text">Текст сообщения-ошибки</param>
         void ShowError(string text);
     }
 }

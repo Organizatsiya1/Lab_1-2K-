@@ -7,54 +7,86 @@ namespace WinFormsApp
 {
     public partial class AddHeroForm : Form, IAddHeroView
     {
-        public Character CreatedHero { get; private set; } // результат
         public event Action SaveEvent;
         public event Action CancelEvent;
         public event Action TypeChangedEvent;
 
         // Свойства с приведением к нужному виду данных
+
+        /// <summary>
+        /// Имя героя, связывает свойство с текстовым полем ввода имени
+        /// value - текущее значение
+        /// </summary>
         public string HeroName 
         { 
             get => textBoxName.Text; 
             set => textBoxName.Text = value; 
         }
 
+        /// <summary>
+        /// Описание героя, связывает свойство с текстовым полем ввода описания
+        /// value - текущее значение
+        /// </summary>
         public string HeroDescription 
         { 
             get => textBoxDesc.Text; 
             set => textBoxDesc.Text = value; 
         }
 
+        /// <summary>
+        /// Здоровье героя. Связывает свойство с числовым полем ввода HP.
+        /// value - текущее значение
+        /// </summary>
         public int HeroHP 
         { 
             get => (int)numericHP.Value; 
             set => numericHP.Value = value; 
         }
 
+        /// <summary>
+        /// Сила героя, связывает свойство с числовым полем ввода силы
+        /// value - текущее значение
+        /// </summary>
         public int HeroStrength 
         { 
             get => (int)numericStrength.Value; 
             set => numericStrength.Value = value; 
         }
 
+        /// <summary>
+        /// Определяет, является ли герой воином на основе выбранного типа в комбо-боксе
+        /// value - текущее значение: true, если выбран тип "Маг"; в противном случае - false
+        /// </summary>
         public bool IsFighter 
         { 
             get => comboBoxType.SelectedItem?.ToString() == "Воин"; 
             set => comboBoxType.SelectedItem = value ? "Воин" : "Маг"; 
         }
 
+        /// <summary>
+        /// Определяет, является ли герой магом на основе выбранного типа в комбо-боксе
+        /// value - текущее значение: true, если выбран тип "Маг"; в противном случае - false
+        /// </summary>
         public bool IsMage 
         { 
             get => comboBoxType.SelectedItem?.ToString() == "Маг"; 
             set => comboBoxType.SelectedItem = value ? "Маг" : "Воин"; 
         }
 
+        /// <summary>
+        /// Выносливость героя, связывает свойство с числовым полем ввода выносливости
+        /// value - текущее значение
+        /// </summary>
         public int HeroStamina 
         { 
             get => (int)numericStamina.Value; 
             set => numericStamina.Value = value; 
         }
 
+        /// <summary>
+        /// Мана героя, связывает свойство с числовым полем ввода маны
+        /// value - текущее значение
+        /// </summary>
         public int HeroMana 
         { 
             get => (int)numericMana.Value; 
@@ -62,8 +94,10 @@ namespace WinFormsApp
         }
 
         /// <summary>
-        /// Перебор выбора оружия для воина с приведением к нужному виду
+        /// Выбранное оружие для воина
+        /// Преобразует отображаемое имя оружия в значение перечисления Weapons
         /// </summary>
+        /// <returns>Если выбранный элемент не найден, возвращает Weapons.None</returns>
         public Weapons SelectedWeapon
         {
             get
@@ -82,8 +116,10 @@ namespace WinFormsApp
         }
 
         /// <summary>
-        /// Перебор выбора школы магии для мага с приведением к нужному виду
+        /// Выбранная школа магии для мага
+        /// Преобразует отображаемое имя школы магии в значение перечисления MagicSchools
         /// </summary>
+        /// <returns>Если выбранный элемент не найден, возвращает MagicSchools.Fire</returns>
         public MagicSchools SelectedSchool
         {
             get
@@ -100,6 +136,8 @@ namespace WinFormsApp
                     comboBoxSchool.SelectedItem = Displays.MagicNames[value];
             }
         }
+
+        public Character CreatedHero { get; private set; }
 
         /// <summary>
         /// Свойство для хранения результата с диалоговым окном
@@ -131,15 +169,6 @@ namespace WinFormsApp
         }
 
         /// <summary>
-        /// Загрузить данные персонажа для редактирования
-        /// </summary>
-        /// <param name="character">Персонаж для отредактирования</param>
-        public void LoadCharacter(Character character)
-        {
-            SetFormForEdit(character);
-        }
-
-        /// <summary>
         /// Переключает видимость полей формы в зависимости от выбранного типа персонажа
         /// </summary>
         /// <param name="isFighter">true — воин, false — маг</param>
@@ -159,41 +188,11 @@ namespace WinFormsApp
         }
 
         /// <summary>
-        /// Метод показа формы
-        /// </summary>
-        public new void Show() => base.Show();
-
-        /// <summary>
-        /// Метод закрытия формы
-        /// </summary>
-        public new void Close() => base.Close();
-
-
-        /// <summary>
-        /// Очистка формы, приведение к призентабельному виду формы (обозначение начальных данных)
-        /// </summary>
-        public void SetCreateMode()
-        {
-            textBoxName.Text = "";
-            textBoxDesc.Text = "";
-
-            numericHP.Value = Math.Max(numericHP.Minimum, Math.Min(numericHP.Maximum, 100));
-            numericStrength.Value = Math.Max(numericStrength.Minimum, Math.Min(numericStrength.Maximum, 10));
-            numericStamina.Value = Math.Max(numericStamina.Minimum, Math.Min(numericStamina.Maximum, 20));
-            numericMana.Value = Math.Max(numericMana.Minimum, Math.Min(numericMana.Maximum, 50));
-
-            comboBoxType.SelectedIndex = 0;
-            comboBoxWeapon.SelectedIndex = 0;
-            comboBoxSchool.SelectedIndex = 0;
-            CreatedHero = null;
-        }
-
-        /// <summary>
-        /// заполняет поля формы значениями из переданного объекта
+        /// Заполняет поля формы значениями из переданного объекта
         /// Дизайнер видимости определенных полей для война и мага
         /// </summary>
         /// <param name="character">Существующий персонаж для отображения в форме. Если null — ничего не делает</param>
-        public void SetFormForEdit(Character character)
+        public void LoadCharacter(Character character)
         {
             if (character == null) return;
 
@@ -219,12 +218,42 @@ namespace WinFormsApp
         }
 
         /// <summary>
+        /// Очистка формы, приведение к презентабельному виду формы (обозначение начальных данных)
+        /// </summary>
+        public void SetCreateMode()
+        {
+            textBoxName.Text = "";
+            textBoxDesc.Text = "";
+
+            numericHP.Value = Math.Max(numericHP.Minimum, Math.Min(numericHP.Maximum, 100));
+            numericStrength.Value = Math.Max(numericStrength.Minimum, Math.Min(numericStrength.Maximum, 10));
+            numericStamina.Value = Math.Max(numericStamina.Minimum, Math.Min(numericStamina.Maximum, 20));
+            numericMana.Value = Math.Max(numericMana.Minimum, Math.Min(numericMana.Maximum, 50));
+
+            comboBoxType.SelectedIndex = 0;
+            comboBoxWeapon.SelectedIndex = 0;
+            comboBoxSchool.SelectedIndex = 0;
+            CreatedHero = null;
+        }
+
+        /// <summary>
+        /// Метод показа формы
+        /// </summary>
+        public new void Show() => base.Show();
+
+        /// <summary>
+        /// Метод закрытия формы
+        /// </summary>
+        public new void Close() => base.Close();
+        
+
+        /// <summary>
         /// Обработчик изменения выбранного типа персонажа
         /// Переключает видимость аборов полей между набором для воина и набором для мага
         /// </summary>
         /// <param name="sender">Ссылка на объект</param>
         /// <param name="e">Аргументы события</param>
-        private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBoxType_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxType.SelectedItem == null) return;
 
@@ -240,7 +269,7 @@ namespace WinFormsApp
         /// </summary>
         /// <param name="sender">Ссылка на объект</param>
         /// <param name="e">Аргументы события</param>
-        private void buttonSave_Click(object sender, EventArgs e)
+        private void ButtonSave_Click(object sender, EventArgs e)
         {
             string name = textBoxName.Text.Trim();
             string desc = textBoxDesc.Text.Trim();
@@ -309,7 +338,7 @@ namespace WinFormsApp
         /// </summary>
         /// <param name="sender">Ссылка на объект</param>
         /// <param name="e">Аргументы события</param>
-        private void buttonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             CancelEvent?.Invoke();
 

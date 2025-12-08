@@ -126,7 +126,10 @@ namespace ConsoleAppUI
             Console.WriteLine($"Всего персонажей: {characters.Count}");
         }
 
-
+        /// <summary>
+        /// Получить выбранного персонажа
+        /// </summary>
+        /// <returns>Выбранный персонаж</returns>
         public Character GetSelectedCharacter()
         {
             if (currentCharacters == null || currentCharacters.Count == 0)
@@ -150,7 +153,7 @@ namespace ConsoleAppUI
         /// <summary>
         /// Показ сообщения пользователю
         /// </summary>
-        /// <param name="text">Сообщение</param>
+        /// <param name="text">Текст сообщения</param>
         public void ShowMessage(string text)
         {
             Console.WriteLine(text);
@@ -159,7 +162,7 @@ namespace ConsoleAppUI
         /// <summary>
         /// Показ сообщения-ошибки пользователю
         /// </summary>
-        /// <param name="text">Сообщение ошибки</param>
+        /// <param name="text">Текст сообщения-ошибки</param>
         public void ShowError(string text)
         {
             Console.WriteLine(text);
@@ -168,6 +171,7 @@ namespace ConsoleAppUI
         /// <summary>
         /// Меню выбора оружия от пользователя
         /// </summary>
+        /// <returns>Выбранное оружие</returns>
         private string GetWeaponFromUser()
         {
             Console.Clear();
@@ -208,6 +212,7 @@ namespace ConsoleAppUI
         /// <summary>
         /// Меню выбора школы магии от пользователя
         /// </summary>
+        /// <returns>Выбранная школа магии</returns>
         private string GetSchoolFromUser()
         {
             Console.Clear();

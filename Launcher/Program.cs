@@ -1,6 +1,5 @@
 ﻿using BusinessLogic;
 using Ninject;
-using Presenter;
 using Shared;
 using System;
 using System.Windows.Forms;
@@ -8,7 +7,6 @@ using WinFormsApp;
 using ConsoleAppUI;
 
 namespace Presenter
-
 {
     internal static class Program
     {
@@ -27,10 +25,12 @@ namespace Presenter
 
             if (choice == "1")
             {
+                Console.WriteLine("Запуск консольного приложения...");
                 RunConsoleApp();
             }
             else if (choice == "2")
             {
+                Console.WriteLine("Запуск Windows Forms приложения...");
                 RunWinFormsApp();
             }
             else
@@ -39,10 +39,11 @@ namespace Presenter
             }
         }
 
+        /// <summary>
+        /// Метод запуска консольного приложения
+        /// </summary>
         static void RunConsoleApp()
         {
-            Console.WriteLine("Запуск консольного приложения...");
-
             var kernel = new StandardKernel(new SimpleConfigModule(false));
 
             var view = new ConsoleView();
@@ -50,13 +51,14 @@ namespace Presenter
             var presenter = new MainPresenter(view, model, null, kernel);
         }
 
+        /// <summary>
+        /// Метод запуска Windows Forms приложения
+        /// </summary>
         [STAThread]
         static void RunWinFormsApp()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            Console.WriteLine("Запуск Windows Forms приложения...");
 
             var kernel = new StandardKernel(new SimpleConfigModule(false));
 

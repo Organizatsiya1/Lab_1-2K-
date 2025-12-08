@@ -29,17 +29,15 @@ namespace WinFormsApp
         }
 
         /// <summary>
-        /// Подписка на собития
+        /// Подписка на собития нажатия на кнопок
         /// </summary>
         private void BindEvents()
         {
             buttonFilterFighters.Click += ButtonFilterFighters_Click;
             buttonFilterMages.Click += ButtonFilterMages_Click;
 
-            // Подписка на кнопку поединка
             buttonFight.Click += ButtonFight_Click;
 
-            // Подписка на радиокнопки выбора репозитория
             radioButtonEntityRepository.CheckedChanged += RadioButtonRepository_CheckedChanged;
             radioButtonDapperRepository.CheckedChanged += RadioButtonRepository_CheckedChanged;
         }
@@ -70,6 +68,76 @@ namespace WinFormsApp
             comboBoxFilterSchool.Items.Clear();
             comboBoxFilterSchool.Items.AddRange(Displays.MagicNames.Values.ToArray());
             comboBoxFilterSchool.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Выводит список всех персонажей с их характеристиками
+        /// </summary>
+        /// <param name="characters">Список персонаж</param>
+        public void Redraw(List<Character> characters)
+        {
+            dataGridViewCharacters.Rows.Clear();
+            for (int i = 0; i < characters.Count; i++)
+            {
+                AddCharacterRow(i, characters[i]);
+            }
+        }
+
+        /// <summary>
+        /// Возвращает объест персонажа, соответствующей выбранной строки таблицы 
+        /// </summary>
+        /// <returns>Выбранный объект персонажа, или же значение null при ошибке выбора</returns>
+        public Character GetSelectedCharacter()
+        {
+            if (dataGridViewCharacters.CurrentRow == null || dataGridViewCharacters.CurrentRow.Index < 0)
+            {
+                MessageBox.Show("Выберите персонажа!");
+                return null;
+            }
+
+            return dataGridViewCharacters.CurrentRow.Tag as Character;
+        }
+
+        /// <summary>
+        /// Получить список выбранных персонажей (для поединка)
+        /// </summary>
+        /// <returns>Выбранные объекты персонажей (более 1)</returns>
+        public List<Character> GetSelectedCharacters()
+        {
+            var selectedCharacters = new List<Character>();
+
+            if (dataGridViewCharacters.SelectedRows.Count == 0)
+            {
+                return selectedCharacters;
+            }
+
+            foreach (DataGridViewRow row in dataGridViewCharacters.SelectedRows)
+            {
+                if (row.Tag is Character character)
+                {
+                    selectedCharacters.Add(character);
+                }
+            }
+
+            return selectedCharacters;
+        }
+
+        /// <summary>
+        /// Показ сообщения пользователю
+        /// </summary>
+        /// <param name="text">Текст сообщения</param>
+        public void ShowMessage(string text)
+        {
+            MessageBox.Show(text, "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        /// <summary>
+        /// Показ сообщения-ошибки пользователю
+        /// </summary>
+        /// <param name="text">Текст сообщения-ошибки</param>
+        public void ShowError(string text)
+        {
+            MessageBox.Show(text, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
@@ -108,82 +176,13 @@ namespace WinFormsApp
         }
 
         /// <summary>
-        /// Обновление таблицы
-        /// </summary>
-        /// <param name="units">Список персонаж</param>
-        public void Redraw(List<Character> units)
-        {
-            dataGridViewCharacters.Rows.Clear();
-            for (int i = 0; i < units.Count; i++)
-            {
-                AddCharacterRow(i, units[i]);
-            }
-        }
-
-        /// <summary>
-        /// Возвращает объест персонажа, соответствующей выбранной строки таблицы 
-        /// </summary>
-        /// <returns>Выбранный объект персонажа, или же значение null при ошибке выбора</returns>
-        public Character GetSelectedCharacter()
-        {
-            if (dataGridViewCharacters.CurrentRow == null || dataGridViewCharacters.CurrentRow.Index < 0)
-            {
-                MessageBox.Show("Выберите персонажа!");
-                return null;
-            }
-
-            return dataGridViewCharacters.CurrentRow.Tag as Character;
-        }
-
-        /// <summary>
-        /// Получить список выбранных персонажей (для поединка)
-        /// </summary>
-        public List<Character> GetSelectedCharacters()
-        {
-            var selectedCharacters = new List<Character>();
-
-            if (dataGridViewCharacters.SelectedRows.Count == 0)
-            {
-                return selectedCharacters;
-            }
-
-            foreach (DataGridViewRow row in dataGridViewCharacters.SelectedRows)
-            {
-                if (row.Tag is Character character)
-                {
-                    selectedCharacters.Add(character);
-                }
-            }
-
-            return selectedCharacters;
-        }
-
-        /// <summary>
-        /// Показ сообщения пользователю
-        /// </summary>
-        /// <param name="text">Сообщение</param>
-        public void ShowMessage(string text)
-        {
-            MessageBox.Show(text, "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        /// <summary>
-        /// Показ сообщения ошибки пользователю
-        /// </summary>
-        /// <param name="text">Сообщение ошибки</param>
-        public void ShowError(string text)
-        {
-            MessageBox.Show(text, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        /// <summary>
         /// Открывает форму создания персонажа
         /// После успешного создания передаёт данные в слой логики (Logic) 
         /// для добавления в список юнитов и обновляет таблицу
         /// </summary>
         /// <param name="sender">Ссылка на объект</param>
         /// <param name="e">Аргументы события</param>
-        private void buttonAddHero_Click(object sender, EventArgs e)
+        private void ButtonAddHero_Click(object sender, EventArgs e)
         {
             AddDataEvent?.Invoke();
         }
@@ -194,7 +193,7 @@ namespace WinFormsApp
         /// </summary>
         /// <param name="sender">Ссылка на объект</param>
         /// <param name="e">Аргументы события</param>
-        private void buttonDeleteHero_Click(object sender, EventArgs e)
+        private void ButtonDeleteHero_Click(object sender, EventArgs e)
         {
             DeleteDataEvent?.Invoke();
         }
@@ -205,7 +204,7 @@ namespace WinFormsApp
         /// </summary>
         /// <param name="sender">Ссылка на объект</param>
         /// <param name="e">Аргументы события</param>
-        private void buttonEditHero_Click(object sender, EventArgs e)
+        private void ButtonEditHero_Click(object sender, EventArgs e)
         {
             EditDataEvent?.Invoke();
         }
@@ -215,7 +214,7 @@ namespace WinFormsApp
         /// </summary>
         /// <param name="sender">Ссылка на объект</param>
         /// <param name="e">Аргументы события</param>
-        private void buttonShowAll_Click(object sender, EventArgs e)
+        private void ButtonShowAll_Click(object sender, EventArgs e)
         {
             LoadDataEvent?.Invoke();
         }

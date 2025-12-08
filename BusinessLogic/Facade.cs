@@ -32,11 +32,13 @@ namespace BusinessLogicModels
         /// <summary>
         /// Получает всех юнитов отряда
         /// </summary>
+        /// <returns>Список юнитов</returns>
         public List<Character> GetUnits() => _characterLogic.GetUnits();
 
         /// <summary>
         /// Удаляет юнита из отряда
         /// </summary>
+        /// <param name="unit">Удаляемый юнит</param>
         public void DeleteUnit(Character unit)
         {
             _characterLogic.DeleteUnit(unit);
@@ -46,11 +48,15 @@ namespace BusinessLogicModels
         /// <summary>
         /// Прочитать данные юнита
         /// </summary>
+        /// <param name="unit">Юнит</param>
+        /// <returns name="info">Прочитанная информация</returns>
         public string ReadUnit(Character unit) => _characterLogic.ReadUnit(unit);
 
         /// <summary>
-        /// Провести поединок между персонажами
+        /// Метод, проводящий поединок между персонажами, если здоровье кого-то опускается до 0 и ниже, он выбывает из списка
         /// </summary>
+        /// <param name="char1">Первый персонаж</param>
+        /// <param name="char2">Второй персонаж</param>
         public string Fight(Character char1, Character char2) => _characterLogic.Fight(char1, char2);
 
         // === Fighter Service Methods ===
@@ -58,6 +64,12 @@ namespace BusinessLogicModels
         /// <summary>
         /// Добавляет бойца в отряд
         /// </summary>
+        /// <param name="name">Имя</param>
+        /// <param name="disc">Описание</param>
+        /// <param name="hp">Здоровье</param>
+        /// <param name="str">Сила</param>
+        /// <param name="stam">Выносливость</param>
+        /// <param name="weapon">Выбранный тип оружия</param>
         public void AddFighter(string name, string disc, int hp, int str, int stam, Weapons weapon)
         {
             _fighterLogic.AddFighter(name, disc, hp, str, stam, weapon);
@@ -67,6 +79,13 @@ namespace BusinessLogicModels
         /// <summary>
         /// Изменение данных бойца
         /// </summary>
+        /// <param name="unit">Юнит</param>
+        /// <param name="name">Имя</param>
+        /// <param name="disc">Досье</param>
+        /// <param name="hp">Здоровье</param>
+        /// <param name="str">Сила</param>
+        /// <param name="stam">Выносливость</param>
+        /// <param name="weapon">Оружие</param>
         public void ChangeFighter(Fighter unit, string name, string disc, int hp, int str, int stam, Weapons weapon)
         {
             _fighterLogic.ChangeFighter(unit, name, disc, hp, str, stam, weapon);
@@ -76,6 +95,8 @@ namespace BusinessLogicModels
         /// <summary>
         /// Выбрать владельцев определённого типа оружия
         /// </summary>
+        /// <param name="weapon">Тип оружия</param>
+        /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(Weapons weapon) => _fighterLogic.ChooseMarked(weapon);
 
         // === Mage Service Methods ===
@@ -83,6 +104,12 @@ namespace BusinessLogicModels
         /// <summary>
         /// Добавляет мага в отряд
         /// </summary>
+        /// <param name="name">Имя</param>
+        /// <param name="disc">Описание</param>
+        /// <param name="hp">Здоровье</param>
+        /// <param name="str">Сила</param>
+        /// <param name="mana">Количество маны</param>
+        /// <param name="School">Выбранная школа магии</param>
         public void AddMage(string name, string disc, int hp, int str, int mana, MagicSchools school)
         {
             _mageLogic.AddMage(name, disc, hp, str, mana, school);
@@ -92,6 +119,13 @@ namespace BusinessLogicModels
         /// <summary>
         /// Изменение данных мага
         /// </summary>
+        /// <param name="unit">Юнит</param>
+        /// <param name="name">Имя</param>
+        /// <param name="disc">Досье</param>
+        /// <param name="hp">Здоровье</param>
+        /// <param name="str">Сила</param>
+        /// <param name="mana">Мана</param>
+        /// <param name="School">Тип магии</param>
         public void ChangeMage(Mage unit, string name, string disc, int hp, int str, int mana, MagicSchools school)
         {
             _mageLogic.ChangeMage(unit, name, disc, hp, str, mana, school);
@@ -101,18 +135,26 @@ namespace BusinessLogicModels
         /// <summary>
         /// Выбрать владельцев определённого типа магии
         /// </summary>
+        /// <param name="magic">Тип магии</param>
+        /// <returns name="marked">Выбранные юниты</returns>
         public List<Character> ChooseMarked(MagicSchools magic) => _mageLogic.ChooseMarked(magic);
 
         // === Normalizer Methods (если нужен прямой доступ) ===
 
         /// <summary>
-        /// Нормализует имя персонажа
+        /// Нормализует имя персонажа (заменяет пустое на "Безымянный")
         /// </summary>
+        /// <param name="name">Исходное имя</param>
+        /// <returns>Нормализованная строка</returns>
         public string NormalizeName(string name) => _standartizer.StandartizeName(name);
 
         /// <summary>
         /// Ограничивает числовую характеристику заданным диапазоном
         /// </summary>
+        /// <param name="value">Значение</param>
+        /// <param name="min">Минимум = 0</param>
+        /// <param name="max">Максимум = 100</param>
+        /// <returns>Нормализованное значение</returns>
         public int ClampStat(int value, int min = 0, int max = 100) => _standartizer.ClampStat(value, min, max);
 
         // === Композитные методы (если нужны) ===
@@ -120,6 +162,9 @@ namespace BusinessLogicModels
         /// <summary>
         /// Получить всех бойцов с определённым оружием и всех магов с определённой школой магии
         /// </summary>
+        /// <param name="weapon">Выбранное оружие</param>
+        /// <param name="school">Выбранная школа магии</param>
+        /// <returns>Список персонажей с определенными оружием и школой магии</returns>
         public List<Character> GetSpecializedUnits(Weapons weapon, MagicSchools school)
         {
             var fightersWithWeapon = _fighterLogic.ChooseMarked(weapon);
@@ -131,6 +176,7 @@ namespace BusinessLogicModels
         /// <summary>
         /// Массовое удаление юнитов
         /// </summary>
+        /// <param name="units">Удаляемые персонажи</param>
         public void DeleteUnits(List<Character> units)
         {
             foreach (var unit in units)
@@ -142,6 +188,7 @@ namespace BusinessLogicModels
         /// <summary>
         /// Получить статистику отряда
         /// </summary>
+        /// <returns name="stats">Полученные характеристики персонажей</returns>
         public string GetSquadStats()
         {
             var units = _characterLogic.GetUnits();

@@ -1,7 +1,4 @@
-﻿using BusinessLogic;
-using Ninject;
-
-using Shared;
+﻿
 
 namespace ConsoleAppUI
 {
